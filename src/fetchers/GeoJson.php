@@ -4,7 +4,7 @@ namespace Ceres\Fetcher;
 // TODO: are the requires already added elsewhere?
 require_once ("AbstractFetcher.php");
 
-class GeoJsonFetcher extends AbstractFetcher {
+class GeoJson extends AbstractFetcher {
 
   protected $endpoint;
 

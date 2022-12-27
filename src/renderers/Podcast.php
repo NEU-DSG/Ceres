@@ -2,7 +2,7 @@
 
 namespace Ceres\Renderer;
 
-class PodcastRenderer extends AbstractRenderer {
+class Podcast extends AbstractRenderer {
 
   protected $jwPlayerOptions = array();
   

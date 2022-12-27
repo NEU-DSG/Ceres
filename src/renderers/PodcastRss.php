@@ -2,7 +2,7 @@
 
 namespace Ceres\Renderer;
 
-class PodcastRssRenderer extends AbstractRenderer
+class PodcastRss extends AbstractRenderer
 {
   public function render() {
     

@@ -2,7 +2,7 @@
 
 namespace Ceres\Renderer;
 
-class TabularRenderer extends AbstractRenderer {
+class Tabular extends AbstractRenderer {
 
     public function render() {
         echo "hi. ready to render! \n";

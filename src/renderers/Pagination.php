@@ -2,7 +2,7 @@
 
 namespace Ceres\Renderer;
 
-class PaginationRenderer extends AbstractRenderer {
+class Pagination extends AbstractRenderer {
   
   public function render() {
     // @TODO needs update to reflect possibility of multiple fetchers being injected

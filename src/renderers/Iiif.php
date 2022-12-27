@@ -2,7 +2,7 @@
 
 namespace Ceres\Renderer;
 
-class IiifRenderer extends AbstractRenderer {
+class Iiif extends AbstractRenderer {
   
   public function render() {
   

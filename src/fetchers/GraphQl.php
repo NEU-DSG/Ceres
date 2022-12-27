@@ -4,7 +4,7 @@ namespace Ceres\Fetcher;
 // TODO: are the requires already added elsewhere?
 require_once ("AbstractFetcher.php");
 
-class GraphQlFetcher extends AbstractFetcher {
+class GraphQl extends AbstractFetcher {
 
   protected $endpoint;
 

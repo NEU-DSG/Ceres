@@ -2,7 +2,7 @@
 
 namespace Ceres\Renderer;
 
-class FacetsRenderer extends AbstractRenderer {
+class Facets extends AbstractRenderer {
   
   public function render() {
   

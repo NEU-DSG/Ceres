@@ -2,7 +2,7 @@
 
 namespace Ceres\Renderer;
 
-class LeafletTimelineRenderer extends AbstractRenderer {
+class LeafletTimeline extends AbstractRenderer {
   
   public function render() {
  

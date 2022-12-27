@@ -2,7 +2,7 @@
 
 namespace Ceres\Renderer;
 
-class LeafletStorymapRenderer extends AbstractRenderer {
+class LeafletStorymap extends AbstractRenderer {
   
   public function render() {
 

@@ -1,10 +1,11 @@
 <?php 
 
 namespace Ceres\Fetcher;
+
 // TODO: are the requires already added elsewhere?
 require_once ("AbstractFetcher.php");
 
-class WdqsFetcher extends AbstractFetcher {
+class Sparql extends AbstractFetcher {
 
   protected $endpoint;
 

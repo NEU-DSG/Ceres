@@ -25,6 +25,22 @@ class StringUtilities {
     }
 
 
+    public static function uniquifyName(string $name, array $compareArray ) {
+        $compareKeys = array_keys($compareArray);
+        $suffixDigit = substr($name, -1);
+        if ( is_int($suffixDigit)) {
+            $name = str_replace($suffixDigit, $name, $suffixDigit +1);
+
+        } else {
+            $name = $name . "_1";
+        }
+
+        if (key_exists($name, $compareKeys)) {
+            $name = self::uniquifyName($name, $compareArray);
+        }
+        return $name;
+    }
+
     public static function createNameIdForInstantiation($instantiation, $desc='') { //sub in actual class
         //test if I'm given an instantiated obj, or the class name to instantiate
     

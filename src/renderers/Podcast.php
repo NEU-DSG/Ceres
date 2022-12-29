@@ -2,7 +2,7 @@
 
 namespace Ceres\Renderer;
 
-class Podcast extends AbstractRenderer {
+class Podcast extends Html {
 
   protected $jwPlayerOptions = array();
   
@@ -70,7 +70,7 @@ class Podcast extends AbstractRenderer {
   }
 
   public function renderJwplayer($resourceId, $options = array()) {
-    $jwplayerRenderer = new JwplayerRenderer($this->fetcher, $resourceId, $options);
+    $jwplayerRenderer = new Jwplayer($this->fetcher, $resourceId, $options);
     return $jwplayerRenderer->render();    
   }
   

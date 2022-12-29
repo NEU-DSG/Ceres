@@ -2,7 +2,7 @@
 
 namespace Ceres\Renderer;
 
-class Jwplayer extends AbstractRenderer {
+class Jwplayer extends Html {
   
   public function render() {
     

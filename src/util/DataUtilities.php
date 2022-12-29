@@ -4,6 +4,7 @@ namespace Ceres\Util;
 use Ceres\Exception;
 use Ceres\Config;
 
+
 class DataUtilities {
 
     protected static $allOptions = [];
@@ -66,6 +67,30 @@ class DataUtilities {
         return false; // or throw something?
 
     }
+
+    static function getOption(string $optionName) {
+        if (function_exists('get_option')) {
+            return get_option($optionName);
+        } else {
+            //save it all to a file in dev for now
+            $optionData = [];
+            return $optionData;
+        }
+    }
+
+    static function updateOption(string $optionName, array $optionData) {
+        if (function_exists('update_option')) {
+            update_option($optionName, $optionData);
+        } else {
+//save it all to a file in dev for now
+        }
+    }
+
+/**
+ * for use to compare option names, vp names, etc to make
+ * sure they are unique when set elsewhere
+ * 
+ */
 
     static function setProperties() {
 //for real WP integration

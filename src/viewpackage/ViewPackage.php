@@ -4,6 +4,7 @@ namespace Ceres\ViewPackage;
 
 use Ceres\Exception\CeresException;
 use Ceres\Util\StringUtilities as StrUtil;
+use Ceres\Util\DataUtilities as DataUtil;
 
 class ViewPackage {
 
@@ -14,7 +15,7 @@ class ViewPackage {
     protected $parentViewPackage;
     protected $projectName;
     protected $viewPackageSettings = [];
-    private $existingViewPackageNames = [];
+    private   $existingViewPackageNames = [];
 
     public function __construct() {
         $this->setExistingViewPackageNames();
@@ -23,28 +24,22 @@ class ViewPackage {
 
     public function setName($humanName) {
         $snakeCasedName = StrUtil::languageToSnakeCase($humanName);
-        $suffixDigit = substr($snakeCasedName, -1);
-        if ( is_int($suffixDigit)) {
-            $snakeCasedName = str_replace($suffixDigit, $snakeCasedName, $suffixDigit +1);
-
-        } else {
-            $snakeCasedName = $snakeCasedName . "_1";
-        }
-        $this->name = $snakeCasedName;
+        $name = StrUtil::uniquifyName($snakeCasedName, self::$existingViewPackageNames);
+        $this->name = $name;
     }
 
-    // @todo qualified or unqualified name?
-    public function setRendererClassName($unqualifiedRenderName) {
+    public function setRendererClassName($qualifiedRenderName) {
         //validate it exists
-        if (class_exists($unqualifiedRenderName)) {
-            $this->rendererClassName = $unqualifiedRenderName;
+        if (class_exists($qualifiedRenderName)) {
+            $this->rendererClassName = $qualifiedRenderName;
         } else {
             throw new CeresException('Render class does not exist');
         }
     }
 
     public function setProjectName() {
-        $siteUrl = get_option('siteurl');
+        //$siteUrl = get_option('siteurl');
+        $siteUrl = DataUtil::getOption(('siteurl'));
         $siteName = preg_replace("(^https?://)", "", $siteUrl);
         $this->projectName = $siteName;
     }
@@ -53,7 +48,6 @@ class ViewPackage {
         if (! in_array($vpName, $this->existingViewPackageNames)) {
             return true;
         }
-
         return false;
     }
 
@@ -99,7 +93,7 @@ class ViewPackage {
      *
      * @return void
      */
-    public function loadOptions() {
+    public function load() {
 
     }
 
@@ -145,9 +139,11 @@ class ViewPackage {
 
     public function save() {
         $vpArray = [];
-        $allViewPackages = get_option('ceres_view_packages');
+        //$allViewPackages = get_option('ceres_view_packages');
+        $allViewPackages = DataUtil::getOption('ceres_view_packages');
         $allViewPackages[] = $vpArray;
-        update_option('ceres_view_packages', $allViewPackages);
+        //update_option('ceres_view_packages', $allViewPackages);
+        DataUtil::updateOption('ceres_view_packages', $allViewPackages);
     }
 
     /**

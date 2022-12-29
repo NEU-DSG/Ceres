@@ -2,17 +2,13 @@
 
   namespace Ceres\Renderer;
 
-  use Ceres\Util\StringUtilities;
+  use Ceres\Util\StringUtilities as StrUtil;
+  use Ceres\Exception\Data as DataException;
+  use Ceres\Exception\Data\UnexpectedData as UnexpectedDataException;
 
   abstract class AbstractRenderer {
 
-    /**
-     * Options to pass along for the particular child renderers
-     * 
-     * @var array
-     */
-
-    protected $options = array();
+    protected $rendererOptions = array();
 
     /**
      * The running HTML to be returned by render()
@@ -23,16 +19,19 @@
 
     protected $html = '';
 
+/**
+ * path to the template containing the template html for the class
+ * 
+ * @var string
+ */
 
-    /**
-     * 
-     * The class used for the containing element for CSS customization purposes
-     * 
-     * @var string
-     */
-    protected $containerClass;
-
-
+    protected $template;
+/**
+ * element to use from $template as the real top element
+ *
+ * @var string
+ */
+    protected $templateElement; 
 
     /**
      * The Ceres_Abstract_Fetcher(s) that are handling the data retrieval. Its itemData property
@@ -55,21 +54,23 @@
      * 
      */
 
-    protected $extractors = array();
+    protected $extractors = [];
+
+    protected $coreProperties = [];
+
+    protected $expectedProperties = [];
 
     public function __construct(array $fetchers = [], array $extractors = [], $options = []) {
       
-      
-
-      foreach ($fetchers as $name => $class) {
-        $this->injectFetcher($name, $class);
+      foreach ($fetchers as $classObj) {
+        $this->injectFetcher($classObj);
       }
 
-      foreach ($extractors as $name => $class) {
-        $this->injectExtractor($name, $class);
+      foreach ($extractors as $classObj) {
+        $this->injectExtractor($classObj);
       }
 
-      $this->setOptions($options);
+      $this->setRendererOptions($options);
     }
 
     /* enqueing will have to figure out how to stuff styles and scripts in early in WP rendering.
@@ -110,16 +111,8 @@
       return "<a href='$url'>$label</a>";
     }
 
-    public function setResourceId($resourceId) {
-      $this->resourceId = $resourceId;
-    }
-
-    public function getResourceId() {
-      return $this->resourceId;
-    }
-
-    public function setOptions(array $options) {
-      $this->options = $options;
+    public function setRendererOptions(array $options) {
+      $this->rendererOptions = $options;
     }
 
     /**
@@ -128,8 +121,8 @@
      * @return array
      */
 
-    public function getOptions() {
-      return $this->options;
+    public function getRendererOptions() {
+      return $this->rendererOptions;
     }
 
     /**
@@ -139,33 +132,58 @@
      * @param string $value
      */
 
-    public function setOption($option, $value = '') {
+    public function setRendererOption($option, $value = '') {
       if ($value == '') {
-        unset($this->options[$option]);
+        unset($this->rendererOptions[$option]);
       } else {
-        $this->options[$option] = $value;
+        $this->rendererOptions[$option] = $value;
       }
     }
 
-    public function getOption($option, $default = false) {
-      if (isset($this->options[$option])) {
-        return $this->options[$option];
+    public function getRendererOption($option, $default = false) {
+      if (isset($this->rendererOptions[$option])) {
+        return $this->rendererOptions[$option];
       }
       return $default;
     }
     
+    public function setFetcherOptionsValues(string $fetcherName, array $optionValues) {
 
 
-    private function injectFetcher($fetcher, $description) {
-      $name = StringUtilities::createNameIdForInstantiation($fetcher, $description);
+    }
+
+    public function setExtractorOptionsValues(string $extractorName, array $optionValues) {
+
+      
+    }
+
+    public function setFetcherOptionValue(string $fetcherName, $optionName, $optionValue) {
+
+
+    }
+
+    public function setExtractorOptionValue(string $extractorName, $optionName, $optionValue) {
+
+
+    }
+
+    public function renderDefaultForProperty(array $propValData) {
+
+    }
+
+    public function renderMissingData($expectedPropName) {
+
+    }
+
+    protected function injectFetcher($fetcher, $description = null) {
+      $name = StrUtil::createNameIdForInstantiation($fetcher, $description);
+      $name = StrUtil::uniquifyName($name, $this->fetchers );
       $this->fetchers[$name] = $fetcher;
     }
 
-    private function injectExtractor($extractor, $description) {
-      $name = StringUtilities::createNameIdForInstantiation($extractor, $description);
+    protected function injectExtractor($extractor, $description = null) {
+      $name = StrUtil::createNameIdForInstantiation($extractor, $description);
+      $name = StrUtil::uniquifyName($name, $this->extractors );
       $this->extractors[$name] = $extractor;
     }
-
-
-    
   }

@@ -10,8 +10,8 @@ function getAllOptions() {
             'desc'    => '',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => '',
-            'notes' => '',
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'renderers', 
         ],
         'imageWrap' => [
@@ -19,7 +19,7 @@ function getAllOptions() {
             'desc'    => 'How to wrap text around images',
             'access' => ['contentCreator', 'projectOwner', 'coder'],
             'type'    => 'enum',
-            'ceresWideDefault' => '',
+            'defaults' => 'from other array',
             'notes' => '',
             'appliesTo' => 'renderers', 
         ],
@@ -29,8 +29,8 @@ function getAllOptions() {
             'desc'    => 'A property in the metadata used to filter metadata results for display',
             'access' => ['coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => 'API default',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'extractors',
         ],
     
@@ -40,8 +40,8 @@ function getAllOptions() {
             'desc'    => 'A property in the metadata used to filter search results',
             'access' => ['coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => 'API default',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'extractors', 
              
         ],
@@ -50,8 +50,8 @@ function getAllOptions() {
             'desc'    => 'How to sort metadata fields for display',
             'access' => ['coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => 'API default',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'extractors', 
             
         ],
@@ -60,8 +60,8 @@ function getAllOptions() {
             'desc'    => 'The property to use for sorting results',
             'access' => ['coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => 'API default',
-            'notes' => '',
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'extractors',
             
         ],
@@ -70,8 +70,8 @@ function getAllOptions() {
             'desc'    => 'The order to sort metadata by, e.g. asc or desc',
             'access' => ['coder'],
             'type'    => 'enum',
-            'ceresWideDefault' => 'API default',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'extractors',  
             
         ],
@@ -80,8 +80,8 @@ function getAllOptions() {
             'desc'    => 'The order to sort results by, e.g. asc or desc',
             'access' => ['coder'],
             'type'    => 'enum',
-            'ceresWideDefault' => 'API default',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'extractors', 
             
         ],
@@ -92,7 +92,7 @@ function getAllOptions() {
             'desc'    => 'The metadata property to use for... ',
             'access' => ['coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => 'API default',
+            'defaults' => 'from other array',
             'notes' => 'Maybe remove this for Extractors', 
             'appliesTo' => 'extractors', 
             
@@ -102,8 +102,8 @@ function getAllOptions() {
             'desc'    => 'Property to use when sorting results',
             'access' => ['coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => 'API default',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'extractors', 
             
         ],
@@ -113,7 +113,7 @@ function getAllOptions() {
             'desc'    => 'Property to use for grouping ',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => 'API default',
+            'defaults' => 'from other array',
             'notes' => 'Needed?', 
             'appliesTo' => 'extractors', 
             
@@ -123,8 +123,8 @@ function getAllOptions() {
             'desc'    => 'The specific metadata properties to display',
             'access' => ['contentCreator', 'projectOwner', 'coder'],
             'type'    => 'enum',
-            'ceresWideDefault' => 'All',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'extractors', 
             
         ],
@@ -133,8 +133,8 @@ function getAllOptions() {
             'desc'    => 'The specific metadata properties to display',
             'access' => ['contentCreator', 'projectOwner', 'coder'],
             'type'    => 'enum',
-            'ceresWideDefault' => 'All',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'fetchers', 
             
         ],
@@ -143,8 +143,8 @@ function getAllOptions() {
             'desc'    => 'Property to use for grouping results',
             'access' => ['contentCreator', 'projectOwner', 'coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => 'API default',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'fetchers', 
              
         ],
@@ -153,8 +153,8 @@ function getAllOptions() {
             'desc'    => 'Property to use for filtering results',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => '',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'fetchers', 
              
         ],
@@ -163,8 +163,8 @@ function getAllOptions() {
             'desc'    => 'Property to use for sorting results',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => '',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'fetchers', 
             
         ],
@@ -173,8 +173,8 @@ function getAllOptions() {
             'desc'    => 'The order with which to sort results',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => 'API default',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'fetchers', 
             
         ],
@@ -183,8 +183,8 @@ function getAllOptions() {
             'desc'    => 'The property to use for sorting results',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => '',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'fetchers', 
             
         ],
@@ -193,8 +193,8 @@ function getAllOptions() {
             'desc'    => 'The property to use as the link back to the original resource',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => '',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'fetchers', 
             
         ],
@@ -203,8 +203,8 @@ function getAllOptions() {
             'desc'    => 'The property to use as the link back to the original media',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => '',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'fetchers', 
             
         ],
@@ -213,8 +213,8 @@ function getAllOptions() {
             'desc'    => 'The URI to use for displaying media',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => '',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'fetchers', 
             
         ],
@@ -223,8 +223,8 @@ function getAllOptions() {
             'desc'    => 'The CSS class to apply to &lt;th> elements',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => '',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'renderers', 
             
         ],
@@ -233,8 +233,8 @@ function getAllOptions() {
             'desc'    => 'The CSS class to apply to &lt;td> elements',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => '',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'renderers', 
             
         ],
@@ -244,8 +244,8 @@ function getAllOptions() {
             'desc'    => 'Whether to get all resources matching the query, or force pagination of the queries for rolling loads',
             'access' => ['coder'],
             'type'    => 'bool',
-            'ceresWideDefault' => true,
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'fetchers', 
             
         ],
@@ -254,8 +254,8 @@ function getAllOptions() {
             'desc'    => 'The data format the API should return',
             'access' => ['coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => 'API default',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'fetchers', 
             
         ],
@@ -264,8 +264,8 @@ function getAllOptions() {
             'desc'    => 'The number of results for each page returned by the API',
             'access' => ['coder'],
             'type'    => 'int',
-            'ceresWideDefault' => 'API default',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'fetchers', 
             
         ],
@@ -274,8 +274,8 @@ function getAllOptions() {
             'desc'    => 'The start page of results from the API',
             'access' => ['coder'],
             'type'    => 'int',
-            'ceresWideDefault' => 'API default',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'fetchers', 
             
         ],
@@ -284,8 +284,8 @@ function getAllOptions() {
             'desc'    => 'The resource ids to return',
             'access' => ['contentCreator', 'projectOwner', 'coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => '',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'fetchers', 
             
         ],
@@ -294,8 +294,8 @@ function getAllOptions() {
             'desc'    => 'The full query to send to the API',
             'access' => ['coder'],
             'type'    => 'text',
-            'ceresWideDefault' => '',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'fetchers', 
             
         ],
@@ -305,18 +305,18 @@ function getAllOptions() {
             'desc'    => 'The API endpoint URI',
             'access' => ['coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => '',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'fetchers', 
             
         ],
         'searchType' => [
             'label'   => 'Search Type',
             'desc'    => 'The type of search to use for the specific API, e.g. search vs item in DRS',
-            'access' => ['coder'],
+            'access'  => ['coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => '',
-            'notes' => '',
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'fetchers',
         ],
         'thumbnailSize' => [
@@ -324,7 +324,7 @@ function getAllOptions() {
             'desc'    => 'The size of the thumbnail to use',
             'access' => ['contentCreator', 'projectOwner', 'coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => 'API default',
+            'defaults' => 'from other array',
             'notes' => 'This will vary based on API result structure',
             'appliesTo' => 'renderers', 
             
@@ -334,8 +334,8 @@ function getAllOptions() {
             'desc'    => 'The separator character to use for key/value pairs',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => ': ',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'renderers', 
             
         ],
@@ -344,8 +344,8 @@ function getAllOptions() {
             'desc'    => 'A CSS class to apply to keys in rendering arrays',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'ceresWideDefault' => '',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'renderers', 
             
         ],
@@ -354,8 +354,8 @@ function getAllOptions() {
             'desc'    => 'A CSS class to apply to values in rendering arrays',
             'access' => ['projectOwner', 'coder'],
             'type'    => '',
-            'ceresWideDefault' => '',
-            'notes' => '', 
+            'defaults' => 'from other array',
+            'notes' => "",
             'appliesTo' => 'renderers', 
             
         ],
@@ -364,7 +364,7 @@ function getAllOptions() {
             'desc'    => '',
             'access' => ['contentCreator', 'projectOwner', 'coder'],
             'type'    => '',
-            'ceresWideDefault' => '',
+            'defaults' => 'from other array',
             'notes' => 'need to break this out', 
             'appliesTo' => 'renderers', 
             
@@ -375,7 +375,7 @@ function getAllOptions() {
             'desc'    => '',
             'access' => ['coder'],
             'type'    => '',
-            'ceresWideDefault' => 'Leaflet defaults',
+            'defaults' => 'from other array',
             'notes' => 'need to break this out? probably not if access remains limited to coders', 
             'appliesTo' => 'renderers', 
         ],
@@ -384,9 +384,327 @@ function getAllOptions() {
     return $ceresAllOptions;
 }
 
+// 'extractorMetadataFilterBy' => [
+//     'currentValue' => null,
+//     'defaults' => [
+//         'ceres' => '',
+//         'projectName' => '',
+//         'viewPackageName' => '',
+//     ]
+// ],
+// ],
+
+
 function getOptionsValues() {
     $ceresOptionsValues = [
+        'altLabelProp' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'resourceLinkProp' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'searchType' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'extractorMetadataFilterBy' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'imageWrap' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'extractorMetadataToShow' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+                ]
+            ],
+        
 
+        'thumbnailSize' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'extractorResourcesFilterBy' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'extractorMetadataSortBy' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'extractorResourcesSortBy' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'extractorMetadataSortOrder' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'extractorResourcesSortOrder' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'extractorMetadataSortByProperty' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'extractorResourcesSortByProperty' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'extractorGroupBy' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'itemLinkProp' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'mediaLinkProp' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'mediaUriProp' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'thClassName' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'tdClassName' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'endpoint' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'fetcherMetadataToShow' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'getAll' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'responseFormat' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'perPage' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'startPage' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'resourceIds' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'query' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'fetcherGroupBy' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ], 
+        'fetcherFilterBy' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'fetcherSortBy' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'fetcherSortOrder' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'fetcherSortByProperty' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'separator' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'keyClass' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        'valueClass' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        //settings in the surrounding HTML
+        'leafletCeres' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
+        //passthroughs to Leaflet
+        'leafletNative' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+            ]
+        ],
 
     ]; 
 
@@ -414,23 +732,23 @@ function getViewPackages() {
 
     $extractorOptions = [
         'general' => [
-            'extractorMetadataFilterBy' => '',
-            'extractorResourcesFilterBy' => '',
-            'extractorMetadataSortBy' => '',
-            'extractorResourcesSortBy' => '',
-            'extractorMetadataSortOrder' => '',
-            'extractorResourcesSortOrder' => '',
-            'extractorMetadataSortByProperty' => '',
-            'extractorResourcesSortByProperty' => '',
-            'extractorGroupBy' => '',
-            'itemLinkProp' => '',
-            'mediaLinkProp' => '',
-            'mediaUriProp' => '',
+            'extractorMetadataFilterBy',
+            'extractorResourcesFilterBy',
+            'extractorMetadataSortBy',
+            'extractorResourcesSortBy',
+            'extractorMetadataSortOrder',
+            'extractorResourcesSortOrder',
+            'extractorMetadataSortByProperty',
+            'extractorResourcesSortByProperty',
+            'extractorGroupBy',
+            'itemLinkProp',
+            'mediaLinkProp',
+            'mediaUriProp',
 
         ],
         'tabular' => [
-            'thClassName' => '',
-            'tdClassName' => '',
+            'thClassName',
+            'tdClassName',
         ]
     ];
 
@@ -443,31 +761,29 @@ function getViewPackages() {
 
     $fetcherOptions = [
         'general' => [
-            'endpoint' => ['value' =>'',
-                        'permissions' => 'contentCreator' // @todo or keep separate?
-                        ],
-            'fetcherMetadataToShow' => [],
-            'getAll' => false,
-            'responseFormat' => '',
-            'perPage' => 10,
-            'startPage' => 1,
-            'resourceIds' => [],
-            'query' => "",
-            'fetcherGroupBy' => '', 
-            'fetcherFilterBy' => '',
-            'fetcherSortBy' => '',
-            'fetcherSortOrder' => '',
-            'fetcherSortByProperty' => '',
+            'endpoint',
+            'fetcherMetadataToShow',
+            'getAll',
+            'responseFormat',
+            'perPage',
+            'startPage',
+            'resourceIds',
+            'query',
+            'fetcherGroupBy', 
+            'fetcherFilterBy',
+            'fetcherSortBy',
+            'fetcherSortOrder',
+            'fetcherSortByProperty',
         ],
         'wdqs' => [
-            'endpoint' => "https://wikidata",
-            'responseFormat' => 'json',
+            'endpoint',
+            'responseFormat',
 
         ],
         'drs' => [
-            'endpoint' => "",
-            'type' => "{search | item}",
-            'thumbnailSize' => "{1, 2, 3, 4, 5}" // from DRS API
+            'endpoint',
+            'type',
+            'thumbnailSize',
 
         ]
 
@@ -483,32 +799,27 @@ function getViewPackages() {
 
     $rendererOptions = [
         'general' => [
-            'imageWrap' => "",
-            'containerClass' => "ceres-container", // @todo need to auto fill based on VP?
-            'metadataToShow' => [],
-            'altLabelProp' => "",
-            'thClass' => "general",
+            'imageWrap',
+            'metadataToShow',
+            'altLabelProp',
+            'thClass',
         ],
 
         'tabular' => [
-            'thClass' => "",
-            'tdClass' => "",
-            'trClass' => "",
+            'thClass',
+            'tdClass',
+            'trClass',
         ],
 
         'keyValue' => [
-            'separator' => ": ",
-            'keyClass' => "",
-            'valueClass' => "",
+            'separator',
+            'keyClass',
+            'valueClass',
         ],
         //settings in the surrounding HTML
-        'leafletCeres' => [
-
-        ],
+        'leafletCeres',
         //passthroughs to Leaflet
-        'leafletNative' => [
-
-        ],
+        'leafletNative',
 
         
     ];
@@ -519,8 +830,8 @@ function getViewPackages() {
                 [
                 'humanName' => "Human Name",
                 'description' => "Description",
-                'parentViewPackage' => "",
-                'projectName' => '',
+                'parentViewPackage',
+                'projectName',
                 'rendererClassName' => "Ceres_Tabular_Renderer",
                 'rendererOptions' => [
                         'options' => [  //redundant, yes. but helps keep the same patter with fetchers and extractors
@@ -568,23 +879,23 @@ function getViewPackages() {
 
     $extractorOptions = [
         'general' => [
-            'extractorMetadataFilterBy' => '',
-            'extractorResourcesFilterBy' => '',
-            'extractorMetadataSortBy' => '',
-            'extractorResourcesSortBy' => '',
-            'extractorMetadataSortOrder' => '',
-            'extractorResourcesSortOrder' => '',
-            'extractorMetadataSortByProperty' => '',
-            'extractorResourcesSortByProperty' => '',
-            'extractorGroupBy' => '',
-            'itemLinkProp' => '',
-            'mediaLinkProp' => '',
-            'mediaUriProp' => '',
+            'extractorMetadataFilterBy',
+            'extractorResourcesFilterBy',
+            'extractorMetadataSortBy',
+            'extractorResourcesSortBy',
+            'extractorMetadataSortOrder',
+            'extractorResourcesSortOrder',
+            'extractorMetadataSortByProperty',
+            'extractorResourcesSortByProperty',
+            'extractorGroupBy',
+            'itemLinkProp',
+            'mediaLinkProp',
+            'mediaUriProp',
 
         ],
         'tabular' => [
-            'thClassName' => '',
-            'tdClassName' => '',
+            'thClassName',
+            'tdClassName',
         ]
     ];
 
@@ -597,31 +908,29 @@ function getViewPackages() {
 
     $fetcherOptions = [
         'general' => [
-            'endpoint' => ['value' =>'',
-                        'permissions' => 'contentCreator' // @todo or keep separate?
-                        ],
-            'fetcherMetadataToShow' => [],
-            'getAll' => false,
-            'responseFormat' => '',
-            'perPage' => 10,
-            'startPage' => 1,
-            'resourceIds' => [],
-            'query' => "",
-            'fetcherGroupBy' => '', 
-            'fetcherFilterBy' => '',
-            'fetcherSortBy' => '',
-            'fetcherSortOrder' => '',
-            'fetcherSortByProperty' => '',
+            'endpoint',
+            'fetcherMetadataToShow',
+            'getAll',
+            'responseFormat',
+            'perPage',
+            'startPage',
+            'resourceIds',
+            'query',
+            'fetcherGroupBy', 
+            'fetcherFilterBy',
+            'fetcherSortBy',
+            'fetcherSortOrder',
+            'fetcherSortByProperty',
         ],
         'wdqs' => [
-            'endpoint' => "https://wikidata",
-            'responseFormat' => 'json',
+            'endpoint',
+            'responseFormat',
 
         ],
         'drs' => [
-            'endpoint' => "",
-            'type' => "{search | item}",
-            'thumbnailSize' => "{1, 2, 3, 4, 5}" // from DRS API
+            'endpoint',
+            'type',
+            'thumbnailSize', // from DRS API
 
         ]
 
@@ -637,32 +946,27 @@ function getViewPackages() {
 
     $rendererOptions = [
         'general' => [
-            'imageWrap' => "",
-            'containerClass' => "ceres-container", // @todo need to auto fill based on VP?
-            'metadataToShow' => [],
-            'altLabelProp' => "",
-            'thClass' => "general",
+            'imageWrap',
+            'metadataToShow',
+            'altLabelProp',
+            'thClass',
         ],
 
         'tabular' => [
-            'thClass' => "",
-            'tdClass' => "",
-            'trClass' => "",
+            'thClass',
+            'tdClass',
+            'trClass',
         ],
 
         'keyValue' => [
-            'separator' => ": ",
-            'keyClass' => "",
-            'valueClass' => "",
+            'separator',
+            'keyClass',
+            'valueClass',
         ],
         //settings in the surrounding HTML
-        'leafletCeres' => [
-
-        ],
+        'leafletCeres',
         //passthroughs to Leaflet
-        'leafletNative' => [
-
-        ],
+        'leafletNative',
 
         
     ];
@@ -673,8 +977,8 @@ function getViewPackages() {
                 [
                 'humanName' => "Human Name",
                 'description' => "Description",
-                'parentViewPackage' => "",
-                'projectName' => '',
+                'parentViewPackage',
+                'projectName',
                 'rendererClassName' => "Ceres_Tabular_Renderer",
                 'rendererOptions' => [
                         'options' => [  //redundant, yes. but helps keep the same patter with fetchers and extractors

@@ -2,7 +2,8 @@
 
   namespace Ceres\Renderer;
 
-  use Ceres\Util\StringUtilities as StrUtil;
+use Ceres\Exception\CeresException;
+use Ceres\Util\StringUtilities as StrUtil;
   use Ceres\Exception\Data as DataException;
   use Ceres\Exception\Data\UnexpectedData as UnexpectedDataException;
 
@@ -18,20 +19,6 @@
      */
 
     protected $html = '';
-
-/**
- * path to the template containing the template html for the class
- * 
- * @var string
- */
-
-    protected $template;
-/**
- * element to use from $template as the real top element
- *
- * @var string
- */
-    protected $templateElement; 
 
     /**
      * The Ceres_Abstract_Fetcher(s) that are handling the data retrieval. Its itemData property
@@ -60,17 +47,23 @@
 
     protected $expectedProperties = [];
 
-    public function __construct(array $fetchers = [], array $extractors = [], $options = []) {
+    public function __construct(array $fetchers = [], array $extractors = [], $renderOptions = []) {
       
       foreach ($fetchers as $classObj) {
+        if (! is_a($classObj, 'Fetcher')) {
+          throw new CeresException("not a fetcher");
+        }
         $this->injectFetcher($classObj);
       }
 
       foreach ($extractors as $classObj) {
+        if (! is_a($classObj, 'Extractor')) {
+          throw new CeresException("not an extractor");
+        }
         $this->injectExtractor($classObj);
       }
 
-      $this->setRendererOptions($options);
+      $this->setRendererOptions($renderOptions);
     }
 
     /* enqueing will have to figure out how to stuff styles and scripts in early in WP rendering.
@@ -132,7 +125,7 @@
      * @param string $value
      */
 
-    public function setRendererOption($option, $value = '') {
+    public function setRendererOptionValue($option, $value = '') {
       if ($value == '') {
         unset($this->rendererOptions[$option]);
       } else {
@@ -140,11 +133,15 @@
       }
     }
 
-    public function getRendererOption($option, $default = false) {
+    public function getRenderOptionValue($option) {
+
+    }
+
+    public function getRendererOption($option) {
       if (isset($this->rendererOptions[$option])) {
         return $this->rendererOptions[$option];
       }
-      return $default;
+      // throw something
     }
     
     public function setFetcherOptionsValues(string $fetcherName, array $optionValues) {
@@ -167,7 +164,7 @@
 
     }
 
-    public function renderDefaultForProperty(array $propValData) {
+    public function getDefaultPropertyValue(array $propValData) {
 
     }
 

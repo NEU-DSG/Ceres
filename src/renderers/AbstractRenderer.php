@@ -12,15 +12,6 @@ use Ceres\Util\StringUtilities as StrUtil;
     protected $rendererOptions = array();
 
     /**
-     * The running HTML to be returned by render()
-     * @TODO: often unused, so a candidate for removal.
-     * 
-     * @var string
-     */
-
-    protected $html = '';
-
-    /**
      * The Ceres_Abstract_Fetcher(s) that are handling the data retrieval. Its itemData property
      * holds the data to work with in most simple cases
      * 

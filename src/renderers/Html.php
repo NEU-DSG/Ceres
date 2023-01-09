@@ -46,11 +46,7 @@ class Html extends AbstractRenderer {
         return $this->containerElement;
     }
 
-    public function appendToClass(DOMElement $element = null, $value ) {
-        if (is_null($element)) {
-            $element = $this->containerElement;
-        }
-        
+    public function appendToClass(DOMElement $element, $value ) {
         $class = $element->getAttribute('class');
         $class = $class .= " $value";
         $element->setAttribute('class', $class);

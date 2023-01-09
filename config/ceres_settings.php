@@ -857,8 +857,8 @@ function getViewPackages() {
                     
                 'extractors' =>
                     [
-                        'WikiDataToTabular' => [
-                            'fullClassName' => 'Ceres\Extractor\TabularWdqs',
+                        'WdqsToTabular' => [
+                            'fullClassName' => 'Ceres\Extractor\WdqsToTabular',
                             'options' => array_merge(
                                 $extractorOptions['general'], 
                                 $extractorOptions['tabular']),
@@ -897,8 +897,8 @@ function getViewPackages() {
                     
                 'extractors' =>
                     [
-                        'WikiDataToLeaflet' => [
-                            'fullClassName' => 'Ceres\Extractor\WikiDataToLeafletMap',
+                        'WdqsToLeafletMap' => [
+                            'fullClassName' => 'Ceres\Extractor\WdqsToLeafletMap',
                             'options' => array_merge(
                                 $extractorOptions['general'], 
                                // $extractorOptions['leaflet']
@@ -1061,7 +1061,7 @@ function getViewPackages() {
                 
             'extractors' =>
                 [
-                    'WikiDataToLeaflet' => [
+                    'DrsToTabular' => [
                         'fullClassName' => 'Ceres\Extractor\DrsToTabular',
                         'options' => array_merge(
                             $extractorOptions['general'], 

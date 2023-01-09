@@ -5,36 +5,28 @@ namespace Ceres\ViewPackage;
 use Ceres\Exception\CeresException;
 use Ceres\Util\StringUtilities as StrUtil;
 use Ceres\Util\DataUtilities as DataUtil;
+use Ceres\Config;
 
 class ViewPackage {
 
+    protected $nameId;
     protected $humanName;
-    protected $name;
     protected $description;
-    protected $rendererClassName;
     protected $parentViewPackage;
     protected $projectName;
-    protected $viewPackageSettings = [];
-    private   $existingViewPackageNames = [];
+    protected $currentViewPackageData = [];
+    private   $allViewPackagesData = [];
 
     public function __construct() {
-        $this->setExistingViewPackageNames();
+        $this->allViewPackagesData = \Ceres\Config\getViewPackages();
     }
 
 
-    public function setName($humanName) {
+    public function setNameId($humanName) {
         $snakeCasedName = StrUtil::languageToSnakeCase($humanName);
-        $name = StrUtil::uniquifyName($snakeCasedName, self::$existingViewPackageNames);
-        $this->name = $name;
-    }
-
-    public function setRendererClassName($qualifiedRenderName) {
-        //validate it exists
-        if (class_exists($qualifiedRenderName)) {
-            $this->rendererClassName = $qualifiedRenderName;
-        } else {
-            throw new CeresException('Render class does not exist');
-        }
+        $existingViewPackageNames = array_keys(self::$allViewPackagesData);
+        $nameId = StrUtil::uniquifyName($snakeCasedName, $existingViewPackageNames);
+        $this->nameId = $nameId;
     }
 
     public function setProjectName() {
@@ -42,24 +34,6 @@ class ViewPackage {
         $siteUrl = DataUtil::getOption(('siteurl'));
         $siteName = preg_replace("(^https?://)", "", $siteUrl);
         $this->projectName = $siteName;
-    }
-
-    public function validateViewPackageName($vpName) {
-        if (! in_array($vpName, $this->existingViewPackageNames)) {
-            return true;
-        }
-        return false;
-    }
-
-    private function setExistingViewPackageNames() {
-        //eventually, loaded from wp_options ceres_view_packages
-        // array_keys on loaded View Packages
-        //$viewPackages = get_option('ceres_view_packages');
-        $viewPackages = [
-            'my_view_package' => [],
-            'my_other_view_package' => [],
-        ];
-        $this->existingViewPackageNames = array_keys($viewPackages);
     }
 
     /**
@@ -71,7 +45,7 @@ class ViewPackage {
      * @return void
      */
 
-    public function filterGeneralOptions($options) {
+    public function filterGeneralOptionsByScope($options) {
         foreach( $options as $scope => $suboptions) {
             // $scope is 'general','tabular' etc for grouping inputs
             if ($scope != 'general') {
@@ -93,7 +67,7 @@ class ViewPackage {
      *
      * @return void
      */
-    public function load() {
+    public function load($nameId) {
 
     }
 
@@ -103,18 +77,6 @@ class ViewPackage {
             return true;
         }
         return false;
-    }
-
-    public function setOptions($optionsArray) {
-
-    }
-
-    protected function setViewPackageSettings($settings) {
-        $this->viewPackageSettings = $settings;
-    }
-
-    protected function getViewPackageSettings($settings) {
-        return $this->viewPackageSettings;
     }
 
     public function export($includeValues) {
@@ -128,7 +90,6 @@ class ViewPackage {
 
         $vpArray = [];
         $newViewPackage = new ViewPackage;
-        $newViewPackage->setOptions($vpArray);
         if ($save) {
             $newViewPackage->save();
         } else {

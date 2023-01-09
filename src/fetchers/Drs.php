@@ -2,6 +2,8 @@
 
 namespace Ceres\Fetcher;
 
+use Ceres\Util\DataUtilities;
+
 // TODO: are the requires already added elsewhere?
 require_once ('AbstractFetcher.php');
 
@@ -133,7 +135,8 @@ class Drs extends AbstractFetcher {
    */
 
   public function getPidFromSettings() {
-    $collectionSetting = get_option('drstk_collection');
+    $collectionSetting = DataUtilities::getOption('drstk_collection');
+    //$collectionSetting = get_option('drstk_collection');
     $explodedCollectionSetting = explode("/", $collectionSetting);
     return end($explodedCollectionSetting);
   }

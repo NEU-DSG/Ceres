@@ -103,6 +103,9 @@ class DataUtilities {
             return get_option($optionName);
         } else {
             //save it all to a file in dev for now
+            if ($optionName == 'drstk_collection') {
+                return 'https://drs/collectionId';
+            }
             $optionData = [];
             return $optionData;
         }

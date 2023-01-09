@@ -827,12 +827,183 @@ function getViewPackages() {
     $ceresViewPackages = [
         "tabular_wikidata_for_short_metadata" =>
                 [
-                'humanName' => "Human Name",
+                'humanName' => "Tabular Wikidata For Short Metadata",
                 'description' => "Description",
-                'parentViewPackage',
-                'projectName',
-                'rendererClassName' => "Ceres_Tabular_Renderer",
-                'rendererOptions' => [
+                'parentViewPackage' => null,
+                'projectName' => null,
+                'renderer' => [
+                        'Tabular' => [
+                            'fullClassName' => 'Ceres\Renderer\Tabular',
+                            'options' => [  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                                array_merge(
+                                    $rendererOptions['general'],
+                                    $rendererOptions['tabular']
+                                )
+                                //after deduping options in the merge,
+                                // stuff in the current values
+                            ]
+                    ],
+                ],
+
+                'fetchers' => 
+                    [
+                        'Wdqs' => [
+                            'fullClassName' => 'Ceres\Fetcher\Wdqs',
+                            'options' => array_merge(
+                                $fetcherOptions['general'],
+                                $fetcherOptions['wdqs']),
+                        ]
+                    ],
+                    
+                'extractors' =>
+                    [
+                        'WikiDataToTabular' => [
+                            'fullClassName' => 'Ceres\Extractor\TabularWdqs',
+                            'options' => array_merge(
+                                $extractorOptions['general'], 
+                                $extractorOptions['tabular']),
+                            ],
+                    ],
+                ],
+        "leaflet_wikidata_for_public_art_map" =>
+            [
+                'humanName' => "Leaflet Wikidata for Public Art Map",
+                'description' => "Description",
+                'parentViewPackage' => null,
+                'projectName' => null,
+                'renderer' => [
+                        'LeafletMap' => [
+                            'fullClassName' => 'Ceres\Renderer\LeafletMap',
+                            'options' => [  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                                array_merge(
+                                    $rendererOptions['general'],
+                                    $rendererOptions['tabular']
+                                )
+                                //after deduping options in the merge,
+                                // stuff in the current values
+                            ]
+                        ]
+                    ],
+        
+                'fetchers' => 
+                    [
+                        'Wdqs' => [
+                            'fullClassName' => 'Ceres\Fetcher\Wdqs',
+                            'options' => array_merge(
+                                $fetcherOptions['general'],
+                                $fetcherOptions['wdqs']),
+                        ]
+                    ],
+                    
+                'extractors' =>
+                    [
+                        'WikiDataToLeaflet' => [
+                            'fullClassName' => 'Ceres\Extractor\WikiDataToLeafletMap',
+                            'options' => array_merge(
+                                $extractorOptions['general'], 
+                               // $extractorOptions['leaflet']
+                            ),
+                            ],
+                    ],
+                ],
+        "html_dev_test" =>
+        [
+            'humanName' => "Html Dev Test",
+            'description' => "Description",
+            'parentViewPackage' => null,
+            'projectName' => null,
+            'renderer' => [
+                    'Html' => [
+                        'fullClassName' => 'Ceres\Renderer\Html',
+                        'options' => [  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                            array_merge(
+                                $rendererOptions['general'],
+                                $rendererOptions['tabular']
+                            )
+                            //after deduping options in the merge,
+                            // stuff in the current values
+                        ]
+                    ]
+
+                ],
+    
+            'fetchers' => 
+                [
+                ],
+                
+            'extractors' =>
+                [
+                ],
+            ],
+
+        "tabular_dev_test" =>
+        [
+            'humanName' => "Tabular Dev Test",
+            'description' => "Description",
+            'parentViewPackage' => null,
+            'projectName' => null,
+            'renderer' => [
+                    'Tabular' => [
+                        'fullClassName' => 'Ceres\Renderer\Tabular',
+                        'options' => [  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                            array_merge(
+                                $rendererOptions['general'],
+                                $rendererOptions['tabular']
+                            )
+                            //after deduping options in the merge,
+                            // stuff in the current values
+                        ]
+                    ]
+                ],
+    
+            'fetchers' => 
+                [
+                ],
+                
+            'extractors' =>
+                [
+                ],
+            ],
+
+        "leafletmap_dev_test" =>
+        [
+            'humanName' => "LeafletMap Dev Test",
+            'description' => "Description",
+            'parentViewPackage' => null,
+            'projectName' => null,
+            'renderer' => [
+                    'LeafletMap' => [
+                        'fullClassName' => 'Ceres\Renderer\LeafletMap',
+                        'options' => [  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                            array_merge(
+                                $rendererOptions['general'],
+                                $rendererOptions['tabular']
+                            )
+                            //after deduping options in the merge,
+                            // stuff in the current values
+                        ]
+                    ]
+                ],
+    
+            'fetchers' => 
+                [
+                ],
+                
+            'extractors' =>
+                [
+                ],
+            ],
+        "tabular_wdqs_test" => 
+        [
+            'humanName' => "Tabular Wdqs Test",
+            'description' => "Description",
+            'parentViewPackage' => null,
+            'projectName' => null,
+            'renderer' => 
+                [
+                    'Tabular' => 
+                        [
+                        'fullClassName' => 'Ceres\Renderer\Tabular',
                         'options' => [  //redundant, yes. but helps keep the same patter with fetchers and extractors
                             array_merge(
                                 $rendererOptions['general'],
@@ -842,29 +1013,68 @@ function getViewPackages() {
                             // stuff in the current values
                         ]
                     ],
-
-                'fetchers' => 
-                    [
-                        'WdqsFetcher' =>
-                            ['options' => array_merge(
-                                $fetcherOptions['general'],
-                                $fetcherOptions['wdqs']),
-                            ]
-                    ],
-                    
-                'extractors' =>
-                    [
-                        'WikiDataToTabular' =>
-                            ['options' => array_merge(
-                                $extractorOptions['general'], 
-                                $extractorOptions['tabular']),
-                            ],
-                    ],
+            ],
+    
+            'fetchers' => 
+                [
+                    'Wdqs' => [
+                        'fullClassName' => 'Ceres\Fetcher\Wdqs',
+                        'options' => array_merge(
+                            $fetcherOptions['general'],
+                            $fetcherOptions['wdqs']),
+                    ]
                 ],
+                
+            'extractors' =>
+                [
+                ],
+            ],
+        "tabular_drs_test" =>
+        [
+            'humanName' => "Tabular Drs Test",
+            'description' => "Description",
+            'parentViewPackage' => null,
+            'projectName' => null,
+            'renderer' => [
+                    'Tabular' => [
+                        'fullClassName' => 'Ceres\Renderer\Tabular',
+                        'options' => [  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                            array_merge(
+                                $rendererOptions['general'],
+                                $rendererOptions['tabular']
+                            )
+                            //after deduping options in the merge,
+                            // stuff in the current values
+                        ]
+                    ]
+                ],
+    
+            'fetchers' => 
+                [
+                    'Drs' => [
+                        'fullClassName' => 'Ceres\Fetcher\Drs',
+                        'options' => array_merge(
+                            $fetcherOptions['general'],
+                            $fetcherOptions['wdqs']),
+                    ]
+                ],
+                
+            'extractors' =>
+                [
+                    'WikiDataToLeaflet' => [
+                        'fullClassName' => 'Ceres\Extractor\DrsToTabular',
+                        'options' => array_merge(
+                            $extractorOptions['general'], 
+                        //    $extractorOptions['leaflet']
+                        ),
+                        ],
+                ],
+            ],
 
-            "another_view_package" => [],
-        
+        //"another_view_package" => [],
+         
     ];
+
 
     return $ceresViewPackages;
 }
@@ -925,148 +1135,3 @@ function getPropertyLabels() {
     return $propertyLabels;
 
 }
-
-    /**
-     * 
-     * for building up  view packages. template, not set values
-     * 
-     */
-
-    $extractorOptions = [
-        'general' => [
-            'extractorMetadataFilterBy',
-            'extractorResourcesFilterBy',
-            'extractorMetadataSortBy',
-            'extractorResourcesSortBy',
-            'extractorMetadataSortOrder',
-            'extractorResourcesSortOrder',
-            'extractorMetadataSortByProperty',
-            'extractorResourcesSortByProperty',
-            'extractorGroupBy',
-            'itemLinkProp',
-            'mediaLinkProp',
-            'mediaUriProp',
-
-        ],
-        'tabular' => [
-            'thClassName',
-            'tdClassName',
-        ]
-    ];
-
-
-    /**
-     * 
-     * for building up view packages. template, not set values
-     */
-
-
-    $fetcherOptions = [
-        'general' => [
-            'endpoint',
-            'fetcherMetadataToShow',
-            'getAll',
-            'responseFormat',
-            'perPage',
-            'startPage',
-            'resourceIds',
-            'query',
-            'fetcherGroupBy', 
-            'fetcherFilterBy',
-            'fetcherSortBy',
-            'fetcherSortOrder',
-            'fetcherSortByProperty',
-        ],
-        'wdqs' => [
-            'endpoint',
-            'responseFormat',
-
-        ],
-        'drs' => [
-            'endpoint',
-            'type',
-            'thumbnailSize', // from DRS API
-
-        ]
-
-
-    ];
-
-
-    /**
-     * 
-     * for building up  view packages. template, not set values
-     */
-
-
-    $rendererOptions = [
-        'general' => [
-            'imageWrap',
-            'metadataToShow',
-            'altLabelProp',
-            'thClass',
-        ],
-
-        'tabular' => [
-            'thClass',
-            'tdClass',
-            'trClass',
-        ],
-
-        'keyValue' => [
-            'separator',
-            'keyClass',
-            'valueClass',
-        ],
-        //settings in the surrounding HTML
-        'leafletCeres',
-        //passthroughs to Leaflet
-        'leafletNative',
-
-        
-    ];
-
-
-    $ceresViewPackages = [
-        "tabular_wikidata_for_short_metadata" =>
-                [
-                'humanName' => "Human Name",
-                'description' => "Description",
-                'parentViewPackage',
-                'projectName',
-                'rendererClassName' => "Tabular",
-                'rendererOptions' => [
-                        'options' => [  //redundant, yes. but helps keep the same patter with fetchers and extractors
-                            array_merge(
-                                $rendererOptions['general'],
-                                $rendererOptions['tabular']
-                            )
-                            //after deduping options in the merge,
-                            // stuff in the current values
-                        ]
-                    ],
-
-                'fetchers' => 
-                    [
-                        'Wdqs' =>
-                            ['options' => array_merge(
-                                $fetcherOptions['general'],
-                                $fetcherOptions['wdqs']),
-                            ]
-                    ],
-                    
-                'extractors' =>
-                    [
-                        'WikiDataToTabular' =>
-                            ['options' => array_merge(
-                                $extractorOptions['general'], 
-                                $extractorOptions['tabular']),
-                            ],
-                    ],
-                ],
-
-            "another_view_package" => [],
-        
-    ];
-
-    //return $ceresViewPackages;

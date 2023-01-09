@@ -10,10 +10,12 @@ class DataUtilities {
     protected static $allOptions = [];
     protected static $optionValues = [];
     protected static $viewPackages = [];
+    protected static $optionsEnums = [];
+    protected static $propertyLabels =  [];
 
     // $scope is ceres, {project_name}, {view_package_name}
-    static function valueForOption($optionName, $scope = null) {
-        self::setProperties();
+    static function valueForOption($optionName, $scope = 'ceres') {
+        self::setData();
         if(isset(self::$optionValues[$optionName])) {
             $optionValues = self::$optionValues[$optionName];
             if (!empty($optionValues['currentValue'])) {
@@ -52,13 +54,41 @@ class DataUtilities {
         }
     }
 
-    static function defaultsForOption($optionName) {
-        self::setProperties();
-        return self::$optionValues[$optionName]['defaults'];
+    static function defaultsForOption($optionName, $scope='ceres') {
+        self::setData();
+
+        return self::$optionValues[$optionName]['defaults'][$scope];
+    }
+
+    static function enumValuesForProperty($property, $scope = 'ceres') {
+
+    }
+    static function labelForProperty($property, $scope='ceres') {
+        // @todo: mods: first, see if @displayLabel is set in Extractors
+
+        // @todo: wikidata can be built into the query, but still needs
+        //a fallback if rdfs:label isn't present
+        // wikidata SERVICE:label should be built into SPARQL query
+
+        //ECDA and Thoreau make use of mods:@displayLabel
+        //so I need a way to bail out to that, based on whether
+        //a project does it's own thing
+        // do that in the DataUtil::labelForProperty
+        self::setData();
+        if (isset(self::$propertyLabels[$scope][$property])) {
+            $label = self::$propertyLabels[$scope][$property];
+        } else {
+            // @todo fallback label and/or Exception
+        }
+
+        if(empty($label)) {
+            return null; // actually have a fallback and/or exception
+        }
+        return $label;
     }
 
     static function userHasAccess($user, $optionName) {
-        self::setProperties();
+        self::setData();
         $userRole = ''; //@todo: dig this up, or have wp something something something
         if (in_array($userRole, self::$allOptions[$optionName]['access'])) {
             return true;
@@ -92,7 +122,8 @@ class DataUtilities {
  * 
  */
 
-    static function setProperties() {
+    static function setData() {
+        // todo: an environment variable for wp, dev, etc
 //for real WP integration
         // self::$viewTemplates = get_option('ceres_view_templates');
         // self::$allOptions = get_option('ceres_all_options');
@@ -102,6 +133,8 @@ class DataUtilities {
         self::$viewPackages = Config\getViewPackages();
         self::$allOptions = Config\getAllOptions();
         self::$optionValues = Config\getOptionsValues();
+        self::$propertyLabels = Config\getPropertyLabels();
+        self::$optionsEnums = Config\getOptionsEnums();
     }
 
 }

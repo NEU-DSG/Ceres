@@ -1,7 +1,6 @@
 <?php
 namespace Ceres\Config;
 
-$testConfigArray = [];
 
 function getAllOptions() {
     $ceresAllOptions = [
@@ -870,6 +869,62 @@ function getViewPackages() {
     return $ceresViewPackages;
 }
 
+function getOptionsEnums() {
+    $optionsEnums = [
+        'imageWrap' => [
+            'ceres' => ['left', 'center', 'right'],
+            '$projectName' => [],
+        ],
+        'thumbnailSize' => [
+            'ceres' => ['extra small', 'small', 'medium', 'large', 'extra large'],
+        ],
+        'extractorMetadataSortOrder' => [
+
+        ],
+        'extractorResourcesSortOrder' => [
+
+        ],
+        'extractorMetadataToShow' => [
+
+        ],
+        'fetcherMetadataToShow' => [
+
+        ],
+
+
+    ];
+}
+
+function getPropertyLabels() {
+    $propertyLabels = [
+        'ceres' => [
+            'dcterms:title' => 'Title',
+            'dcterms:subject' => 'Subject(s)',
+            //etc
+    
+            // @todo: mods: first, see if @displayLabel is set in Extractors
+            'mods:' => '',
+    
+            'darwincore:' => '',
+    
+            // @todo: wikidata can be built into the query, but still needs
+            //a fallback if rdfs:label isn't present
+
+        ],
+        '$projectName' => []
+            //ECDA and Thoreau make use of mods:@displayLabel
+            //so I need a way to bail out to that, based on whether
+            //a project does it's own thing
+
+            // do that in the DataUtil::labelForProperty
+        ,
+        '$ecda' => [],
+
+    ];
+
+    return $propertyLabels;
+
+}
 
     /**
      * 
@@ -979,7 +1034,7 @@ function getViewPackages() {
                 'description' => "Description",
                 'parentViewPackage',
                 'projectName',
-                'rendererClassName' => "Ceres_Tabular_Renderer",
+                'rendererClassName' => "Tabular",
                 'rendererOptions' => [
                         'options' => [  //redundant, yes. but helps keep the same patter with fetchers and extractors
                             array_merge(
@@ -993,7 +1048,7 @@ function getViewPackages() {
 
                 'fetchers' => 
                     [
-                        'WdqsFetcher' =>
+                        'Wdqs' =>
                             ['options' => array_merge(
                                 $fetcherOptions['general'],
                                 $fetcherOptions['wdqs']),
@@ -1014,4 +1069,4 @@ function getViewPackages() {
         
     ];
 
-    return $ceresViewPackages;
+    //return $ceresViewPackages;

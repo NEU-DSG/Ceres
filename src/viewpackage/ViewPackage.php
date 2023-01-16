@@ -18,6 +18,7 @@ class ViewPackage {
     private   $allViewPackagesData = [];
 
     public function __construct() {
+        //@todo: generalize this for different envs
         $this->allViewPackagesData = \Ceres\Config\getViewPackages();
     }
 
@@ -31,7 +32,7 @@ class ViewPackage {
 
     public function setProjectName() {
         //$siteUrl = get_option('siteurl');
-        $siteUrl = DataUtil::getOption(('siteurl'));
+        $siteUrl = DataUtil::getWpOption(('siteurl'));
         $siteName = preg_replace("(^https?://)", "", $siteUrl);
         $this->projectName = $siteName;
     }
@@ -63,15 +64,36 @@ class ViewPackage {
     /**
      * loadOptions
      * 
-     * reads the data for the vp from the wp_options 
+     * reads the data for the vp from the wp_options
+     * Sets current values, including overrides
      *
      * @return void
      */
     public function load($nameId) {
+        $this->currentViewPackageData = $this->allViewPackagesData[$nameId];
+        $rendererData = $this->currentViewPackageData['renderer'];
+        $rendererOptions = [];
+        foreach ($rendererData as $rendererName => $rendererData) {
+            $renderOptions[] = $rendererData['options'];
+        }
+        foreach ($renderOptions as $optionName) {
+            $rendererOptions[$optionName] = DataUtil::valueForOption($optionName, $this->nameId);
+        }
+    }
+
+/**
+ * 
+ * For data created by content creator to override the defaults,
+ * and the $currentValue
+ * 
+ * Need currentValues loaded first in order to override them
+ */
+
+    function overrideOptionValue($value, $optionArray) {
 
     }
 
-    function checkOptionAccess($user, $option) {
+    function userOptionAccess($user, $option) {
         $userCeresRole = $user->getCeresRole(); //totally fake, need to figure this out
         if(in_array($userCeresRole, $option['access'])) {
             return true;
@@ -99,12 +121,12 @@ class ViewPackage {
     }
 
     public function save() {
+        $vpArray = $this->toArray();
         $vpArray = [];
-        //$allViewPackages = get_option('ceres_view_packages');
-        $allViewPackages = DataUtil::getOption('ceres_view_packages');
+        $allViewPackages = DataUtil::getWpOption('ceres_view_packages');
         $allViewPackages[] = $vpArray;
         //update_option('ceres_view_packages', $allViewPackages);
-        DataUtil::updateOption('ceres_view_packages', $allViewPackages);
+        DataUtil::updateWpOption('ceres_view_packages', $allViewPackages);
     }
 
     /**
@@ -115,6 +137,8 @@ class ViewPackage {
      */
     public function toArray() {
         //mimic/ recreate the dev template
+        // what does PHP native to array do?
+        // or just serialize in its current state?
 
     }
 }

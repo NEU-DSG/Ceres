@@ -1,28 +1,49 @@
 <?php
 namespace Ceres\Util;
 
-use Ceres\Exception;
-use Ceres\Config;
+use Ceres\Exception\DataException;
+use Ceres\Data;
 
 
 class DataUtilities {
 
     protected static $allOptions = [];
-    protected static $optionValues = [];
+    protected static $optionsValues = [];
     protected static $viewPackages = [];
     protected static $optionsEnums = [];
     protected static $propertyLabels =  [];
 
+    /**
+     * Looks at GET params for overrides coming from 
+     * content creator
+     * Or parse from shortcode options
+     */
+
+    static function overrideForOption($optionName) {
+        if (isset($_GET[$optionName])) {
+            return $_GET[$optionName];
+        }
+        return null;
+    }
+
+
     // $scope is ceres, {project_name}, {view_package_name}
     static function valueForOption($optionName, $scope = 'ceres') {
         self::setData();
-        if(isset(self::$optionValues[$optionName])) {
-            $optionValues = self::$optionValues[$optionName];
+        if(isset(self::$optionsValues[$optionName])) {
+            $optionValues = self::$optionsValues[$optionName];
+
+            // first, check if content creator has set an override
+            $overrideValue = self::overrideForOption($optionName);
+            if (!is_null($overrideValue)) {
+                return $overrideValue;
+            }
             if (!empty($optionValues['currentValue'])) {
                 return $optionValues['currentValue'];
             }
 
             if (!empty($scope)) {
+                // @todo what happens if this is empty?
                 return $optionValues['defaults'][$scope];
             }
 
@@ -57,11 +78,12 @@ class DataUtilities {
     static function defaultsForOption($optionName, $scope='ceres') {
         self::setData();
 
-        return self::$optionValues[$optionName]['defaults'][$scope];
+        return self::$optionsValues[$optionName]['defaults'][$scope];
     }
 
     static function enumValuesForProperty($property, $scope = 'ceres') {
-
+        self::setData();
+        return self::$optionsEnums[$property][$scope];
     }
     static function labelForProperty($property, $scope='ceres') {
         // @todo: mods: first, see if @displayLabel is set in Extractors
@@ -98,24 +120,59 @@ class DataUtilities {
 
     }
 
-    static function getOption(string $optionName) {
+    /**
+     * Gets an option as stored in WP's option table, e.g
+     * `ceres_view_packages` or `siteurl`
+     * 
+     *
+     * @param string $optionName
+     * @return mixed
+     */
+
+    static function getWpOption(string $wpOptionName) {
         if (function_exists('get_option')) {
-            return get_option($optionName);
+            return get_option($wpOptionName);
         } else {
             //save it all to a file in dev for now
-            if ($optionName == 'drstk_collection') {
-                return 'https://drs/collectionId';
+            switch($wpOptionName) {
+                case 'ceres_all_options':
+                    return self::$allOptions;
+                break;
+                case 'ceres_option_values':
+                    return self::$optionsValues;
+                break;                    
+                case 'ceres_view_packages':
+                    return self::$viewPackages;
+                break;                    
+                case 'ceres_options_enums':
+                    return self::$optionsEnums;
+                break;                    
+                case 'ceres_property_labels':
+                    return self::$propertyLabels;
+                break;                    
+                break;
+                case 'site_url':
+                    return "https://" . $_SERVER['SERVER_NAME'];
+                break;
+                default:
+                
+                    throw new DataException("Option $wpOptionName does not exist");
+
             }
-            $optionData = [];
-            return $optionData;
         }
     }
 
-    static function updateOption(string $optionName, array $optionData) {
+    static function updateWpOption(string $wpOptionName, array $wpOptionData) {
+        if (substr($wpOptionName, 0, 6) != 'ceres_') {
+            throw new DataException("Cannot update a non-CERES wp option: $wpOptionName");
+        }
         if (function_exists('update_option')) {
-            update_option($optionName, $optionData);
+            update_option($wpOptionName, $wpOptionData);
         } else {
 //save it all to a file in dev for now
+            $optionDataJson = json_encode($wpOptionData);
+            $fileName = CERES_ROOT_DIR . "/devscraps/data/$wpOptionName.json";
+            file_put_contents($fileName, $optionDataJson);
         }
     }
 
@@ -133,11 +190,39 @@ class DataUtilities {
         // self::$optionValues = get_option('ceres_option_values');
 
 //for dev/testing
-        self::$viewPackages = Config\getViewPackages();
-        self::$allOptions = Config\getAllOptions();
-        self::$optionValues = Config\getOptionsValues();
-        self::$propertyLabels = Config\getPropertyLabels();
-        self::$optionsEnums = Config\getOptionsEnums();
+
+//@todo switch into data, not config
+
+        self::$viewPackages = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_view_packages.json'), true);
+        self::$allOptions = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_all_values.json'), true);
+        self::$optionsValues = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_options_values'), true);
+        self::$propertyLabels = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_property_labels.json'), true);
+        self::$optionsEnums = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_options_enums.json'), true);
+
+
+        // self::$viewPackages = Config\getViewPackages();
+        // self::$allOptions = Config\getAllOptions();
+        // self::$optionValues = Config\getOptionsValues();
+        // self::$propertyLabels = Config\getPropertyLabels();
+        // self::$optionsEnums = Config\getOptionsEnums();
+    }
+
+    /**
+     * rebuildViewPackages
+     * 
+     * The scopes for R/E/Fs are kept separate for maintenance,
+     * but get merged together in getViewPackages
+     * 
+     * With the move to json, need to rebuild the merges and update json
+     * for updates
+     *
+     * @return void
+     */
+    static function rebuildViewPackages() {
+        $vpsArrays = self::$viewPackages = Data\getViewPackages();
+        self::updateWpOption('ceres_view_packages', $vpsArrays );
+
+
     }
 
 }

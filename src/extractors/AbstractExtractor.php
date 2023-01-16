@@ -9,7 +9,8 @@ abstract class AbstractExtractor {
     // includeItemLink
     // includeMediaLink
     
-    protected $options = array();
+    protected array $options = array();
+    protected array $dataToRender = [];
 
     /**
      * The data from a Fetcher for start with
@@ -25,7 +26,11 @@ abstract class AbstractExtractor {
         $cleanedData = array();
 
 
-        return $cleanedData;
+        $this->dataToRender = $cleanedData;
+    }
+
+    public function getDataToRender() {
+        return $this->dataToRender;
     }
 }
 

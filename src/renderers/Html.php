@@ -10,6 +10,7 @@ class Html extends AbstractRenderer {
     protected DOMElement $containerElement;
     protected DOMXPath $xPath;
     protected DOMDocument $htmlDom;
+    protected string $templateFileName = 'html.html';
 
     public function __construct() {
         $this->loadHtmlTemplate();
@@ -32,19 +33,21 @@ class Html extends AbstractRenderer {
 
     public function loadHtmlTemplate() {
         $this->htmlDom = new DOMDocument();
-        $this->htmlDom->loadHtmlFile(CERES_ROOT_DIR . "/config/rendererTemplates/html.html");
+        $this->htmlDom->loadHtmlFile(CERES_ROOT_DIR . "/data/rendererTemplates/$this->templateFileName");
     }
 
     public function setContainerElement() {
-        $query = "/html[1]/body[1]/div[1]";
-        $nodes = $this->xPath->query($query);
-        $this->containerElement = $nodes->item(0);
+        // $query = "/html[1]/body[1]/div[1]";
+        // $nodes = $this->xPath->query($query);
+        // $this->containerElement = $nodes->item(0);
+        $this->containerElement = $this->htmlDom->getElementById('ceres-container');
     }
 
     public function getContainerElement() {
 
         return $this->containerElement;
     }
+
 
     public function appendToClass(DOMElement $element, $value ) {
         $class = $element->getAttribute('class');

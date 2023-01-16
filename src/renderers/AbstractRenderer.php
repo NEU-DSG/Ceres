@@ -2,8 +2,8 @@
 
   namespace Ceres\Renderer;
 
-use Ceres\Exception\CeresException;
-use Ceres\Util\StringUtilities as StrUtil;
+  use Ceres\Exception\CeresException;
+  use Ceres\Util\StringUtilities as StrUtil;
   use Ceres\Exception\Data as DataException;
   use Ceres\Exception\Data\UnexpectedData as UnexpectedDataException;
 
@@ -38,6 +38,9 @@ use Ceres\Util\StringUtilities as StrUtil;
 
     protected $expectedProperties = [];
 
+    //the data coming from an Extractor to render
+    protected array $dataToRender = [];
+
     public function __construct(array $fetchers = [], array $extractors = [], $renderOptions = []) {
       
       foreach ($fetchers as $classObj) {
@@ -56,6 +59,12 @@ use Ceres\Util\StringUtilities as StrUtil;
 
       $this->setRendererOptions($renderOptions);
     }
+
+    public function setDataToRender() {
+      foreach ($this->extractors as $extractorName=>$extractor ) {
+          $this->dataToRender[$extractorName] = $extractor->getDataToRender();
+      }
+  }
 
     /* enqueing will have to figure out how to stuff styles and scripts in early in WP rendering.
     Might have to go elsewhere */

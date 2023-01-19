@@ -26,13 +26,26 @@ class DataUtilities {
         return null;
     }
 
+    static function skipArrayLevel(array $array, bool $returnFirst = true) {
+        $returnArray = [];
+        foreach(array_keys($array) as $key) {
+            $value = $array[$key];
+            if (is_array($value)) {
+                if ($returnFirst) {
+                    return $value;
+                } else {
+                    $returnArray[] = $value;
+                }
+            }
+        return $returnArray;
+        }
+    }
 
     // $scope is ceres, {project_name}, {view_package_name}
-    static function valueForOption($optionName, $scope = 'ceres') {
+    static function valueForOption(string $optionName, $scope = 'ceres') {
         self::setData();
         if(isset(self::$optionsValues[$optionName])) {
             $optionValues = self::$optionsValues[$optionName];
-
             // first, check if content creator has set an override
             $overrideValue = self::overrideForOption($optionName);
             if (!is_null($overrideValue)) {
@@ -130,6 +143,7 @@ class DataUtilities {
      */
 
     static function getWpOption(string $wpOptionName) {
+        self::setData();
         if (function_exists('get_option')) {
             return get_option($wpOptionName);
         } else {
@@ -138,7 +152,7 @@ class DataUtilities {
                 case 'ceres_all_options':
                     return self::$allOptions;
                 break;
-                case 'ceres_option_values':
+                case 'ceres_options_values':
                     return self::$optionsValues;
                 break;                    
                 case 'ceres_view_packages':
@@ -150,7 +164,6 @@ class DataUtilities {
                 case 'ceres_property_labels':
                     return self::$propertyLabels;
                 break;                    
-                break;
                 case 'site_url':
                     return "https://" . $_SERVER['SERVER_NAME'];
                 break;
@@ -194,8 +207,8 @@ class DataUtilities {
 //@todo switch into data, not config
 
         self::$viewPackages = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_view_packages.json'), true);
-        self::$allOptions = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_all_values.json'), true);
-        self::$optionsValues = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_options_values'), true);
+        self::$allOptions = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_all_options.json'), true);
+        self::$optionsValues = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_options_values.json'), true);
         self::$propertyLabels = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_property_labels.json'), true);
         self::$optionsEnums = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_options_enums.json'), true);
 
@@ -219,9 +232,48 @@ class DataUtilities {
      * @return void
      */
     static function rebuildViewPackages() {
-        $vpsArrays = self::$viewPackages = Data\getViewPackages();
-        self::updateWpOption('ceres_view_packages', $vpsArrays );
+        $vpsArray = self::$viewPackages = Data\getViewPackages();
+        $ref = ['renderer', 'extractor', 'fetcher'];
+        
+        foreach ($vpsArray as $vpNameId => $vpData) {
+            foreach ($vpData as $key => $data) {
+                if (in_array($key, $ref)) {
+                    foreach ($data as $class => $classData) {
+                        $vpsArray[$vpNameId][$key][$class]['options'] = array_values( array_unique($classData['options']) );
+                        
+                    }
+                }
+            }
+        }
+        self::updateWpOption('ceres_view_packages', $vpsArray );
+    }
 
+    static function rebuildOptionsValues() {
+        $data = Data\getOptionsValues();
+        self::updateWpOption('ceres_options_values', $data);
+    }
+
+    static function rebuildOptionsEnums() {
+        $data = Data\getOptionsEnums();
+        self::updateWpOption('ceres_options_enums', $data);
+    }
+
+    static function rebuildPropertyLabels() {
+        $data = Data\getPropertyLabels();
+        self::updateWpOption('ceres_property_labels', $data);
+    }
+
+    static function rebuildAllOptions() {
+        $data = Data\getAllOptions();
+        self::updateWpOption('ceres_all_options', $data);
+    }
+
+    static function rebuildAllWpOptions() {
+        self::rebuildAllOptions();
+        self::rebuildOptionsEnums();
+        self::rebuildOptionsValues();
+        self::rebuildPropertyLabels();
+        self::rebuildViewPackages();
 
     }
 

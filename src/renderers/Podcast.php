@@ -69,6 +69,11 @@ class Podcast extends Html {
     return $podcastArticleHtml;
   }
 
+
+  public function build() {
+    
+  }
+
   public function renderJwplayer($resourceId, $options = array()) {
     $jwplayerRenderer = new Jwplayer($this->fetcher, $resourceId, $options);
     return $jwplayerRenderer->render();    

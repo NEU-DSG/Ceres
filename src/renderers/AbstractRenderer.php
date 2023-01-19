@@ -78,15 +78,8 @@
     }
     
     abstract function render();
-    
-      /*
-        foreach ($this->extractors as $name=>$extractor) {
-          fire up extractor(s) to get what's needed
-        }
 
-
-
-      */
+    abstract function build();
 
     // @TODO this might get moved into a separate Pagination Renderer, likely different for each Fetcher
     //   First thought is that this'd just instantiate a new Renderer and tell it to do its thing
@@ -95,14 +88,7 @@
     
     // abstract function buildPagination();
 
-    // @todo move to utils?
-    public function linkify($linkData) {
-      $label = $linkData['label'];
-      $url = $linkData['url'];
 
-      // @todo What to do about other <a> atts? a closure or lambda?
-      return "<a href='$url'>$label</a>";
-    }
 
     public function setRendererOptions(array $options) {
       $this->rendererOptions = $options;
@@ -161,10 +147,6 @@
 
     public function setExtractorOptionValue(string $extractorName, $optionName, $optionValue) {
 
-
-    }
-
-    public function getDefaultPropertyValue(array $propValData) {
 
     }
 

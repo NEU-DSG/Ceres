@@ -2,32 +2,138 @@
 
 namespace Ceres\ViewPackage;
 
+use Ceres\Renderer;
 use Ceres\Exception\CeresException;
 use Ceres\Util\StringUtilities as StrUtil;
 use Ceres\Util\DataUtilities as DataUtil;
-use Ceres\Config;
 
 class ViewPackage {
 
-    protected $nameId;
-    protected $humanName;
-    protected $description;
-    protected $parentViewPackage;
-    protected $projectName;
-    protected $currentViewPackageData = [];
-    private   $allViewPackagesData = [];
+    protected string $nameId;
+    protected string $humanName;
+    protected string $description;
+    protected string $parentViewPackage;
+    protected string $projectName;
+    protected $renderer;
+    protected array $currentViewPackageData = [];
+    private  array $allViewPackagesData = [];
 
-    public function __construct() {
-        //@todo: generalize this for different envs
-        $this->allViewPackagesData = \Ceres\Config\getViewPackages();
+    public function __construct(string $nameId) {
+        
+        $this->allViewPackagesData = DataUtil::getWpOption('ceres_view_packages');
+        $this->load($nameId);
     }
 
+    public function load(string $nameId) {
+        $this->nameId = $nameId;
+        $this->currentViewPackageData = $this->allViewPackagesData[$nameId];
+        $rendererData = $this->currentViewPackageData['renderer'];
+        $rendererOptions = [];
+        //skip the second level key to get at array of info about renderer
+        $rendererClassInfo = DataUtil::skipArrayLevel($rendererData);
+        $rendererOptions = $rendererClassInfo['options'];
+
+        foreach (array_keys($rendererOptions) as $optionName) {
+            $rendererOptions[$optionName] = DataUtil::valueForOption($optionName, $this->nameId);
+        }
+    }
+
+    public function build() {
+        $this->buildRenderer();
+        $this->buildExtractor();
+        $this->buildFetcher();
+    }
+
+    public function buildRenderer() {
+        $rendererData = $this->currentViewPackageData['renderer'];
+        $rendererClassInfo = DataUtil::skipArrayLevel($rendererData);
+        $rendererName = $rendererClassInfo['fullClassName'];
+        
+        $this->renderer = new $rendererName;
+
+        foreach ($rendererClassInfo['options'] as $index => $optionName) {
+            $optionValue = DataUtil::valueForOption($optionName, $this->nameId);
+            $rendererClassInfo['options'][$optionName] = $optionValue;
+            unset($rendererClassInfo['options'][$index]);
+        }
+        $this->renderer->setRendererOptions($rendererClassInfo['options']);
+        $extractor = $this->buildExtractor();
+        
+        if($extractor) {
+            $this->renderer->injectExtractor($extractor, 'test extractor');
+        }
+        
+        $fetcher = $this->buildFetcher();
+        if ($fetcher) {
+            $this->renderer->injectFetcher($fetcher, 'test fetcher');
+        }
+
+    }
+
+    public function buildExtractor(string $shortName = null) {
+        $data = $this->currentViewPackageData['extractors'];
+        if (empty($data)) {
+            return null;
+        }
+
+        if ($shortName) {
+            $classInfo = $data[$shortName];
+        } else {
+            $classInfo = DataUtil::skipArrayLevel($data);
+        }
+        
+        $className = $classInfo['fullClassName'];
+
+        foreach ($classInfo['options'] as $index => $optionName) {
+            $optionValue = DataUtil::valueForOption($optionName, $this->nameId);
+            $classInfo['options'][$optionName] = $optionValue;
+            unset($classInfo['options'][$index]);
+        }
+
+        $extractor = new $className; 
+        return $extractor;
+    }
+
+    public function buildFetcher(string $shortName = null) {
+        $data = $this->currentViewPackageData['fetchers'];
+        if (empty($data)) {
+            return null;
+        }
+        if ($shortName) {
+            $classInfo = $data[$shortName];
+        } else {
+            $classInfo = DataUtil::skipArrayLevel($data);
+        }
+        
+        $className = $classInfo['fullClassName'];
+
+        foreach ($classInfo['options'] as $index => $optionName) {
+            $optionValue = DataUtil::valueForOption($optionName, $this->nameId);
+            $classInfo['options'][$optionName] = $optionValue;
+            unset($classInfo['options'][$index]);
+        }
+
+        $extractor = new $className; 
+        return $extractor;
+    }
+
+    public function render() {
+        $this->renderer->render();
+    }
 
     public function setNameId($humanName) {
         $snakeCasedName = StrUtil::languageToSnakeCase($humanName);
         $existingViewPackageNames = array_keys(self::$allViewPackagesData);
         $nameId = StrUtil::uniquifyName($snakeCasedName, $existingViewPackageNames);
         $this->nameId = $nameId;
+    }
+
+    public function getNameId() {
+        return $this->nameId;
+    }
+
+    public function getRenderer() {
+        return $this->renderer;
     }
 
     public function setProjectName() {
@@ -46,6 +152,8 @@ class ViewPackage {
      * @return void
      */
 
+
+     //did this become unneccesary??? or redundant?
     public function filterGeneralOptionsByScope($options) {
         foreach( $options as $scope => $suboptions) {
             // $scope is 'general','tabular' etc for grouping inputs
@@ -59,26 +167,6 @@ class ViewPackage {
             }
         }
         return $options;
-    }
-
-    /**
-     * loadOptions
-     * 
-     * reads the data for the vp from the wp_options
-     * Sets current values, including overrides
-     *
-     * @return void
-     */
-    public function load($nameId) {
-        $this->currentViewPackageData = $this->allViewPackagesData[$nameId];
-        $rendererData = $this->currentViewPackageData['renderer'];
-        $rendererOptions = [];
-        foreach ($rendererData as $rendererName => $rendererData) {
-            $renderOptions[] = $rendererData['options'];
-        }
-        foreach ($renderOptions as $optionName) {
-            $rendererOptions[$optionName] = DataUtil::valueForOption($optionName, $this->nameId);
-        }
     }
 
 /**
@@ -111,7 +199,8 @@ class ViewPackage {
         // prepend something to description
 
         $vpArray = [];
-        $newViewPackage = new ViewPackage;
+        $newVpNameId = StrUtil::uniquifyName($this->nameId, $this->allViewPackagesData);
+        $newViewPackage = new ViewPackage($newVpNameId);
         if ($save) {
             $newViewPackage->save();
         } else {

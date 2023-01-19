@@ -7,4 +7,8 @@ class LeafletMap extends AbstractRenderer {
   public function render() {
   
   }
+
+  public function build() {
+    
+  }
 }

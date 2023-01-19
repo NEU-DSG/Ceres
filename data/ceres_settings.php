@@ -4,6 +4,16 @@ namespace Ceres\Data;
 
 function getAllOptions() {
     $ceresAllOptions = [
+        'text' => [
+            'label' => 'Text',
+            'desc'    => 'Plain Text to add somewhere',
+            'access' => ['projectOwner', 'coder', 'contentCreator'],
+            'type'    => 'text',
+            'defaults' => 'from other array',
+            'notes' => "",
+            'appliesTo' => 'renderers',            
+        ],
+
         'altLabelProp' => [
             'label'   => '',
             'desc'    => '',
@@ -13,12 +23,12 @@ function getAllOptions() {
             'notes' => "",
             'appliesTo' => 'renderers', 
         ],
-        'imageWrap' => [
-            'label'   => 'Image Wrap',
-            'desc'    => 'How to wrap text around images',
+        'float' => [
+            'label'   => 'Float',
+            'desc'    => 'How to wrap text around an element',
             'access' => ['contentCreator', 'projectOwner', 'coder'],
             'type'    => 'enum',
-            'defaults' => 'from other array',
+            'defaults' => '',
             'notes' => '',
             'appliesTo' => 'renderers', 
         ],
@@ -217,7 +227,7 @@ function getAllOptions() {
             'appliesTo' => 'fetchers', 
             
         ],
-        'thClassName' => [
+        'thClass' => [
             'label'   => 'Table Head Class Name',
             'desc'    => 'The CSS class to apply to &lt;th> elements',
             'access' => ['projectOwner', 'coder'],
@@ -227,7 +237,7 @@ function getAllOptions() {
             'appliesTo' => 'renderers', 
             
         ],
-        'tdClassName' => [
+        'tdClass' => [
             'label'   => 'Table Data Class Name',
             'desc'    => 'The CSS class to apply to &lt;td> elements',
             'access' => ['projectOwner', 'coder'],
@@ -396,11 +406,22 @@ function getAllOptions() {
 
 function getOptionsValues() {
     $ceresOptionsValues = [
+        'text' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'html_dev_test' => 'Howdy!' ,
+                'viewPackageName' => '',
+            ]            
+        ],
+
         'altLabelProp' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 'projectName' => '',
+                'html_dev_test' => 'aria-label' ,
                 'viewPackageName' => '',
             ]
         ],
@@ -428,19 +449,30 @@ function getOptionsValues() {
                 'viewPackageName' => '',
             ]
         ],
-        'imageWrap' => [
+        'float' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 'projectName' => '',
+                'html_dev_test' => 'left' ,
                 'viewPackageName' => '',
             ]
         ],
         'extractorMetadataToShow' => [
             'currentValue' => null,
             'defaults' => [
-                'ceres' => '',
+                'ceres' => [],
                 'projectName' => '',
+                'viewPackageName' => '',
+                ]
+            ],
+
+        'metadataToShow' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => [],
+                'projectName' => '',
+                'html_dev_test' => ['all'],
                 'viewPackageName' => '',
                 ]
             ],
@@ -542,19 +574,32 @@ function getOptionsValues() {
                 'viewPackageName' => '',
             ]
         ],
-        'thClassName' => [
+        'thClass' => [
             'currentValue' => null,
             'defaults' => [
-                'ceres' => '',
+                'ceres' => 'ceres-th',
                 'projectName' => '',
+                'html_dev_test' => 'ceres-test',
                 'viewPackageName' => '',
             ]
         ],
-        'tdClassName' => [
+
+        'trClass' => [
             'currentValue' => null,
             'defaults' => [
-                'ceres' => '',
+                'ceres' => 'ceres-tr',
                 'projectName' => '',
+                'html_dev_test' => 'ceres-tr ceres-test',
+                'viewPackageName' => '',
+            ]
+        ],
+
+        'tdClass' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => 'ceres-td',
+                'projectName' => '',
+                'html_dev_test' => 'ceres-td ceres-test',
                 'viewPackageName' => '',
             ]
         ],
@@ -798,10 +843,9 @@ function getViewPackages() {
 
     $rendererOptions = [
         'general' => [
-            'imageWrap',
+            'float',
             'metadataToShow',
             'altLabelProp',
-            'thClass',
         ],
 
         'tabular' => [
@@ -815,6 +859,11 @@ function getViewPackages() {
             'keyClass',
             'valueClass',
         ],
+
+        'html' => [
+            'text',
+        ],
+
         //settings in the surrounding HTML
         'leafletCeres',
         //passthroughs to Leaflet
@@ -834,14 +883,14 @@ function getViewPackages() {
                 'renderer' => [
                         'Tabular' => [
                             'fullClassName' => 'Ceres\Renderer\Tabular',
-                            'options' => [  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                            'options' =>  //redundant, yes. but helps keep the same patter with fetchers and extractors
                                 array_merge(
                                     $rendererOptions['general'],
                                     $rendererOptions['tabular']
                                 )
                                 //after deduping options in the merge,
                                 // stuff in the current values
-                            ]
+                            
                     ],
                 ],
 
@@ -874,14 +923,14 @@ function getViewPackages() {
                 'renderer' => [
                         'LeafletMap' => [
                             'fullClassName' => 'Ceres\Renderer\LeafletMap',
-                            'options' => [  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                            'options' =>  //redundant, yes. but helps keep the same patter with fetchers and extractors
                                 array_merge(
                                     $rendererOptions['general'],
                                     $rendererOptions['tabular']
                                 )
                                 //after deduping options in the merge,
                                 // stuff in the current values
-                            ]
+                            
                         ]
                     ],
         
@@ -915,14 +964,14 @@ function getViewPackages() {
             'renderer' => [
                     'Html' => [
                         'fullClassName' => 'Ceres\Renderer\Html',
-                        'options' => [  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                        'options' =>   //redundant, yes. but helps keep the same patter with fetchers and extractors
                             array_merge(
                                 $rendererOptions['general'],
-                                $rendererOptions['tabular']
+                                $rendererOptions['html']
                             )
                             //after deduping options in the merge,
                             // stuff in the current values
-                        ]
+                        
                     ]
 
                 ],
@@ -945,14 +994,14 @@ function getViewPackages() {
             'renderer' => [
                     'Tabular' => [
                         'fullClassName' => 'Ceres\Renderer\Tabular',
-                        'options' => [  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                        'options' =>  //redundant, yes. but helps keep the same patter with fetchers and extractors
                             array_merge(
                                 $rendererOptions['general'],
                                 $rendererOptions['tabular']
                             )
                             //after deduping options in the merge,
                             // stuff in the current values
-                        ]
+                        
                     ]
                 ],
     
@@ -974,14 +1023,14 @@ function getViewPackages() {
             'renderer' => [
                     'LeafletMap' => [
                         'fullClassName' => 'Ceres\Renderer\LeafletMap',
-                        'options' => [  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                        'options' =>  //redundant, yes. but helps keep the same patter with fetchers and extractors
                             array_merge(
                                 $rendererOptions['general'],
                                 $rendererOptions['tabular']
                             )
                             //after deduping options in the merge,
                             // stuff in the current values
-                        ]
+                    
                     ]
                 ],
     
@@ -1004,14 +1053,14 @@ function getViewPackages() {
                     'Tabular' => 
                         [
                         'fullClassName' => 'Ceres\Renderer\Tabular',
-                        'options' => [  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                        'options' => //redundant, yes. but helps keep the same patter with fetchers and extractors
                             array_merge(
                                 $rendererOptions['general'],
                                 $rendererOptions['tabular']
                             )
                             //after deduping options in the merge,
                             // stuff in the current values
-                        ]
+                        
                     ],
             ],
     
@@ -1038,14 +1087,14 @@ function getViewPackages() {
             'renderer' => [
                     'Tabular' => [
                         'fullClassName' => 'Ceres\Renderer\Tabular',
-                        'options' => [  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                        'options' => //redundant, yes. but helps keep the same patter with fetchers and extractors
                             array_merge(
                                 $rendererOptions['general'],
                                 $rendererOptions['tabular']
                             )
                             //after deduping options in the merge,
                             // stuff in the current values
-                        ]
+                    
                     ]
                 ],
     
@@ -1081,9 +1130,10 @@ function getViewPackages() {
 
 function getOptionsEnums() {
     $optionsEnums = [
-        'imageWrap' => [
-            'ceres' => ['left', 'center', 'right'],
-            '$projectName' => [],
+        'float' => [
+            'ceres' => ['left', 'right'],
+            '$projectName' => ['left', 'right'],
+            '$viewPackageName' => ['left', 'right']
         ],
         'thumbnailSize' => [
             'ceres' => ['extra small', 'small', 'medium', 'large', 'extra large'],

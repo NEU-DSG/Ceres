@@ -56,6 +56,10 @@ class PodcastRss extends AbstractRenderer
     
   }
   
+
+  public function build() {
+    
+  }
   
   public function renderPodcastArticle($itemData) {
     // @TODO: This ties the Renderer to the DRS_Fetcher explicitly to the DRS. I want to avoid that

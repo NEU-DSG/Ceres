@@ -34,4 +34,9 @@ class Pagination extends Html {
     $html .= $lastButton .= "</div>";
     return $html;
   }
+
+
+  public function build() {
+    
+  }
 }

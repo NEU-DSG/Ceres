@@ -16,16 +16,16 @@ abstract class AbstractFetcher {
 
     protected array $responseData = array();
     
-/**
- * expectedSize
- * 
- * either 'single' (0 or 1 results -- basically single item),
- * or 'multiple' (0 or 1+ -- basically search/browse)
- * 
- * A first line of defense for knowing if the results fit expectations
- *
- * @var string
- */
+    /**
+     * expectedSize
+     * 
+     * either 'single' (0 or 1 results -- basically single item),
+     * or 'multiple' (0 or 1+ -- basically search/browse)
+     * 
+     * A first line of defense for knowing if the results fit expectations
+     *
+     * @var string
+     */
     protected string $expectedSize = 'single';
 
 
@@ -56,10 +56,13 @@ abstract class AbstractFetcher {
     
     protected int $currentPage;
     
+    protected array $fetcherOptions;
 
-
-    public function __construct(string $endpoint) {
-        $this->endpoint = $endpoint;
+    public function __construct(string $endpoint = null) {
+        if (! is_null($endpoint)) {
+            $this->endpoint = $endpoint;
+        }
+        
     }
 
     public function setCurlHandler() {
@@ -151,6 +154,23 @@ abstract class AbstractFetcher {
         $this->setPaginationData();
     }
     
+    public function setFetcherOptions(array $fetcherOptions) {
+        $this->fetcherOptions = $fetcherOptions;
+    }
+
+    public function setFetcherOptionValue(string $optionName, $value) {
+        $this->fetcherOptions[$optionName] = $value;
+    }
+
+    public function getFetcherOptions() {
+        return $this->fetcherOptions;
+    }
+
+    public function getFetcherOptionValue(string $optionName) {
+        return $this->fetcherOptions[$optionName];
+    }
+
+
     public function hasNextPage() {
       $nextPage = $this->currentPage + 1;
       if ($nextPage > $this->pageCount) {

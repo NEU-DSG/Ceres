@@ -60,6 +60,14 @@ class StringUtilities {
         return ucfirst(str_replace('_', ' ', $name));
     }
 
+    public static function sanitizeTextField($value) {
+        if (function_exists('sanitize_text_field')) {
+            return sanitize_text_field($value);
+        }
+        
+
+    }
+
 
 
 

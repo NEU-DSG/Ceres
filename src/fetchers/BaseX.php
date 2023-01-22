@@ -2,9 +2,6 @@
 
 namespace Ceres\Fetcher;
 
-// TODO: are the requires already added elsewhere?
-require_once ("AbstractFetcher.php");
-
 class BaseX extends AbstractFetcher {
 
   protected $endpoint;

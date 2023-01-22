@@ -1,8 +1,6 @@
 <?php 
 
 namespace Ceres\Fetcher;
-// TODO: are the requires already added elsewhere?
-require_once ("AbstractFetcher.php");
 
 class GraphQl extends AbstractFetcher {
 

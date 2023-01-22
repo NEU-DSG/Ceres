@@ -7,7 +7,7 @@ use Ceres\Util\DataUtilities;
 // TODO: are the requires already added elsewhere?
 require_once ('AbstractFetcher.php');
 
-class Drs extends AbstractFetcher {
+class Drs extends Rest {
 
   protected $endpoint = "https://repository.library.northeastern.edu/api/v1";
   private $pageParamName = 'page';

@@ -2,16 +2,21 @@
 
 namespace Ceres\Fetcher;
 
-// TODO: are the requires already added elsewhere?
-//require_once ("AbstractFetcher.php");
+use Ceres\Exception\DataException;
+use Ceres\Exception\Fetcher as FetcherException;
 
 class Sparql extends AbstractFetcher {
 
-    protected string $queryType = 'SELECT'; // 'SELECT' or 'CONSTRUCT'
+    protected string $queryForm = 'SELECT DISTINCT'; // 'SELECT', 'CONSTRUCT', 'ASK', 'DESCRIBE'
     
     protected array $prefixes = [
-        'dcterms' => '',
+        'dct' => '',
         'dc' => '',
+        'wd' => '',
+        'wdt' => '',
+        'rdfs' => '',
+        'owl' => '',
+        'schema' => '',
 
         
     ];
@@ -34,12 +39,28 @@ class Sparql extends AbstractFetcher {
 
     protected array $orderByClauses = [];
 
+    protected array $bindClauses = [];
+
+    protected array $unionClauses = [];
+
+    protected array $valuesClauses = [];
+
+    protected array $havingClauses = [];
+
+    protected ?int $limit = null;
+
     protected array $bindings = [];
 
     protected string $query = "";
 
 
     public function __construct() {
+    }
+
+    public function addPrefixes(array $prefixes) {
+        foreach ($prefixes as $prefix => $uri) {
+            $this->addPrefix($prefix, $uri);
+        }
     }
 
     public function addPrefix(string $prefix, string $uri) {
@@ -75,11 +96,43 @@ class Sparql extends AbstractFetcher {
         $this->orderByClauses[] = $clause;
     }
 
+    public function addBindClause(string $clause) {
+        $this->bindClauses[] = $clause;
+    }
+
+    public function addUnionClause(string $clause) {
+        $this->unionClauses[] = $clause;
+    }
+
+    public function addValuesClause(string $clause) {
+        $this->valuesClauses[] = $clause;
+    }
+
+    public function addHavingClause(string $clause) {
+        $this->havingClauses[] = $clause;
+    }
+
+    public function setQueryForm(string $queryForm) {
+        $allowedQueryForms = ['SELECT DISTINCT', 'SELECT', 'ASK', 'DESCRIBE'];
+        if(! in_array($queryForm, $allowedQueryForms)) {
+            throw new DataException();
+        }
+
+        $this->queryForm = $queryForm;
+    }
+
     public function build() {
+        if (is_null($this->fetcherOptions['rqFile'])) {
+            throw new FetcherException();
+        }
         $query = "";
         $query .= $this->buildPrefixes();
         $query .= $this->buildQueryBindings(); //select, construct, ask, etc
         $query .= $this->buildWhere();
+    }
+
+    public function detectResponseFormat() {
+        
     }
 
     protected function buildWhere() {
@@ -101,16 +154,16 @@ class Sparql extends AbstractFetcher {
     }
 
     protected function buildQueryBindings() {
-        $bindingsString = "{$this->queryType}";
+        $bindingsString = "{$this->queryForm}";
         foreach($this->bindings as $binding) {
-            $bindingsString .= "?$binding ";
+            $bindingsString .= "$binding ";
         }
     }
 
     protected function buildWhereClauses() {
         $whereClauses = "";
         foreach ($this->whereQueryClauses as $clause) {
-            $whereClauses .= "$clause \n";
+            $whereClauses .= "$clause \r\n";
         }
         return $whereClauses;
     }
@@ -118,7 +171,7 @@ class Sparql extends AbstractFetcher {
     protected function buildOptionalClauses() {
         $optionalClauses = "";
         foreach ($this->optionalClauses as $clause) {
-            $optionalClauses .= "OPTIONAL $clause \n";
+            $optionalClauses .= "OPTIONAL $clause \r\n";
         }
         return $optionalClauses;
     }
@@ -126,7 +179,7 @@ class Sparql extends AbstractFetcher {
     protected function buildFilterClauses() {
         $filterClauses = "";
         foreach ($this->filterClauses as $clause) {
-            $filterClauses .= "\nFILTER $clause \n";
+            $filterClauses .= "\r\nFILTER $clause \r\n";
         }
         return $filterClauses;
     }
@@ -135,7 +188,7 @@ class Sparql extends AbstractFetcher {
     protected function buildOrderByClauses() {
         $orderByClauses = "";
         foreach ($this->orderByClauses as $clause) {
-            $orderByClauses .= "\nORDER BY $clause \n";
+            $orderByClauses .= "\r\nORDER BY $clause \r\n";
         }
         return $orderByClauses;
     }
@@ -143,7 +196,7 @@ class Sparql extends AbstractFetcher {
     protected function buildServiceClauses() {
         $serviceClauses = "";
         foreach ($this->serviceClauses as $clause) {
-            $serviceClauses .= "SERVICE $clause \n";
+            $serviceClauses .= "SERVICE $clause \r\n";
         }
     }
 }

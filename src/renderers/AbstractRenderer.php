@@ -60,11 +60,16 @@
       $this->setRendererOptions($renderOptions);
     }
 
-    public function setDataToRender() {
-      foreach ($this->extractors as $extractorName=>$extractor ) {
-          $this->dataToRender[$extractorName] = $extractor->getDataToRender();
+
+    public function setDataToRender(string $extractorName = null) {
+      if (is_null($extractorName)) {
+          $allExtractors = array_values($this->extractors);
+          $extractor = $allExtractors[0];
+      } else {
+          $extractor = $this->extractors[$extractorName];
       }
-  }
+      $this->dataToRender = $extractor->getDataToRender();
+    }
 
     /* enqueing will have to figure out how to stuff styles and scripts in early in WP rendering.
     Might have to go elsewhere */
@@ -154,15 +159,18 @@
 
     }
 
-    protected function injectFetcher($fetcher, $description = null) {
+    function injectFetcher($fetcher, $description = null) {
       $name = StrUtil::createNameIdForInstantiation($fetcher, $description);
       $name = StrUtil::uniquifyName($name, $this->fetchers );
       $this->fetchers[$name] = $fetcher;
+      return $name;
     }
 
-    protected function injectExtractor($extractor, $description = null) {
+    public function injectExtractor($extractor, $description = null) {
       $name = StrUtil::createNameIdForInstantiation($extractor, $description);
       $name = StrUtil::uniquifyName($name, $this->extractors );
       $this->extractors[$name] = $extractor;
+      return $name;
     }
+
   }

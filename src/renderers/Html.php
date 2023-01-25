@@ -27,7 +27,7 @@ class Html extends AbstractRenderer {
         // just to be nice if/when I end up with compound Renderers,
         // need to make sure I don't end up with multiple ids
         $this->containerElement->removeAttribute(('id'));
-        $templateNode = $this->htmlDom->getElementById('ceres-template');
+        //$templateNode = $this->htmlDom->getElementById('ceres-template');
         //$this->containerElement->removeChild($templateNode); 
         
         echo $this->toHtmlString();

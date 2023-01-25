@@ -8,7 +8,6 @@ use Ceres\Util\StringUtilities;
 class Drs extends Rest {
 
     protected $endpoint = "https://repository.library.northeastern.edu/api/v1";
-    protected $itemsData;
     private $pageParamName = 'page';
 
     public function __construct(array $queryOptions = array(), array $queryParams = array(), $resourceId = null) {
@@ -181,16 +180,6 @@ class Drs extends Rest {
         }
     }
 
-    public function getItemDataById($itemId) {
-        //there's discussion about indexing the response by id, so hopefully
-        //someday this looping won't be needed 
-        foreach($this->itemsData as $itemData) {
-        if($itemData['id'] == $itemId) {
-            return $itemData;
-        }
-        }
-    }
-
     public function parseJwPlayerData($itemId) {
         $itemData = $this->getItemDataById($itemId);
         $mediaPid = $this->parseContentObjectId($itemId);
@@ -219,7 +208,6 @@ class Drs extends Rest {
         $queryString = $this->endpoint . "/files/$itemId/content_objects";
         $contentObjectsData = $this->fetchData($queryString, true);
 
-        //PHP 7 has array_first_key() to avoid this reset/key stuff, but I can't assume PHP7
         reset($contentObjectsData['output']['canonical_object']);
         $canonicalObjectUrl = key($contentObjectsData['output']['canonical_object']);
         $canonicalObjectUrlParts = explode('/', $canonicalObjectUrl);

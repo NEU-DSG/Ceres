@@ -10,15 +10,23 @@ class Sparql extends AbstractFetcher {
     protected string $queryForm = 'SELECT DISTINCT'; // 'SELECT', 'CONSTRUCT', 'ASK', 'DESCRIBE'
     
     protected array $prefixes = [
-        'dct' => '',
-        'dc' => '',
-        'wd' => '',
-        'wdt' => '',
-        'rdfs' => '',
-        'owl' => '',
-        'schema' => '',
+        'dct' => 'http://purl.org/dc/terms/',
+        'dc' => 'http://purl.org/dc/elements/1.1/',
+        'rdf' => 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+        'rdfs' => 'http://www.w3.org/2000/01/rdf-schema#',
+        'owl' => 'http://www.w3.org/2002/07/owl#',
+        'schema' => 'http://purl.org/net/schemas/',
+        'foaf' => 'http://xmlns.com/foaf/0.1/',
+        // @todo: move to a DbPediaFetcher
+        // 'dbp' => 'http://dbpedia.org/property/',
+        // 'dbr' => 'http://dbpedia.org/resource/',
+        // 'dbo' => 'http://dbpedia.org/ontology/',
+        'xsd' => 'http://www.w3.org/2001/XMLSchema#',
+        'geo' => 'http://www.w3.org/2003/01/geo/wgs84_pos#',
+        'geosparql' => 'http://www.opengis.net/ont/geosparql#',
+        'skos' => 'http://www.w3.org/2004/02/skos/core#',
 
-        
+   // lookup service http://prefix.cc/ still works, but no idea if it's being updated
     ];
 
     /**
@@ -55,6 +63,8 @@ class Sparql extends AbstractFetcher {
 
 
     public function __construct() {
+// anything new to do here?
+        parent::__construct();
     }
 
     public function addPrefixes(array $prefixes) {
@@ -114,16 +124,17 @@ class Sparql extends AbstractFetcher {
 
     public function setQueryForm(string $queryForm) {
         $allowedQueryForms = ['SELECT DISTINCT', 'SELECT', 'ASK', 'DESCRIBE'];
+        $queryForm = strtoupper($queryForm);
         if(! in_array($queryForm, $allowedQueryForms)) {
-            throw new DataException();
+            throw new DataException("Invalid SPARQL query form: $queryForm ");
         }
 
         $this->queryForm = $queryForm;
     }
 
     public function build() {
-        if (is_null($this->fetcherOptions['rqFile'])) {
-            throw new FetcherException();
+        if (! is_null($this->fetcherOptions['rqFile'])) {
+            throw new FetcherException("rqFile is set, preventing building");
         }
         $query = "";
         $query .= $this->buildPrefixes();

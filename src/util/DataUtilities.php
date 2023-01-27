@@ -277,4 +277,31 @@ class DataUtilities {
 
     }
 
+    /**
+     * getOptionsFromSubmission
+     * 
+     * lookup user-submitted options, e.g. from a WP submission or GET params
+     *
+     * @return void
+     */
+
+     //@todo how to write for an arbitrary signature??
+
+    static function getOptionsFromSubmission() {
+        //WP. see https://github.com/WordPress/wordpress-develop/blob/6.1/src/wp-includes/shortcodes.php#L566
+
+        if (function_exists('shortcode_atts')) {
+            // I _think_ $wpPairs is just the list of ALL option=>default pairs,
+            // but I also think I'm handling my defaults separately, so ignorable?
+
+            //$shortcode is the name of the shortcode if it needs somethings special,
+            // but that's to be avoided
+
+            $options = shortcode_atts($wpPairs, [], $shortcode);
+            return $options;
+        }
+
+        return $_GET;
+    }
+
 }

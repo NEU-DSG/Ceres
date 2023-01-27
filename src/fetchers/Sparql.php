@@ -29,6 +29,7 @@ class Sparql extends AbstractFetcher {
    // lookup service http://prefix.cc/ still works, but no idea if it's being updated
     ];
 
+    protected string $lang = 'en'; // @todo: make an option???
     /**
      * whereQueryClauses
      * 
@@ -47,6 +48,8 @@ class Sparql extends AbstractFetcher {
 
     protected array $orderByClauses = [];
 
+    protected array $groupByClauses = [];
+
     protected array $bindClauses = [];
 
     protected array $unionClauses = [];
@@ -57,7 +60,7 @@ class Sparql extends AbstractFetcher {
 
     protected ?int $limit = null;
 
-    protected array $bindings = [];
+    protected array $resultVars = [];
 
     protected string $query = "";
 
@@ -121,6 +124,16 @@ class Sparql extends AbstractFetcher {
     public function addHavingClause(string $clause) {
         $this->havingClauses[] = $clause;
     }
+    public function addGroupByClause(string $clause) {
+        $this->groupByClauses[] = $clause;
+    }
+
+
+    // @todo make an option
+    public function setLang(string $lang) {
+        $this->fetcherOptions['lang'] = $lang;
+    }
+
 
     public function setQueryForm(string $queryForm) {
         $allowedQueryForms = ['SELECT DISTINCT', 'SELECT', 'ASK', 'DESCRIBE'];
@@ -138,12 +151,25 @@ class Sparql extends AbstractFetcher {
         }
         $query = "";
         $query .= $this->buildPrefixes();
-        $query .= $this->buildQueryBindings(); //select, construct, ask, etc
+        $query .= $this->buildResultVars();
         $query .= $this->buildWhere();
+        return $query;
+    }
+
+    public function addResultVar(string $resultVar) {
+        $this->resultVars[] = $resultVar;
     }
 
     public function detectResponseFormat() {
         
+    }
+
+    public function buildResultVars() {
+        $resultVarString = "";
+        foreach ($this->resultVars as $resultVar) {
+            $resultVarString = "?$resultVar ";
+        }
+        return $resultVarString;
     }
 
     protected function buildWhere() {
@@ -166,8 +192,8 @@ class Sparql extends AbstractFetcher {
 
     protected function buildQueryBindings() {
         $bindingsString = "{$this->queryForm}";
-        foreach($this->bindings as $binding) {
-            $bindingsString .= "$binding ";
+        foreach($this->bindClauses as $bindClause) {
+            $bindingsString .= "$bindClause ";
         }
     }
 

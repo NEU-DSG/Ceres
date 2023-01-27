@@ -20,6 +20,21 @@ class Html extends AbstractRenderer {
         parent::__construct();
     }
 
+
+
+    /**
+     * renderFullHtml
+     *
+     * Renders the full HTML from DOCTYPE to closing </html>
+     * Mostly used for dev/debuging
+     * 
+     * @return void
+     */
+    public function renderFullHtml() {
+        $this->build();
+        echo $this->htmlDom->saveHtml();
+    }
+
     public function render() {
 
         $this->build();

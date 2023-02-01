@@ -1128,8 +1128,8 @@ function getViewPackages() {
     return $ceresViewPackages;
 }
 
-function getOptionsEnums() {
-    $optionsEnums = [
+function getCeresOptionsEnums() {
+    $ceresOptionsEnums = [
         'float' => [
             'ceres' => ['left', 'right'],
             '$projectName' => ['left', 'right'],
@@ -1153,11 +1153,11 @@ function getOptionsEnums() {
 
 
     ];
-    return $optionsEnums;
+    return $ceresOptionsEnums;
 }
 
-function getPropertyLabels() {
-    $propertyLabels = [
+function getCeresPropertyLabels() {
+    $ceresPropertyLabels = [
         'ceres' => [
             'dcterms:title' => 'Title',
             'dcterms:subject' => 'Subject(s)',
@@ -1183,6 +1183,6 @@ function getPropertyLabels() {
 
     ];
 
-    return $propertyLabels;
+    return $ceresPropertyLabels;
 
 }

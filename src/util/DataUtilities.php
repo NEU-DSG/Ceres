@@ -280,7 +280,7 @@ class DataUtilities {
     /**
      * getOptionsFromSubmission
      * 
-     * lookup user-submitted options, e.g. from a WP submission or GET params
+     * lookup user-submitted options, e.g. from a WP submission (e.g. shortcode) or GET params
      *
      * @return void
      */
@@ -301,6 +301,7 @@ class DataUtilities {
             return $options;
         }
 
+        //last fallback to GET params
         return $_GET;
     }
 

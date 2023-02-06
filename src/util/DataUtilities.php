@@ -26,7 +26,7 @@ class DataUtilities {
         return null;
     }
 
-    static function skipArrayLevel(array $array, bool $returnFirst = true) {
+    static function skipArrayLevel(array $array, bool $returnFirst = true) :array {
         $returnArray = [];
         foreach(array_keys($array) as $key) {
             $value = $array[$key];
@@ -54,8 +54,7 @@ class DataUtilities {
             if (!empty($optionValues['currentValue'])) {
                 return $optionValues['currentValue'];
             }
-
-            if (!empty($scope)) {
+            if (!empty($scope) && !empty($optionValues['defaults'][$scope])) {
                 // @todo what happens if this is empty?
                 return $optionValues['defaults'][$scope];
             }
@@ -86,6 +85,11 @@ class DataUtilities {
 
             // return false or throw a Ceres\Exception
         }
+    }
+
+    static function viewPackageArray(string $vpId) : array {
+        self::setData();
+        return self::$viewPackages[$vpId];
     }
 
     static function defaultsForOption($optionName, $scope='ceres') {

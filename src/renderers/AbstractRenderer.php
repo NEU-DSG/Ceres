@@ -57,7 +57,10 @@
         $this->injectExtractor($classObj);
       }
 
-      $this->setRendererOptions($renderOptions);
+      if (! empty($rendererOptions)) {
+        $this->setRendererOptions($renderOptions);
+      }
+      
     }
 
     public function setDataToRender() {
@@ -119,8 +122,8 @@
       }
     }
 
-    public function getRenderOptionValue($option) {
-
+    public function getRenderOptionValue($option) : string {
+        return $this->rendererOptions[$option];
     }
 
     public function getRendererOption($option) {

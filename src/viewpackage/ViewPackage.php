@@ -48,15 +48,15 @@ class ViewPackage {
         $rendererData = $this->currentViewPackageData['renderer'];
         $rendererClassInfo = DataUtil::skipArrayLevel($rendererData);
         $rendererName = $rendererClassInfo['fullClassName'];
-        
         $this->renderer = new $rendererName;
-
+        //@todo: use my fancy new skip array level in DataUtil?
         foreach ($rendererClassInfo['options'] as $index => $optionName) {
             $optionValue = DataUtil::valueForOption($optionName, $this->nameId);
             $rendererClassInfo['options'][$optionName] = $optionValue;
             unset($rendererClassInfo['options'][$index]);
         }
         $this->renderer->setRendererOptions($rendererClassInfo['options']);
+
         $extractor = $this->buildExtractor();
         
         if($extractor) {
@@ -119,6 +119,11 @@ class ViewPackage {
 
     public function render() {
         $this->renderer->render();
+    }
+
+
+    public function renderFullHtml() {
+        $this->renderer->renderFullHtml();
     }
 
     public function setNameId($humanName) {

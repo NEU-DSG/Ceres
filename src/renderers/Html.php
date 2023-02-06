@@ -44,9 +44,9 @@ class Html extends AbstractRenderer {
         $this->containerElement->removeAttribute(('id'));
         $templateNode = $this->htmlDom->getElementById('ceres-template');
         //$this->containerElement->removeChild($templateNode); 
-        
+        echo "<br>before toHtmlString<br>";
         echo $this->toHtmlString();
-
+        echo "<br>after toHtmlString<br>";
     }
 
     public function build() {

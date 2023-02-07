@@ -1,6 +1,7 @@
 <?php
 namespace Ceres\Renderer;
 
+use Ceres\Util\DataUtilities;
 use DOMDocument;
 use DOMElement;
 use DOMXPath;
@@ -44,9 +45,7 @@ class Html extends AbstractRenderer {
         $this->containerElement->removeAttribute(('id'));
         $templateNode = $this->htmlDom->getElementById('ceres-template');
         //$this->containerElement->removeChild($templateNode); 
-        echo "<br>before toHtmlString<br>";
         echo $this->toHtmlString();
-        echo "<br>after toHtmlString<br>";
     }
 
     public function build() {
@@ -73,7 +72,10 @@ class Html extends AbstractRenderer {
 
     public function setHtmlDom() {
         $this->htmlDom = new DOMDocument();
+
+        set_error_handler(["\Ceres\Util\DataUtilities", 'suppressWarnings'], E_WARNING);
         $this->htmlDom->loadHtmlFile(CERES_ROOT_DIR . "/data/rendererTemplates/$this->templateFileName");
+        restore_error_handler();
     }
 
     public function setContainerElement() {
@@ -95,9 +97,54 @@ class Html extends AbstractRenderer {
     }
 
 
-    public function appendTextNode(DOMElement $element, string $text) {
+    public function appendTextNode(DOMElement $element, ?string $text) {
         $textNode = $this->htmlDom->createTextNode($text);
         $element->appendChild($textNode);
+    }
+
+    public function enumToSelect(array $enumOptions) : DOMElement {
+        $selectNode = $this->htmlDom->createElement('select');
+
+        foreach ($enumOptions as $option) {
+            $optionNode = $this->htmlDom->createElement('option');
+            $this->appendTextNode($optionNode, $option);
+            $selectNode->appendChild($optionNode);
+        }
+
+        return $selectNode;
+    }
+
+    public function arrayToUl(array $dataArray) : DOMElement {
+        $ulNode = $this->htmlDom->createElement('ul');
+        foreach($dataArray as $liText) {
+            $liNode = $this->htmlDom->createElement('li');
+            $this->appendTextNode($liNode, $liText);
+            $ulNode->appendChild($liNode);
+        }
+        return $ulNode;
+    }
+
+    public function varcharToInput(?string $text) : DOMElement {
+        $inputNode = $this->htmlDom->createElement('input');
+        $inputNode->setAttribute('type', 'text');
+        $inputNode->setAttribute('value', $text);
+        return $inputNode;
+    }
+
+    public function textToTextArea(?string $text) : DOMElement {
+        $textAreaNode = $this->htmlDom->createElement('textarea');
+        $this->appendTextNode($textAreaNode, $text);
+        return $textAreaNode;
+    }
+
+    public function textToHeading(string $text, string $headingLevel) : DOMElement {
+        $headingNode = $this->htmlDom->createElement($headingLevel);
+        $this->appendTextNode($headingNode, $text);
+        return $headingNode;
+    }
+
+    public function boolToCheckbox(?bool $value) {
+
     }
 
 }

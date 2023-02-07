@@ -9,6 +9,7 @@ class DataUtilities {
 
     protected static $allOptions = [];
     protected static $optionsValues = [];
+    protected static $currentValues = [];
     protected static $viewPackages = [];
     protected static $optionsEnums = [];
     protected static $propertyLabels =  [];
@@ -44,6 +45,14 @@ class DataUtilities {
     // $scope is ceres, {project_name}, {view_package_name}
     static function valueForOption(string $optionName, $scope = 'ceres') {
         self::setData();
+
+        if(! is_null(self::$currentValues['currentValue'])) {
+            $currentValueId = self::$optionsValues['currentValue'];
+            return self::$currentValues[$currentValueId]['value'];
+
+        }
+
+
         if(isset(self::$optionsValues[$optionName])) {
             $optionValues = self::$optionsValues[$optionName];
             // first, check if content creator has set an override
@@ -98,10 +107,29 @@ class DataUtilities {
         return self::$optionsValues[$optionName]['defaults'][$scope];
     }
 
-    static function enumValuesForProperty($property, $scope = 'ceres') {
+    static function enumValuesForOption($option, $scope = 'ceres') : array {
         self::setData();
-        return self::$optionsEnums[$property][$scope];
+        return self::$optionsEnums[$option][$scope];
     }
+
+    static function accessValuesForOption($option) : array {
+        self::setData();
+        return self::$allOptions[$option]['access'];
+
+    }
+
+
+
+    static function typeForOption($option, $scope = 'ceres') {
+        self::setData();
+        return self::$allOptions[$option]['type'];
+    }
+
+    static function descriptionForOption($option, $scope = 'ceres') {
+        self::setData();
+        return self::$allOptions[$option]['desc'];
+    }
+
     static function labelForProperty($property, $scope='ceres') {
         // @todo: mods: first, see if @displayLabel is set in Extractors
 
@@ -112,7 +140,7 @@ class DataUtilities {
         //ECDA and Thoreau make use of mods:@displayLabel
         //so I need a way to bail out to that, based on whether
         //a project does it's own thing
-        // do that in the DataUtil::labelForProperty
+        // do that in the DataUtil::labelForoption
         self::setData();
         if (isset(self::$propertyLabels[$scope][$property])) {
             $label = self::$propertyLabels[$scope][$property];
@@ -167,14 +195,17 @@ class DataUtilities {
                 break;                    
                 case 'ceres_property_labels':
                     return self::$propertyLabels;
-                break;                    
+                break;
+                case 'ceres_current_values':
+                    return self::$currentValues;
+                break;
+
                 case 'site_url':
                     return "https://" . $_SERVER['SERVER_NAME'];
                 break;
                 default:
                 
                     throw new DataException("Option $wpOptionName does not exist");
-
             }
         }
     }
@@ -208,14 +239,12 @@ class DataUtilities {
 
 //for dev/testing
 
-//@todo switch into data, not config
-
         self::$viewPackages = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_view_packages.json'), true);
         self::$allOptions = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_all_options.json'), true);
         self::$optionsValues = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_options_values.json'), true);
         self::$propertyLabels = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_property_labels.json'), true);
         self::$optionsEnums = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_options_enums.json'), true);
-
+        self::$currentValues = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_current_values.json'), true);
 
         // self::$viewPackages = Config\getViewPackages();
         // self::$allOptions = Config\getAllOptions();
@@ -272,12 +301,18 @@ class DataUtilities {
         self::updateWpOption('ceres_all_options', $data);
     }
 
+    static function rebuildCurrentValues() {
+        $data = Data\getCurrentValues();
+        self::updateWpOption('ceres_current_values', $data);
+    }
+
     static function rebuildAllWpOptions() {
         self::rebuildAllOptions();
         self::rebuildOptionsEnums();
         self::rebuildOptionsValues();
         self::rebuildPropertyLabels();
         self::rebuildViewPackages();
+        self::rebuildCurrentValues();
 
     }
 
@@ -307,6 +342,26 @@ class DataUtilities {
 
         //last fallback to GET params
         return $_GET;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * see https://stackoverflow.com/a/11206244/752724
+     * 
+     * @param [type] $errno
+     * @param [type] $errstr
+     * @return void
+     */
+    static function suppressWarnings(    
+        int $errno,
+        string $errstr,
+        ?string $errfile,
+        ?int $errline,
+        ?array $errcontext) {
+
+
+
     }
 
 }

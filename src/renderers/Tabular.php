@@ -29,12 +29,11 @@ class Tabular extends Html {
         $dataToRender = [
             ['Ambiguous Thing', 'Option 1', 'Option 2'],
             ['Wednesday', 'day of the week', 'part of the Addams family'],
+            ['Thing', 'Scary beast from _The Thing_', 'part of the Addams family'],
             ['Patrick', '2FP', '3FP'],
         ];
         $this->dataToRender['fakeExtractor'] = $dataToRender;
     }
-
-
 
     public function render() {
         $this->build();

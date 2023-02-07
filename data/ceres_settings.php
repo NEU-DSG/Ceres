@@ -2,6 +2,20 @@
 namespace Ceres\Data;
 
 
+function getCurrentValues() {
+    $ceresCurrentValues = [
+        // ['id' =>, 'option' =>, 'value' =>],
+        ['id' => '1', 'option' => 'caption', 'value' => 'Chinatown Collections'],
+
+
+
+
+    ];
+
+    return $ceresCurrentValues;
+}
+
+
 function getAllOptions() {
     $ceresAllOptions = [
         'caption' => [
@@ -167,6 +181,16 @@ function getAllOptions() {
             'appliesTo' => 'fetchers', 
             
         ],
+        'metadataToShow' => [
+            'label'   => 'Metadata To Show',
+            'desc'    => 'The specific metadata properties to display',
+            'access' => ['contentCreator', 'projectOwner', 'coder'],
+            'type'    => 'enum',
+            'defaults' => 'from $ceresOptionsValues array',
+            'notes' => "",
+            'appliesTo' => 'renderers', 
+            
+        ],
         'fetcherGroupBy' => [
             'label'   => 'Group by',
             'desc'    => 'Property to use for grouping results',
@@ -249,7 +273,7 @@ function getAllOptions() {
         ],
         'thClass' => [
             'label'   => 'Table Head Class Name',
-            'desc'    => 'The CSS class to apply to &lt;th> elements',
+            'desc'    => 'The CSS class to apply to <th> elements',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
@@ -259,7 +283,18 @@ function getAllOptions() {
         ],
         'tdClass' => [
             'label'   => 'Table Data Class Name',
-            'desc'    => 'The CSS class to apply to &lt;td> elements',
+            'desc'    => 'The CSS class to apply to <td> elements',
+            'access' => ['projectOwner', 'coder'],
+            'type'    => 'varchar',
+            'defaults' => 'from $ceresOptionsValues array',
+            'notes' => "",
+            'appliesTo' => 'renderers', 
+            
+        ],
+
+        'trClass' => [
+            'label'   => 'Table Row Class Name',
+            'desc'    => 'The CSS class to apply to <tr> elements',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
@@ -427,14 +462,24 @@ function getAllOptions() {
 function getOptionsValues() {
     $ceresOptionsValues = [
         'caption' => [
-            'currentValue' => null,
+            'currentValue' => 1, // actually an id to currentValues
             'defaults' => [
                 'ceres' => '',
                 'projectName' => '',
                 'html_dev_test' => 'Howdy!' ,
                 'tabular_dev_test' => '',
             ]            
-        ],
+        ],        
+        
+        // 'caption' => [
+        //     'currentValue' => null,
+        //     'defaults' => [
+        //         'ceres' => '',
+        //         'projectName' => '',
+        //         'html_dev_test' => 'Howdy!' ,
+        //         'tabular_dev_test' => '',
+        //     ]            
+        // ],
 
         'text' => [
             'currentValue' => null,
@@ -874,7 +919,6 @@ function getViewPackages() {
 
     $rendererOptions = [
         'general' => [
-            'float',
             'metadataToShow',
             'altLabelProp',
         ],
@@ -1181,6 +1225,10 @@ function getOptionsEnums() {
         ],
         'fetcherMetadataToShow' => [
 
+        ],
+
+        'metadataToShow' => [
+            'ceres' => ['all']
         ],
 
 

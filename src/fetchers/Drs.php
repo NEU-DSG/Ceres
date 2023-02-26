@@ -5,10 +5,12 @@ namespace Ceres\Fetcher;
 use Ceres\Util\DataUtilities;
 use Ceres\Util\StringUtilities;
 
+require_once(CERES_ROOT_DIR . '/src/fetchers/Rest.php');
+
 class Drs extends Rest {
 
-    protected $endpoint = "https://repository.library.northeastern.edu/api/v1";
-    private $pageParamName = 'page';
+    protected string $endpoint = "https://repository.library.northeastern.edu/api/v1";
+    private string $pageParamName = 'page';
 
     public function __construct(array $queryOptions = array(), array $queryParams = array(), $resourceId = null) {
         parent::__construct($queryOptions, $queryParams, $resourceId);

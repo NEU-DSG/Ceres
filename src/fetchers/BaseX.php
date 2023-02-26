@@ -2,5 +2,5 @@
 
 namespace Ceres\Fetcher;
 
-class BaseX extends AbstractFetcher {
+class BaseX {
 }

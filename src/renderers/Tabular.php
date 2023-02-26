@@ -22,7 +22,7 @@ class Tabular extends Html {
 
     }
 
-    public function setDataToRender() {
+    public function setDataToRender(string $extractorName = null) {
         //@todo what happens if row lengths don't match? something for extractor
         //to throw something about?
     

@@ -118,15 +118,12 @@ abstract class AbstractFetcher {
     curl_setopt($ch, CURLOPT_HEADER, true);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
     curl_setopt($ch, CURLOPT_FAILONERROR, false);
+    curl_setopt($ch, CURLOPT_USERAGENT, "CERES/develop p.murray-john@northeastern.edu");
     $rawResponse = curl_exec($ch);
-    // @TODO:  when we're up to PHP > 5.5, CURLINFO_HTTP_CODE should be CURLINFO_RESPONSE_CODE
-    //$responseStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $responseStatus = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
-    //fallback for PHP < 5.5
-    // @TODO remove this once our servers are upgraded, so we can keep using modern(ish) PHP practices
     if (! $responseStatus) {
-      $responseStatusArray = curl_getinfo($ch);
-      $responseStatus = $responseStatusArray['http_code'];
+        $responseStatusArray = curl_getinfo($ch);
+        $responseStatus = $responseStatusArray['http_code'];
     }
     
     
@@ -137,22 +134,26 @@ abstract class AbstractFetcher {
     // end shenanigans 
     
     switch ($responseStatus) {
-      case 200:
-        $output = $responseBody;
-        $statusMessage = 'OK';
-        break;
-      case 404:
-        $output = 'The resource was not found.';
-        $statusMessage = 'Not Found';
-        break;
-      case 302:
-        $output = $responseBody;
-        $statusMessage = 'The resource has moved or is no longer available';
-        break;
-      default:
-        $output = 'An unknown error occured.' . $responseStatus;
-        $statusMessage = 'An unkown error occured. Please try again';
-        break;
+        case 200:
+            $output = $responseBody;
+            $statusMessage = 'OK';
+            break;
+        case 403:
+            $output = "Forbidden -- is access correct?";
+            $statusMessage = 'Forbidden';
+            break;
+        case 404:
+            $output = 'The resource was not found.';
+            $statusMessage = 'Not Found';
+            break;
+        case 302:
+            $output = $responseBody;
+            $statusMessage = 'The resource has moved or is no longer available';
+            break;
+        default:
+            $output = 'An unknown error occured.' . $responseStatus;
+            $statusMessage = 'An unkown error occured. Please try again';
+            break;
     }
     $responseData = array(
         'status' => $responseStatus,

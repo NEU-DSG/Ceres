@@ -2,14 +2,55 @@
 namespace Ceres\Data;
 
 
+/**
+ * Algorithm for minting/looking up ids
+ * 
+ * Until we move everything over to real db tables, ids are minted in the editing area
+ * and set back to the server. They contain 3 parts
+ * 
+ * 1. the optionName
+ * 2. the pageId it is set on
+ * 3. a hash of the value
+ * 
+ * This means that no two options on the same page can have the same value
+ * 
+ * @TODO: do I need a way to specify the page id from the admin
+ */
+
+function getCurrentValues() {
+    $ceresCurrentValues = [
+        // ['optionName' =>, 'value' =>],
+        'id1' => ['optionName' => 'caption', 'value' => 'Chinatown Collections'],
+        'id2' => ['optionName' => 'trClass', 'value' => 'classy-class'],
+        'id3' => ['optionName' => 'trClass', 'value' => 'classless-class'],
+
+
+
+
+    ];
+
+    return $ceresCurrentValues;
+}
+
+
 function getAllOptions() {
     $ceresAllOptions = [
+        'caption' => [
+            'label' => 'Caption',
+            'desc'    => 'Text to use for a table caption',
+            'access' => ['projectOwner', 'coder', 'contentCreator'],
+            'type'    => 'text',
+            'defaults' => 'from $ceresOptionsValues array',
+            'notes' => "",
+            'appliesTo' => 'renderers',            
+        ],
+
         'text' => [
             'label' => 'Text',
             'desc'    => 'Plain Text to add somewhere',
             'access' => ['projectOwner', 'coder', 'contentCreator'],
             'type'    => 'text',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'renderers',            
         ],
@@ -19,7 +60,7 @@ function getAllOptions() {
             'desc'    => '',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'renderers', 
         ],
@@ -32,13 +73,23 @@ function getAllOptions() {
             'notes' => '',
             'appliesTo' => 'renderers', 
         ],
-    
+        'caption' => [
+            'label'   => 'Table caption',
+            'desc'    => 'Caption text for an HTML table',
+            'access' => ['contentCreator', 'projectOwner', 'coder'],
+            'type'    => 'text',
+            'defaults' => '',
+            'notes' => '',
+            'appliesTo' => 'renderers', 
+        ],
+        
+        
         'extractorMetadataFilterBy' => [
             'label'   => 'Filter Metadata By',
             'desc'    => 'A property in the metadata used to filter metadata results for display',
             'access' => ['coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'extractors',
         ],
@@ -49,7 +100,7 @@ function getAllOptions() {
             'desc'    => 'A property in the metadata used to filter search results',
             'access' => ['coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'extractors', 
              
@@ -59,7 +110,7 @@ function getAllOptions() {
             'desc'    => 'How to sort metadata fields for display',
             'access' => ['coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'extractors', 
             
@@ -69,7 +120,7 @@ function getAllOptions() {
             'desc'    => 'The property to use for sorting results',
             'access' => ['coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'extractors',
             
@@ -79,7 +130,7 @@ function getAllOptions() {
             'desc'    => 'The order to sort metadata by, e.g. asc or desc',
             'access' => ['coder'],
             'type'    => 'enum',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'extractors',  
             
@@ -89,7 +140,7 @@ function getAllOptions() {
             'desc'    => 'The order to sort results by, e.g. asc or desc',
             'access' => ['coder'],
             'type'    => 'enum',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'extractors', 
             
@@ -101,7 +152,7 @@ function getAllOptions() {
             'desc'    => 'The metadata property to use for... ',
             'access' => ['coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => 'Maybe remove this for Extractors', 
             'appliesTo' => 'extractors', 
             
@@ -111,7 +162,7 @@ function getAllOptions() {
             'desc'    => 'Property to use when sorting results',
             'access' => ['coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'extractors', 
             
@@ -122,7 +173,7 @@ function getAllOptions() {
             'desc'    => 'Property to use for grouping ',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => 'Needed?', 
             'appliesTo' => 'extractors', 
             
@@ -132,7 +183,7 @@ function getAllOptions() {
             'desc'    => 'The specific metadata properties to display',
             'access' => ['contentCreator', 'projectOwner', 'coder'],
             'type'    => 'enum',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'extractors', 
             
@@ -142,9 +193,19 @@ function getAllOptions() {
             'desc'    => 'The specific metadata properties to display',
             'access' => ['contentCreator', 'projectOwner', 'coder'],
             'type'    => 'enum',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'fetchers', 
+            
+        ],
+        'metadataToShow' => [
+            'label'   => 'Metadata To Show',
+            'desc'    => 'The specific metadata properties to display',
+            'access' => ['contentCreator', 'projectOwner', 'coder'],
+            'type'    => 'enum',
+            'defaults' => 'from $ceresOptionsValues array',
+            'notes' => "",
+            'appliesTo' => 'renderers', 
             
         ],
         'fetcherGroupBy' => [
@@ -152,7 +213,7 @@ function getAllOptions() {
             'desc'    => 'Property to use for grouping results',
             'access' => ['contentCreator', 'projectOwner', 'coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'fetchers', 
              
@@ -162,7 +223,7 @@ function getAllOptions() {
             'desc'    => 'Property to use for filtering results',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'fetchers', 
              
@@ -172,7 +233,7 @@ function getAllOptions() {
             'desc'    => 'Property to use for sorting results',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'fetchers', 
             
@@ -182,7 +243,7 @@ function getAllOptions() {
             'desc'    => 'The order with which to sort results',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'fetchers', 
             
@@ -192,7 +253,7 @@ function getAllOptions() {
             'desc'    => 'The property to use for sorting results',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'fetchers', 
             
@@ -202,7 +263,7 @@ function getAllOptions() {
             'desc'    => 'The property to use as the link back to the original resource',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'fetchers', 
             
@@ -212,7 +273,7 @@ function getAllOptions() {
             'desc'    => 'The property to use as the link back to the original media',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'fetchers', 
             
@@ -222,27 +283,38 @@ function getAllOptions() {
             'desc'    => 'The URI to use for displaying media',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'fetchers', 
             
         ],
         'thClass' => [
             'label'   => 'Table Head Class Name',
-            'desc'    => 'The CSS class to apply to &lt;th> elements',
+            'desc'    => 'The CSS class to apply to <th> elements',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'renderers', 
             
         ],
         'tdClass' => [
             'label'   => 'Table Data Class Name',
-            'desc'    => 'The CSS class to apply to &lt;td> elements',
+            'desc'    => 'The CSS class to apply to <td> elements',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
+            'notes' => "",
+            'appliesTo' => 'renderers', 
+            
+        ],
+
+        'trClass' => [
+            'label'   => 'Table Row Class Name',
+            'desc'    => 'The CSS class to apply to <tr> elements',
+            'access' => ['projectOwner', 'coder'],
+            'type'    => 'varchar',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'renderers', 
             
@@ -253,7 +325,7 @@ function getAllOptions() {
             'desc'    => 'Whether to get all resources matching the query, or force pagination of the queries for rolling loads',
             'access' => ['coder'],
             'type'    => 'bool',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'fetchers', 
             
@@ -263,7 +335,7 @@ function getAllOptions() {
             'desc'    => 'The data format the API should return',
             'access' => ['coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'fetchers', 
             
@@ -273,7 +345,7 @@ function getAllOptions() {
             'desc'    => 'The number of results for each page returned by the API',
             'access' => ['coder'],
             'type'    => 'int',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'fetchers', 
             
@@ -283,7 +355,7 @@ function getAllOptions() {
             'desc'    => 'The start page of results from the API',
             'access' => ['coder'],
             'type'    => 'int',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'fetchers', 
             
@@ -293,7 +365,7 @@ function getAllOptions() {
             'desc'    => 'The resource ids to return',
             'access' => ['contentCreator', 'projectOwner', 'coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'fetchers', 
             
@@ -303,7 +375,7 @@ function getAllOptions() {
             'desc'    => 'The full query to send to the API',
             'access' => ['coder'],
             'type'    => 'text',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'fetchers', 
             
@@ -314,7 +386,7 @@ function getAllOptions() {
             'desc'    => 'The API endpoint URI',
             'access' => ['coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'fetchers', 
             
@@ -324,7 +396,7 @@ function getAllOptions() {
             'desc'    => 'The type of search to use for the specific API, e.g. search vs item in DRS',
             'access'  => ['coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'fetchers',
         ],
@@ -333,7 +405,7 @@ function getAllOptions() {
             'desc'    => 'The size of the thumbnail to use',
             'access' => ['contentCreator', 'projectOwner', 'coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => 'This will vary based on API result structure',
             'appliesTo' => 'renderers', 
             
@@ -343,7 +415,7 @@ function getAllOptions() {
             'desc'    => 'The separator character to use for key/value pairs',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'renderers', 
             
@@ -353,7 +425,7 @@ function getAllOptions() {
             'desc'    => 'A CSS class to apply to keys in rendering arrays',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'renderers', 
             
@@ -363,7 +435,7 @@ function getAllOptions() {
             'desc'    => 'A CSS class to apply to values in rendering arrays',
             'access' => ['projectOwner', 'coder'],
             'type'    => '',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'renderers', 
             
@@ -373,7 +445,7 @@ function getAllOptions() {
             'desc'    => '',
             'access' => ['contentCreator', 'projectOwner', 'coder'],
             'type'    => '',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => 'need to break this out', 
             'appliesTo' => 'renderers', 
             
@@ -384,7 +456,7 @@ function getAllOptions() {
             'desc'    => '',
             'access' => ['coder'],
             'type'    => '',
-            'defaults' => 'from other array',
+            'defaults' => 'from $ceresOptionsValues array',
             'notes' => 'need to break this out? probably not if access remains limited to coders', 
             'appliesTo' => 'renderers', 
         ],
@@ -406,6 +478,17 @@ function getAllOptions() {
 
 function getOptionsValues() {
     $ceresOptionsValues = [
+        
+        'caption' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'html_dev_test' => 'Howdy!' ,
+                'tabular_dev_test' => '',
+            ]            
+        ],
+
         'text' => [
             'currentValue' => null,
             'defaults' => [
@@ -580,7 +663,7 @@ function getOptionsValues() {
                 'ceres' => 'ceres-th',
                 'projectName' => '',
                 'html_dev_test' => 'ceres-test',
-                'viewPackageName' => '',
+                'tabular_dev_test' => 'ceres-dev ceres-th',
             ]
         ],
 
@@ -589,8 +672,8 @@ function getOptionsValues() {
             'defaults' => [
                 'ceres' => 'ceres-tr',
                 'projectName' => '',
-                'html_dev_test' => 'ceres-tr ceres-test',
-                'viewPackageName' => '',
+                'html_dev_test' => 'ceres-test',
+                'tabular_dev_test' => 'ceres-dev ceres-tr',
             ]
         ],
 
@@ -601,6 +684,7 @@ function getOptionsValues() {
                 'projectName' => '',
                 'html_dev_test' => 'ceres-td ceres-test',
                 'viewPackageName' => '',
+                'tabular_dev_test' => 'ceres-dev ceres-td',
             ]
         ],
         'endpoint' => [
@@ -843,7 +927,6 @@ function getViewPackages() {
 
     $rendererOptions = [
         'general' => [
-            'float',
             'metadataToShow',
             'altLabelProp',
         ],
@@ -852,6 +935,7 @@ function getViewPackages() {
             'thClass',
             'tdClass',
             'trClass',
+            'caption',
         ],
 
         'keyValue' => [
@@ -1129,7 +1213,7 @@ function getViewPackages() {
 }
 
 function getOptionsEnums() {
-    $optionsEnums = [
+    $ceresOptionsEnums = [
         'float' => [
             'ceres' => ['left', 'right'],
             '$projectName' => ['left', 'right'],
@@ -1151,13 +1235,17 @@ function getOptionsEnums() {
 
         ],
 
+        'metadataToShow' => [
+            'ceres' => ['all']
+        ],
+
 
     ];
-    return $optionsEnums;
+    return $ceresOptionsEnums;
 }
 
 function getPropertyLabels() {
-    $propertyLabels = [
+    $ceresPropertyLabels = [
         'ceres' => [
             'dcterms:title' => 'Title',
             'dcterms:subject' => 'Subject(s)',
@@ -1183,6 +1271,6 @@ function getPropertyLabels() {
 
     ];
 
-    return $propertyLabels;
+    return $ceresPropertyLabels;
 
 }

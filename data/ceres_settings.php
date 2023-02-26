@@ -2,10 +2,27 @@
 namespace Ceres\Data;
 
 
+/**
+ * Algorithm for minting/looking up ids
+ * 
+ * Until we move everything over to real db tables, ids are minted in the editing area
+ * and set back to the server. They contain 3 parts
+ * 
+ * 1. the optionName
+ * 2. the pageId it is set on
+ * 3. a hash of the value
+ * 
+ * This means that no two options on the same page can have the same value
+ * 
+ * @TODO: do I need a way to specify the page id from the admin
+ */
+
 function getCurrentValues() {
     $ceresCurrentValues = [
-        // ['id' =>, 'option' =>, 'value' =>],
-        ['id' => '1', 'option' => 'caption', 'value' => 'Chinatown Collections'],
+        // ['optionName' =>, 'value' =>],
+        'id1' => ['optionName' => 'caption', 'value' => 'Chinatown Collections'],
+        'id2' => ['optionName' => 'trClass', 'value' => 'classy-class'],
+        'id3' => ['optionName' => 'trClass', 'value' => 'classless-class'],
 
 
 
@@ -461,25 +478,16 @@ function getAllOptions() {
 
 function getOptionsValues() {
     $ceresOptionsValues = [
+        
         'caption' => [
-            'currentValue' => 1, // actually an id to currentValues
+            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 'projectName' => '',
                 'html_dev_test' => 'Howdy!' ,
                 'tabular_dev_test' => '',
             ]            
-        ],        
-        
-        // 'caption' => [
-        //     'currentValue' => null,
-        //     'defaults' => [
-        //         'ceres' => '',
-        //         'projectName' => '',
-        //         'html_dev_test' => 'Howdy!' ,
-        //         'tabular_dev_test' => '',
-        //     ]            
-        // ],
+        ],
 
         'text' => [
             'currentValue' => null,

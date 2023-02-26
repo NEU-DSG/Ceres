@@ -3,7 +3,8 @@ namespace Ceres\Util;
 
 use Ceres\Exception\DataException;
 use Ceres\Data;
-
+use Error;
+use ErrorException;
 
 class DataUtilities {
 
@@ -44,14 +45,7 @@ class DataUtilities {
 
     // $scope is ceres, {project_name}, {view_package_name}
     static function valueForOption(string $optionName, $scope = 'ceres') {
-        self::setData();
-
-        if(! is_null(self::$currentValues['currentValue'])) {
-            $currentValueId = self::$optionsValues['currentValue'];
-            return self::$currentValues[$currentValueId]['value'];
-
-        }
-
+        echo "<h3>$optionName, $scope</h3>";
 
         if(isset(self::$optionsValues[$optionName])) {
             $optionValues = self::$optionsValues[$optionName];
@@ -163,6 +157,23 @@ class DataUtilities {
 
         return false; // or throw something?
 
+    }
+
+    // $pageId works for the contentCreator screen, where they get minted
+    //      which means I'd be recording the overrides as currentValue
+    // need what works on the admin screen
+    // or just drop that to project scope
+    //   'cuz having access to admin screen implies a project-wide access
+    //   if a project-level person wants to change the specific page value, go to the page
+    //   and fight it out with contentCreator
+    //   currentValue would drop to the default for project
+    //      implies contentCreator/page level inaccessible to project level on admin side
+    //      implies lookup is page-specific, and $currentValue is set by contentCreator at
+    //          that level
+    //
+    //   contentCreator side needs to send up the params to get the $currentValue
+    static function mintCurrentValueId(string $optionName, mixed $pageId, mixed $currentValue) : string {
+        return "id2";
     }
 
     /**
@@ -313,6 +324,11 @@ class DataUtilities {
         self::rebuildPropertyLabels();
         self::rebuildViewPackages();
         self::rebuildCurrentValues();
+
+    }
+
+    static function updateCeresValue($id, $value) {
+        self::$currentValues[$id]['value'] = $value;
 
     }
 

@@ -107,7 +107,7 @@ class ViewPackage extends Html {
                         $ddNodeAccess = $this->htmlDom->createElement('dd');
                         $ddNodeFormEl = $this->htmlDom->createElement('dd');
                     
-                        $optionValue = DataUtil::valueForOption($subOption);
+                        $subValue = DataUtil::valueForOption($subOption, $this->viewPackageName);
                         $optionDescription = DataUtil::descriptionForOption($subOption);
                         $optionType = DataUtil::typeForOption($subOption);
                         $accessValues = DataUtil::accessValuesForOption($subOption);

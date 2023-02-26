@@ -32,8 +32,8 @@ class ViewPackage {
         //skip the second level key to get at array of info about renderer
         $rendererClassInfo = DataUtil::skipArrayLevel($rendererData);
         $rendererOptions = $rendererClassInfo['options'];
-
-        foreach (array_keys($rendererOptions) as $optionName) {
+      
+        foreach ($rendererOptions as $optionName) {
             $rendererOptions[$optionName] = DataUtil::valueForOption($optionName, $this->nameId);
         }
     }

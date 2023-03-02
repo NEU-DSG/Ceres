@@ -3,34 +3,38 @@
 namespace Ceres\Extractor;
 
 abstract class AbstractExtractor {
-
-
-    // includeMediaThumbnail
-    // includeItemLink
-    // includeMediaLink
     
-    protected array $options = array();
+    protected array $extractorOptions = array();
+    protected $sourceData;
     protected array $dataToRender = [];
 
-    /**
-     * The data from a Fetcher for start with
-     *
-     * @var array
-     */
-    protected $sourceData = array();
-
-
-
-
-    public function extract() {
-        $cleanedData = array();
-
-
-        $this->dataToRender = $cleanedData;
+    public function __construct() {
+        
     }
 
-    public function getDataToRender() {
+    abstract public function extract();
+
+    /**
+     * getDataToRender
+     * 
+     * Returns exactly what the fetcher gave it, in case the result needs no processing
+     *
+     * @param boolean $bounceSource
+     * @return mixed
+     */
+    public function getDataToRender($bounceSource = false) {
+        if ($bounceSource) {
+            return json_encode($this->sourceData);
+        }
         return $this->dataToRender;
+    }
+
+    public function setSourceData($sourceData):void {
+        if (is_string($sourceData)) {
+            $sourceData = json_decode($sourceData, true);
+        }
+        
+        $this->sourceData = $sourceData;
     }
 }
 

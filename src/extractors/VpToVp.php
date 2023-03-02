@@ -8,16 +8,16 @@ use Ceres\Exception\DataException;
 
 class VpToVp extends AbstractExtractor {
 
-    public function __construct() {
-        parent::__construct();
+    public function __construct($sourceData) {
+        parent::__construct($sourceData);
         $this->sourceData = DataUtil::getWpOption('ceres_view_packages');
 
     }
 
-    public function extract() {
+    public function extract():void {
         $dataToRender = [];
-        if (isset($this->options['vpNameId'])) {
-            $vpArray = $this->sourceData[$this->options['vpNameId']];
+        if (isset($this->extractorOptions['vpNameId'])) {
+            $vpArray = $this->sourceData[$this->extractorOptions['vpNameId']];
         } else {
             throw new DataException("Invalid vpNameId option");
         }

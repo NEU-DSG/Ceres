@@ -47,7 +47,7 @@ function getAllOptions() {
 
         'text' => [
             'label' => 'Text',
-            'desc'    => 'Plain Text to add somewhere',
+            'desc'    => 'Plain Text to display',
             'access' => ['projectOwner', 'coder', 'contentCreator'],
             'type'    => 'text',
             'defaults' => 'from $ceresOptionsValues array',
@@ -55,8 +55,8 @@ function getAllOptions() {
             'appliesTo' => 'renderers',            
         ],
 
-        'altLabelProp' => [
-            'label'   => '',
+        'altTextProp' => [
+            'label'   => 'Property to use for alt text',
             'desc'    => '',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
@@ -66,7 +66,7 @@ function getAllOptions() {
         ],
         'float' => [
             'label'   => 'Float',
-            'desc'    => 'How to wrap text around an element',
+            'desc'    => 'How an element should float around text',
             'access' => ['contentCreator', 'projectOwner', 'coder'],
             'type'    => 'enum',
             'defaults' => '',
@@ -404,7 +404,7 @@ function getAllOptions() {
             'label'   => 'Thumbnail Size',
             'desc'    => 'The size of the thumbnail to use',
             'access' => ['contentCreator', 'projectOwner', 'coder'],
-            'type'    => 'varchar',
+            'type'    => 'enum',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => 'This will vary based on API result structure',
             'appliesTo' => 'renderers', 
@@ -443,7 +443,7 @@ function getAllOptions() {
         'leafletCeres' => [
             'label'   => 'Leaflet CERES',
             'desc'    => '',
-            'access' => ['contentCreator', 'projectOwner', 'coder'],
+            'access' => ['coder'],
             'type'    => '',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => 'need to break this out', 

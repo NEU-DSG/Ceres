@@ -4,11 +4,6 @@ namespace Ceres\Extractor;
 
 
 class SparqlExtractorToTable extends AbstractSparqlExtractor {
-
-    // from head/vars in sparql result
-    protected array $vars = [];
-
-    protected array $bindings = [];
     
     /**
      * valueForBindingVar
@@ -52,8 +47,6 @@ class SparqlExtractorToTable extends AbstractSparqlExtractor {
             $dataToRender[] = $bindingVals;
             $bindingVals = [];
         }
-
-        print_r($dataToRender);
-        die();
+        $this->dataToRender = $dataToRender;
     }
 }

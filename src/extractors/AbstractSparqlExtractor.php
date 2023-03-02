@@ -6,9 +6,9 @@ namespace Ceres\Extractor;
 abstract class AbstractSparqlExtractor extends AbstractExtractor {
 
     // from head/vars in sparql result
-    protected array $vars = [];
+    protected array $vars;
 
-    protected array $bindings = [];
+    protected array $bindings;
     
     /**
      * valueForBindingVar

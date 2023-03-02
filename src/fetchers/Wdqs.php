@@ -4,13 +4,37 @@ namespace Ceres\Fetcher;
 
 class Wdqs extends Sparql {
 
-    protected string $endpoint = 'wkqs';
-
-
+    protected string $endpoint = 'https://query.wikidata.org/sparql';
 
     public function __construct() {
         
         parent::__construct();
+    }
+
+    public function fetchData($url = null, $returnWithoutSetting = false) {
+        $opts = [
+            'http' => [
+                'method' => 'GET',
+                'header' => [
+                    'Accept: application/sparql-results+json',
+                    'User-Agent: CERES/develop p.murray-john@northeastern.edu'
+                ],
+            ],
+        ];
+        $context = stream_context_create($opts);
+
+        $url = $this->endpoint . '?query=' . urlencode($this->query);
+        $response = file_get_contents($url, false, $context);
+        return $response;
+
+    }
+
+    public function setQuery(string $query):void {
+        $this->query = $query;
+    }
+
+    public function setQueryFromFile(string $file):void {
+        $this->query = file_get_contents($file);
     }
 }
 

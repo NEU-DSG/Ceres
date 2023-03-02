@@ -6,6 +6,8 @@ abstract class AbstractFetcher {
 
   protected string $endpoint;
 
+  protected string $method = 'GET'; //usually GET, sometime POST. Others unimplemented
+
   /**
    * refers to additional URL path options, generally for a RESTful API pattern
    * @var array
@@ -107,12 +109,27 @@ abstract class AbstractFetcher {
    */
 
   public function fetchData($url = null, $returnWithoutSetting = false) {
-    if (is_null($url)) {
-      $url = $this->buildQueryString();
-    }
-
     
     $ch = curl_init();
+    
+    switch ($this->method) {
+        case 'GET':
+            if (is_null($url)) {
+                $url = $this->buildQueryString(); // build entire URL, including params as part of it
+            }
+            curl_setopt($ch, CURLOPT_HTTPGET, true);
+        break;
+        case 'POST':
+            curl_setopt($ch, CURLOPT_POST, true);
+            $postFields = $this->buildQueryString();
+        break;
+        default:
+
+        break;
+
+    }
+
+
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HEADER, true);
@@ -133,6 +150,7 @@ abstract class AbstractFetcher {
     $responseBody = substr($rawResponse, $header_len);
     // end shenanigans 
     
+    $output = $responseBody;
     switch ($responseStatus) {
         case 200:
             $output = $responseBody;
@@ -149,6 +167,12 @@ abstract class AbstractFetcher {
         case 302:
             $output = $responseBody;
             $statusMessage = 'The resource has moved or is no longer available';
+            break;
+
+        case 400:
+            $output = $responseBody;
+            $statusMessage = 'Bad Request (no biscuit!)';
+
             break;
         default:
             $output = 'An unknown error occured.' . $responseStatus;

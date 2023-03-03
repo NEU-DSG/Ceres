@@ -231,6 +231,7 @@ class DataUtilities {
 //save it all to a file in dev for now
             $optionDataJson = json_encode($wpOptionData);
             $fileName = CERES_ROOT_DIR . "/devscraps/data/$wpOptionName.json";
+            $fileName = CERES_ROOT_DIR . "/data/$wpOptionName.json";
             file_put_contents($fileName, $optionDataJson);
         }
     }

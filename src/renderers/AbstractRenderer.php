@@ -9,7 +9,7 @@
 
   abstract class AbstractRenderer {
 
-    protected $rendererOptions = array();
+    protected array $rendererOptions = [];
 
     /**
      * The Ceres_Abstract_Fetcher(s) that are handling the data retrieval. Its itemData property
@@ -21,7 +21,7 @@
      * @var array Ceres_Abstract_Fetcher
      */
 
-    protected $fetchers = array();
+    protected array $fetchers = [];
     
     /**
      * The Extractor(s) that will be used to wrangle raw responses from the Fetchers
@@ -32,11 +32,11 @@
      * 
      */
 
-    protected $extractors = [];
+    protected array $extractors = [];
 
-    protected $coreProperties = [];
+    protected array $coreProperties = [];
 
-    protected $expectedProperties = [];
+    protected array $expectedProperties = [];
 
     //the data coming from an Extractor to render
     protected array $dataToRender = [];
@@ -127,7 +127,7 @@
       }
     }
 
-    public function getRenderOptionValue($option) : string {
+    public function getRendererOptionValue($option) : string {
         return $this->rendererOptions[$option];
     }
 

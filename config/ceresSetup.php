@@ -18,7 +18,5 @@ foreach($files as $file) {
     }
 }
 
-
-
 require_once(CERES_ROOT_DIR . '/data/ceres_settings.php');
 require_once(CERES_ROOT_DIR . '/devscraps/ceres_utility_functions.php');

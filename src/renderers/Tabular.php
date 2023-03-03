@@ -12,6 +12,14 @@ class Tabular extends Html {
     protected DOMElement $tfootNode;
     protected DOMElement $captionNode;
 
+    protected array $rendererOptions = [
+        'trClass' => '',
+        'tdClass' => '',
+        'theadClass' => '',
+        'thClass' => '',
+
+    ];
+
     public function __construct() {
         parent::__construct();
 
@@ -35,13 +43,20 @@ class Tabular extends Html {
         $this->dataToRender['fakeExtractor'] = $dataToRender;
     }
 
-    public function render() {
-        $this->build();
-        echo $this->toHtmlString();
-    }
-
     public function build() {
         foreach($this->dataToRender as $extractorName => $rowsData) {
+            //$firstRowIsHeader = $this->getRenderOptionValue('firstRowIsHeader');
+            $firstRowIsHeader = true;
+
+            if ($firstRowIsHeader) {
+                $headerRowData = array_shift($rowsData);
+                $rowNode = $this->buildRow($headerRowData, 'th');
+                $this->theadNode->appendChild($rowNode);
+            }
+
+
+
+
             foreach ($rowsData as $rowData) {
                 $row = $this->buildRow($rowData);
                 $this->tbodyNode->appendChild($row);      
@@ -52,21 +67,19 @@ class Tabular extends Html {
         foreach ($this->extractors as $name=>$extractor) {
           fire up extractor(s) to get what's needed
         }
-
-
-
       */
     }
 
-    public function buildRow($rowData) {
-        $trClass = $this->getRenderOptionValue('trClass');
-        $tdClass = $this->getRenderOptionValue('tdClass');
+    public function buildRow($rowData, $cellElement = 'td') {
+        $trClass = $this->getRendererOptionValue('trClass');
+        $tdClass = $this->getRendererOptionValue('tdClass');
+        $thClass = $this->getRendererOptionValue('thClass');
 
         $trNode = $this->htmlDom->createElement('tr');
         $this->appendToClass($trNode, $trClass);
 
         foreach ($rowData as $columnData) {
-            $tdNode = $this->htmlDom->createElement('td');
+            $tdNode = $this->htmlDom->createElement($cellElement);
             $this->appendTextNode($tdNode, $columnData);
             $this->appendToClass($tdNode, $tdClass);
             $trNode->appendChild($tdNode);

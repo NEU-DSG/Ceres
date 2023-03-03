@@ -12,14 +12,6 @@ class Tabular extends Html {
     protected DOMElement $tfootNode;
     protected DOMElement $captionNode;
 
-    protected array $rendererOptions = [
-        'trClass' => '',
-        'tdClass' => '',
-        'theadClass' => '',
-        'thClass' => '',
-
-    ];
-
     public function __construct() {
         parent::__construct();
 
@@ -28,6 +20,11 @@ class Tabular extends Html {
         $this->tfootNode = $this->htmlDom->getElementsByTagName('tfoot')->item(0);
         $this->captionNode = $this->htmlDom->getElementsByTagName('caption')->item(0);
 
+        $this->appendToClass($this->tbodyNode, $this->getRendererOptionValue('tbodyClass'));
+        $this->appendToClass($this->theadNode, $this->getRendererOptionValue('theadClass'));
+        $this->appendToClass($this->tfootNode, $this->getRendererOptionValue('tfootClass'));
+        $this->appendToClass($this->captionNode, $this->getRendererOptionValue('captionClass'));
+        $this->appendToClass($this->containerNode, $this->getRendererOptionValue('tableClass'));
     }
 
     public function setDataToRender(string $extractorName = null) {
@@ -54,9 +51,6 @@ class Tabular extends Html {
                 $this->theadNode->appendChild($rowNode);
             }
 
-
-
-
             foreach ($rowsData as $rowData) {
                 $row = $this->buildRow($rowData);
                 $this->tbodyNode->appendChild($row);      
@@ -74,6 +68,7 @@ class Tabular extends Html {
         $trClass = $this->getRendererOptionValue('trClass');
         $tdClass = $this->getRendererOptionValue('tdClass');
         $thClass = $this->getRendererOptionValue('thClass');
+        $theadClass = $this->getRendererOptionValue('theadClass');
 
         $trNode = $this->htmlDom->createElement('tr');
         $this->appendToClass($trNode, $trClass);

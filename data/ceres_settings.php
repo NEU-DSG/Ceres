@@ -37,9 +37,18 @@ function getAllOptions() {
     $ceresAllOptions = [
         'caption' => [
             'label' => 'Caption',
-            'desc'    => 'Text to use for a table caption',
+            'desc'    => 'Text to use for a table <caption>',
             'access' => ['projectOwner', 'coder', 'contentCreator'],
             'type'    => 'text',
+            'defaults' => 'from $ceresOptionsValues array',
+            'notes' => "",
+            'appliesTo' => 'renderers',            
+        ],
+        'captionClass' => [
+            'label' => 'Caption',
+            'desc'    => 'Class to use for a table <caption>',
+            'access' => ['projectOwner', 'coder', 'contentCreator'],
+            'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'appliesTo' => 'renderers',            
@@ -298,6 +307,16 @@ function getAllOptions() {
             'appliesTo' => 'renderers', 
             
         ],
+        'tableClass' => [
+            'label'   => 'Table Class Name',
+            'desc'    => 'The CSS class to apply to <table> elements',
+            'access' => ['projectOwner', 'coder'],
+            'type'    => 'varchar',
+            'defaults' => 'from $ceresOptionsValues array',
+            'notes' => "",
+            'appliesTo' => 'renderers', 
+            
+        ],
         'tdClass' => [
             'label'   => 'Table Data Class Name',
             'desc'    => 'The CSS class to apply to <td> elements',
@@ -312,6 +331,16 @@ function getAllOptions() {
         'trClass' => [
             'label'   => 'Table Row Class Name',
             'desc'    => 'The CSS class to apply to <tr> elements',
+            'access' => ['projectOwner', 'coder'],
+            'type'    => 'varchar',
+            'defaults' => 'from $ceresOptionsValues array',
+            'notes' => "",
+            'appliesTo' => 'renderers', 
+            
+        ],
+        'theadClass' => [
+            'label'   => 'Table Head Class Name',
+            'desc'    => 'The CSS class to apply to <thead> elements',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
@@ -932,6 +961,7 @@ function getViewPackages() {
             'thClass',
             'tdClass',
             'trClass',
+            'theadClass',
             'caption',
         ],
 

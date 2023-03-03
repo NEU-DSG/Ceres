@@ -8,7 +8,7 @@ use DOMXPath;
 
 class Html extends AbstractRenderer {
 
-    protected DOMElement $containerElement;
+    protected DOMElement $containerNode;
     protected DOMXPath $xPath;
     protected DOMDocument $htmlDom;
     protected string $templateFileName = 'html.html';
@@ -16,7 +16,7 @@ class Html extends AbstractRenderer {
     public function __construct() {
         $this->setHtmlDom();
         $this->xPath = new DOMXPath($this->htmlDom);
-        $this->setContainerElement();
+        $this->setContainerNode();
 
         parent::__construct();
     }
@@ -49,10 +49,8 @@ class Html extends AbstractRenderer {
     }
 
     public function build() {
-        $text = $this->getRendererOption('text');
+        $text = $this->getRendererOptionValue('text');
         $this->appendTextNode($this->containerElement, $text);
-
- 
     }
 
     // @todo move to utils?
@@ -78,19 +76,16 @@ class Html extends AbstractRenderer {
         restore_error_handler();
     }
 
-    public function setContainerElement() {
-        // $query = "/html[1]/body[1]/div[1]";
-        // $nodes = $this->xPath->query($query);
-        // $this->containerElement = $nodes->item(0);
-        $this->containerElement = $this->htmlDom->getElementById('ceres-container');
+    public function setContainerNode() {
+        $this->containerNode = $this->htmlDom->getElementById('ceres-container');
     }
 
-    public function getContainerElement() : DOMElement {
-        return $this->containerElement;
+    public function getContainerNode() : DOMElement {
+        return $this->containerNode;
     }
 
 
-    public function appendToClass(DOMElement $element, $value ) {
+    public function appendToClass(DOMElement $element, $value ):void {
         $class = $element->getAttribute('class');
         $class = $class .= " $value";
         $element->setAttribute('class', $class);

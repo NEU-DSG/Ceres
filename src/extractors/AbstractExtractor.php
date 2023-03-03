@@ -5,12 +5,7 @@ namespace Ceres\Extractor;
 abstract class AbstractExtractor {
     
     protected array $extractorOptions = array();
-    protected $sourceData;
     protected array $dataToRender = [];
-
-    public function __construct() {
-        
-    }
 
     abstract public function extract();
 
@@ -22,7 +17,7 @@ abstract class AbstractExtractor {
      * @param boolean $bounceSource
      * @return mixed
      */
-    protected $sourceData = array();
+    protected array $sourceData = array();
 
 
     public function __construct() {
@@ -37,8 +32,6 @@ abstract class AbstractExtractor {
  * 
  */
 
-    abstract function extract();
-
     public function getDataToRender() {
         return $this->dataToRender;
     }
@@ -48,7 +41,7 @@ abstract class AbstractExtractor {
     }
 
     public function setOptionValue(string $optionName, string $optionValue) {
-        $this->options[$optionName] = $optionValue;
+        $this->extractorOptions[$optionName] = $optionValue;
     }
 }
 

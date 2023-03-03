@@ -11,7 +11,7 @@ class Rest extends AbstractFetcher {
      * @var array
      */
 
-    protected $queryOptions = array();
+    protected array $queryOptions = [];
 
     /**
      * The ID of the remote resource (DRS pid, DPLA hash id, etc)

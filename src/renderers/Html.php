@@ -42,7 +42,7 @@ class Html extends AbstractRenderer {
 
         // just to be nice if/when I end up with compound Renderers,
         // need to make sure I don't end up with multiple ids
-        $this->containerElement->removeAttribute(('id'));
+        $this->containerNode->removeAttribute(('id'));
         //$templateNode = $this->htmlDom->getElementById('ceres-template');
         //$this->containerElement->removeChild($templateNode); 
         echo $this->toHtmlString();
@@ -50,7 +50,7 @@ class Html extends AbstractRenderer {
 
     public function build() {
         $text = $this->getRendererOptionValue('text');
-        $this->appendTextNode($this->containerElement, $text);
+        $this->appendTextNode($this->containerNode, $text);
     }
 
     // @todo move to utils?
@@ -63,7 +63,7 @@ class Html extends AbstractRenderer {
   
     public function toHtmlString($node = null) : string {
         if (is_null($node)) {
-            $node = $this->containerElement;
+            $node = $this->containerNode;
         }
         return $this->htmlDom->saveHtml($node);
     }

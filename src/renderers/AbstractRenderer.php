@@ -127,11 +127,7 @@
       }
     }
 
-    public function getRendererOptionValue($option) : string {
-        return $this->rendererOptions[$option];
-    }
-
-    public function getRendererOption($option) {
+    public function getRendererOptionValue($option) {
       if (isset($this->rendererOptions[$option])) {
         return $this->rendererOptions[$option];
       }

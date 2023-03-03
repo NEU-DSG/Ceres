@@ -3,7 +3,7 @@
 namespace Ceres\Extractor;
 
 
-class SparqlExtractorToTable extends AbstractSparqlExtractor {
+class SparqlToTable extends AbstractSparqlExtractor {
     
     /**
      * valueForBindingVar

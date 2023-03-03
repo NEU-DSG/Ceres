@@ -874,10 +874,6 @@ function getViewPackages() {
             'mediaUriProp',
 
         ],
-        'tabular' => [
-            'thClassName',
-            'tdClassName',
-        ]
     ];
 
 
@@ -906,6 +902,7 @@ function getViewPackages() {
         'wdqs' => [
             'endpoint',
             'responseFormat',
+            'rqFile',
 
         ],
         'drs' => [
@@ -1039,6 +1036,47 @@ function getViewPackages() {
                             ],
                     ],
                 ],
+                "leaflet_wikidata_for_public_art_map" =>
+                [
+                    'humanName' => "Table Wikidata for Public Art Map",
+                    'description' => "Extract data from Wikidata for a map, but display as table.",
+                    'parentViewPackage' => null,
+                    'projectName' => null,
+                    'renderer' => [
+                            'LeafletMap' => [
+                                'fullClassName' => 'Ceres\Renderer\LeafletMap',
+                                'options' =>  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                                    array_merge(
+                                        $rendererOptions['general'],
+                                        $rendererOptions['tabular']
+                                    )
+                                    //after deduping options in the merge,
+                                    // stuff in the current values
+                                
+                            ]
+                        ],
+            
+                    'fetchers' => 
+                        [
+                            'Wdqs' => [
+                                'fullClassName' => 'Ceres\Fetcher\Wdqs',
+                                'options' => array_merge(
+                                    $fetcherOptions['general'],
+                                    $fetcherOptions['wdqs']),
+                            ]
+                        ],
+                        
+                    'extractors' =>
+                        [
+                            'WdqsToTabular' => [
+                                'fullClassName' => 'Ceres\Extractor\SparqlToTable',
+                                'options' => array_merge(
+                                    $extractorOptions['general'], 
+                                    $extractorOptions['tabular']
+                                ),
+                                ],
+                        ],
+                    ],
         "html_dev_test" =>
         [
             'humanName' => "Html Dev Test",

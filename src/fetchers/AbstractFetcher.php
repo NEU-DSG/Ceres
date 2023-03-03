@@ -11,8 +11,9 @@ abstract class AbstractFetcher {
    * @var array
    */
 
-  protected $queryOptions = array();
+  protected array $queryOptions = array();
 
+  protected array $fetcherOptions = array();
   /**
    * The ID of the remote resource (DRS pid, DPLA hash id, etc)
    * @var string
@@ -91,10 +92,11 @@ abstract class AbstractFetcher {
 
   abstract public function getItemDataById($itemId);
 
-  public function __construct(array $queryOptions = array(), array $queryParams = array(), $resourceId = null ) {
+  public function __construct(array $queryOptions = [], array $queryParams = [], $resourceId = null, array $fetcherOptions = [] ) {
     $this->setQueryParams($queryParams);
     $this->setQueryOptions($queryOptions);
     $this->setResourceId($resourceId);
+    $this->setFetcherOptions($fetcherOptions);
   }
   
   /**

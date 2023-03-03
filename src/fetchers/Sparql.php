@@ -113,11 +113,6 @@ class Sparql extends AbstractFetcher {
     
   }
 
-  public function __construct(array $queryOptions = array(), array $queryParams = array(), $resourceId = null ) {
-    $this->setQueryParams($queryParams);
-    $this->setQueryOptions($queryOptions);
-    $this->setResourceId($resourceId);
-  }
   
   /**
    * The params are to to bypass the usual class-based props, e.g. when needing to 

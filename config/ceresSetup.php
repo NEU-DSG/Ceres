@@ -8,11 +8,17 @@ if (empty(CERES_ROOT_DIR)) {
 }
 
 $files = glob(CERES_ROOT_DIR . '/src/*/*.php');
+$missingFiles = [];
 //print_r($files);
 foreach($files as $file) {
-    // echo $file . "<br>";
-    require_once($file);
+    try {
+        require_once($file);
+    } catch (Exception $e) {
+        $missingFiles[] = $file;
+    }
 }
+
+
+
 require_once(CERES_ROOT_DIR . '/data/ceres_settings.php');
 require_once(CERES_ROOT_DIR . '/devscraps/ceres_utility_functions.php');
-

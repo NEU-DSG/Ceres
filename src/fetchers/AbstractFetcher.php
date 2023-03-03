@@ -4,7 +4,9 @@ namespace Ceres\Fetcher;
 
 abstract class AbstractFetcher {
 
-  protected $endpoint;
+  protected string $endpoint;
+
+  protected string $method = 'GET'; //usually GET, sometime POST. Others unimplemented
 
   /**
    * refers to additional URL path options, generally for a RESTful API pattern
@@ -109,25 +111,38 @@ abstract class AbstractFetcher {
    */
 
   public function fetchData($url = null, $returnWithoutSetting = false) {
-    if (is_null($url)) {
-      $url = $this->buildQueryString();
-    }
     
     $ch = curl_init();
+    
+    switch ($this->method) {
+        case 'GET':
+            if (is_null($url)) {
+                $url = $this->buildQueryString(); // build entire URL, including params as part of it
+            }
+            curl_setopt($ch, CURLOPT_HTTPGET, true);
+        break;
+        case 'POST':
+            curl_setopt($ch, CURLOPT_POST, true);
+            $postFields = $this->buildQueryString();
+        break;
+        default:
+
+        break;
+
+    }
+
+
     curl_setopt($ch, CURLOPT_URL, $url);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
     curl_setopt($ch, CURLOPT_HEADER, true);
     curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 10);
     curl_setopt($ch, CURLOPT_FAILONERROR, false);
+    curl_setopt($ch, CURLOPT_USERAGENT, "CERES/develop p.murray-john@northeastern.edu");
     $rawResponse = curl_exec($ch);
-    // @TODO:  when we're up to PHP > 5.5, CURLINFO_HTTP_CODE should be CURLINFO_RESPONSE_CODE
-    //$responseStatus = curl_getinfo($ch, CURLINFO_HTTP_CODE);
     $responseStatus = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
-    //fallback for PHP < 5.5
-    // @TODO remove this once our servers are upgraded, so we can keep using modern(ish) PHP practices
     if (! $responseStatus) {
-      $responseStatusArray = curl_getinfo($ch);
-      $responseStatus = $responseStatusArray['http_code'];
+        $responseStatusArray = curl_getinfo($ch);
+        $responseStatus = $responseStatusArray['http_code'];
     }
     
     
@@ -137,23 +152,34 @@ abstract class AbstractFetcher {
     $responseBody = substr($rawResponse, $header_len);
     // end shenanigans 
     
+    $output = $responseBody;
     switch ($responseStatus) {
-      case 200:
-        $output = $responseBody;
-        $statusMessage = 'OK';
-        break;
-      case 404:
-        $output = 'The resource was not found.';
-        $statusMessage = 'Not Found';
-        break;
-      case 302:
-        $output = $responseBody;
-        $statusMessage = 'The resource has moved or is no longer available';
-        break;
-      default:
-        $output = 'An unknown error occured.' . $responseStatus;
-        $statusMessage = 'An unkown error occured. Please try again';
-        break;
+        case 200:
+            $output = $responseBody;
+            $statusMessage = 'OK';
+            break;
+        case 403:
+            $output = "Forbidden -- is access correct?";
+            $statusMessage = 'Forbidden';
+            break;
+        case 404:
+            $output = 'The resource was not found.';
+            $statusMessage = 'Not Found';
+            break;
+        case 302:
+            $output = $responseBody;
+            $statusMessage = 'The resource has moved or is no longer available';
+            break;
+
+        case 400:
+            $output = $responseBody;
+            $statusMessage = 'Bad Request (no biscuit!)';
+
+            break;
+        default:
+            $output = 'An unknown error occured.' . $responseStatus;
+            $statusMessage = 'An unkown error occured. Please try again';
+            break;
     }
     $responseData = array(
         'status' => $responseStatus,

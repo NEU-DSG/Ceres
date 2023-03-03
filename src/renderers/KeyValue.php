@@ -2,6 +2,8 @@
 namespace Ceres\Renderer;
 
 use Ceres\Renderer\Html;
+use Ceres\Util\DataUtilities as DataUtil;
+use Ceres\Util\StringUtilities as StringUtil;
 
 
 class KeyValue extends Html {

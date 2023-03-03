@@ -705,11 +705,40 @@ function getOptionsValues() {
                 'tabular_dev_test' => 'ceres-dev ceres-tr',
             ]
         ],
-
+        'theadClass' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => 'ceres-thead',
+                'projectName' => '',
+                'html_dev_test' => 'ceres-td ceres-test',
+                'viewPackageName' => '',
+                'tabular_dev_test' => 'ceres-dev ceres-td',
+            ]
+        ],
+        'captionClass' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => 'ceres-caption',
+                'projectName' => '',
+                'html_dev_test' => 'ceres-td ceres-test',
+                'viewPackageName' => '',
+                'tabular_dev_test' => 'ceres-dev ceres-td',
+            ]
+        ],
         'tdClass' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => 'ceres-td',
+                'projectName' => '',
+                'html_dev_test' => 'ceres-td ceres-test',
+                'viewPackageName' => '',
+                'tabular_dev_test' => 'ceres-dev ceres-td',
+            ]
+        ],
+        'tableClass' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => 'ceres-table',
                 'projectName' => '',
                 'html_dev_test' => 'ceres-td ceres-test',
                 'viewPackageName' => '',
@@ -902,6 +931,14 @@ function getViewPackages() {
             'mediaLinkProp',
             'mediaUriProp',
 
+        ],
+        'tabular' => [
+            'tableClass',
+            'theadClass',
+            'tdClass',
+            'thClass',
+            'trClass',
+            'captionClass',
         ],
     ];
 

@@ -30,13 +30,13 @@ class Wdqs extends Sparql {
         //status digup from https://stackoverflow.com/questions/15620124/http-requests-with-file-get-contents-getting-the-response-code
         $status_line = $http_response_header[0];
         
-            preg_match('{HTTP\/\S*\s(\d{3})}', $status_line, $match);
-        
-            $status = $match[1];
-        
-            if ($status !== "200") {
-                throw new \RuntimeException("unexpected response status: {$status_line}\n" . $response);
-            }
+        preg_match('{HTTP\/\S*\s(\d{3})}', $status_line, $match);
+    
+        $status = $match[1];
+    
+        if ($status !== "200") {
+            throw new \RuntimeException("unexpected response status: {$status_line}\n" . $response);
+        }
         
         return $response;
 

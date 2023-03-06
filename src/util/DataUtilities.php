@@ -45,7 +45,6 @@ class DataUtilities {
 
     // $scope is ceres, {project_name}, {view_package_name}
     static function valueForOption(string $optionName, $scope = 'ceres') {
-        echo "<h3>$optionName, $scope</h3>";
 
         if(isset(self::$optionsValues[$optionName])) {
             $optionValues = self::$optionsValues[$optionName];
@@ -231,6 +230,8 @@ class DataUtilities {
 //save it all to a file in dev for now
             $optionDataJson = json_encode($wpOptionData);
             $fileName = CERES_ROOT_DIR . "/devscraps/data/$wpOptionName.json";
+            
+            file_put_contents($fileName, $optionDataJson);
             $fileName = CERES_ROOT_DIR . "/data/$wpOptionName.json";
             file_put_contents($fileName, $optionDataJson);
         }

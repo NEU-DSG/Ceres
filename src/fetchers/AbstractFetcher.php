@@ -6,6 +6,8 @@ abstract class AbstractFetcher {
 
   protected string $endpoint;
 
+  protected string $query;
+
   protected string $method = 'GET'; //usually GET, sometime POST. Others unimplemented
 
   /**

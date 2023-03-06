@@ -7,7 +7,8 @@ class Wdqs extends Sparql {
     protected string $endpoint = 'https://query.wikidata.org/sparql';
 
     public function __construct() {
-        
+        $file = CERES_ROOT_DIR . '/data/rqFiles/publicart/leaflet.rq';
+        $this->setQueryFromFile($file);
         parent::__construct();
     }
 
@@ -37,7 +38,6 @@ class Wdqs extends Sparql {
         if ($status !== "200") {
             throw new \RuntimeException("unexpected response status: {$status_line}\n" . $response);
         }
-        
         return $response;
 
     }
@@ -46,7 +46,8 @@ class Wdqs extends Sparql {
         $this->query = $query;
     }
 
-    public function setQueryFromFile(string $file):void {
+    public function setQueryFromFile(?string $file):void {
+        $file = CERES_ROOT_DIR . '/data/rqFiles/publicart/leaflet.rq';
         $this->query = file_get_contents($file);
     }
 }

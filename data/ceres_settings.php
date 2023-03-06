@@ -1103,15 +1103,15 @@ function getViewPackages() {
                             ],
                     ],
                 ],
-                "leaflet_wikidata_for_public_art_map" =>
+                "leaflet_wikidata_for_public_art_table" =>
                 [
                     'humanName' => "Table Wikidata for Public Art Map",
                     'description' => "Extract data from Wikidata for a map, but display as table.",
                     'parentViewPackage' => null,
                     'projectName' => null,
                     'renderer' => [
-                            'LeafletMap' => [
-                                'fullClassName' => 'Ceres\Renderer\LeafletMap',
+                            'Tabular' => [
+                                'fullClassName' => 'Ceres\Renderer\Tabular',
                                 'options' =>  //redundant, yes. but helps keep the same patter with fetchers and extractors
                                     array_merge(
                                         $rendererOptions['general'],
@@ -1129,7 +1129,8 @@ function getViewPackages() {
                                 'fullClassName' => 'Ceres\Fetcher\Wdqs',
                                 'options' => array_merge(
                                     $fetcherOptions['general'],
-                                    $fetcherOptions['wdqs']),
+                                    $fetcherOptions['wdqs'],
+                                ),
                             ]
                         ],
                         

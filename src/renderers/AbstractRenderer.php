@@ -41,7 +41,7 @@
     //the data coming from an Extractor to render
     protected array $dataToRender = [];
 
-    public function __construct(array $fetchers = [], array $extractors = [], $renderOptions = []) {
+    public function __construct(array $fetchers = [], array $extractors = [], $rendererOptions = []) {
       
       foreach ($fetchers as $classObj) {
         if (! is_a($classObj, 'Fetcher')) {
@@ -58,13 +58,13 @@
       }
 
       if (! empty($rendererOptions)) {
-        $this->setRendererOptions($renderOptions);
+        $this->setRendererOptions($rendererOptions);
       }
       
     }
 
 
-    public function setDataToRender(string $extractorName = null) {
+    public function setDataToRender(?string $extractorName) {
       if (is_null($extractorName)) {
           $allExtractors = array_values($this->extractors);
           $extractor = $allExtractors[0];
@@ -159,16 +159,25 @@
     }
 
     function injectFetcher($fetcher, $description = null) {
+      
+      //for if/when I have multiple fetchers
       $name = StrUtil::createNameIdForInstantiation($fetcher, $description);
       $name = StrUtil::uniquifyName($name, $this->fetchers );
-      $this->fetchers[$name] = $fetcher;
+      //$this->fetchers[$name] = $fetcher;
+
+
+      $this->fetchers[] = $fetcher;
       return $name;
     }
 
     public function injectExtractor($extractor, $description = null) {
+      
+      //for if/when I have multiple extractors
       $name = StrUtil::createNameIdForInstantiation($extractor, $description);
       $name = StrUtil::uniquifyName($name, $this->extractors );
-      $this->extractors[$name] = $extractor;
+      //$this->extractors[$name] = $extractor;
+
+      $this->extractors[] = $extractor;
       return $name;
     }
 

@@ -27,41 +27,34 @@ class Tabular extends Html {
         $this->appendToClass($this->containerNode, $this->getRendererOptionValue('tableClass'));
     }
 
-    public function setDataToRender(string $extractorName = null) {
-        //@todo what happens if row lengths don't match? something for extractor
-        //to throw something about?
-    
-        $dataToRender = [
-            ['Ambiguous Thing', 'Option 1', 'Option 2'],
-            ['Wednesday', 'day of the week', 'part of the Addams family'],
-            ['Thing', 'Scary beast from _The Thing_', 'part of the Addams family'],
-            ['Patrick', '2FP', '3FP'],
-        ];
-        $this->dataToRender['fakeExtractor'] = $dataToRender;
+    public function setDataToRender(?string $extractorName = null) {
+        //have this roll through the fetcher->fetchData --> $extractor->setSourceData() chain
+        $fetcher = $this->fetchers[0];
+        $extractor = $this->extractors[0];
+
+        $sourceData = $fetcher->fetchData();
+
+        $extractor->setSourceData($sourceData);
+        $extractor->extract();
+
+        $this->dataToRender = $extractor->getDataToRender();
     }
 
     public function build() {
-        foreach($this->dataToRender as $extractorName => $rowsData) {
-            //$firstRowIsHeader = $this->getRenderOptionValue('firstRowIsHeader');
-            $firstRowIsHeader = true;
+        $rowsData = $this->dataToRender; 
+        //$firstRowIsHeader = $this->getRenderOptionValue('firstRowIsHeader');
+        $firstRowIsHeader = true;
 
-            if ($firstRowIsHeader) {
-                $headerRowData = array_shift($rowsData);
-                $rowNode = $this->buildRow($headerRowData, 'th');
-                $this->theadNode->appendChild($rowNode);
-            }
-
-            foreach ($rowsData as $rowData) {
-                $row = $this->buildRow($rowData);
-                $this->tbodyNode->appendChild($row);      
-            }
-
+        if ($firstRowIsHeader) {
+            $headerRowData = array_shift($rowsData);
+            $rowNode = $this->buildRow($headerRowData, 'th');
+            $this->theadNode->appendChild($rowNode);
         }
-      /*
-        foreach ($this->extractors as $name=>$extractor) {
-          fire up extractor(s) to get what's needed
+
+        foreach ($rowsData as $rowData) {
+            $row = $this->buildRow($rowData);
+            $this->tbodyNode->appendChild($row);      
         }
-      */
     }
 
     public function buildRow($rowData, $cellElement = 'td') {

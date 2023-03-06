@@ -53,9 +53,6 @@ class StringUtilities {
         $shortName = $refClass->getShortName();
     
         $name = self::camelCaseToSnakeCase($shortName) . "_" . self::languageToSnakeCase($desc);
-        //echo $name;
-        //echo "$shortName \n $name";
-    
         //snake to language?
         return ucfirst(str_replace('_', ' ', $name));
     }

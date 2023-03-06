@@ -95,6 +95,7 @@ class ViewPackage {
 
     public function buildFetcher(string $shortName = null) {
         $data = $this->currentViewPackageData['fetchers'];
+
         if (empty($data)) {
             return null;
         }
@@ -108,11 +109,18 @@ class ViewPackage {
 
         foreach ($classInfo['options'] as $index => $optionName) {
             $optionValue = DataUtil::valueForOption($optionName, $this->nameId);
+            if ($optionName == 'queryFile') {
+                $queryFile = $optionValue;
+            }
             $classInfo['options'][$optionName] = $optionValue;
             unset($classInfo['options'][$index]);
         }
 
         $fetcher = new $className;
+
+        if (isset($queryFile)) {
+            $fetcher->setQueryFromFile($queryFile);
+        }
         return $fetcher;
     }
 

@@ -409,6 +409,16 @@ function getAllOptions() {
             'appliesTo' => 'fetchers', 
             
         ],
+        'queryFile' => [
+            'label'   => 'Query File',
+            'desc'    => 'A file with the query to send to the API',
+            'access' => ['coder'],
+            'type'    => 'text',
+            'defaults' => 'from $ceresOptionsValues array',
+            'notes' => "",
+            'appliesTo' => 'fetchers', 
+            
+        ],
     
         'endpoint' => [
             'label'   => 'Endpoint',
@@ -809,6 +819,15 @@ function getOptionsValues() {
                 'viewPackageName' => '',
             ]
         ],
+        'queryFile' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => 'no',
+                'projectName' => '',
+                'viewPackageName' => '',
+                'leaflet_wikidata_for_public_art_table' => CERES_ROOT_DIR . '/data/rqFiles/publicart/leaflet.rq'
+            ]
+        ],
         'fetcherGroupBy' => [
             'currentValue' => null,
             'defaults' => [
@@ -959,6 +978,7 @@ function getViewPackages() {
             'startPage',
             'resourceIds',
             'query',
+            'queryFile',
             'fetcherGroupBy', 
             'fetcherFilterBy',
             'fetcherSortBy',
@@ -968,7 +988,6 @@ function getViewPackages() {
         'wdqs' => [
             'endpoint',
             'responseFormat',
-            'rqFile',
 
         ],
         'drs' => [

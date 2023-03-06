@@ -7,8 +7,8 @@ class Wdqs extends Sparql {
     protected string $endpoint = 'https://query.wikidata.org/sparql';
 
     public function __construct() {
-        $file = CERES_ROOT_DIR . '/data/rqFiles/publicart/leaflet.rq';
-        $this->setQueryFromFile($file);
+        // $file = CERES_ROOT_DIR . '/data/rqFiles/publicart/leaflet.rq';
+        // $this->setQueryFromFile($file);
         parent::__construct();
     }
 
@@ -42,14 +42,13 @@ class Wdqs extends Sparql {
 
     }
 
-    public function setQuery(string $query):void {
-        $this->query = $query;
-    }
+    // public function setQuery(string $query):void {
+    //     $this->query = $query;
+    // }
 
-    public function setQueryFromFile(?string $file):void {
-        $file = CERES_ROOT_DIR . '/data/rqFiles/publicart/leaflet.rq';
-        $this->query = file_get_contents($file);
-    }
+    // public function setQueryFromFile(?string $file):void {
+    //     $this->query = file_get_contents($file);
+    // }
 }
 
 

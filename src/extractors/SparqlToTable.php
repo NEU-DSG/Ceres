@@ -47,9 +47,6 @@ class SparqlToTable extends AbstractSparqlExtractor {
             $dataToRender[] = $bindingVals;
             $bindingVals = [];
         }
-        // echo "<h3>sparqlToTable, 50</h3>";
-        // print_r($dataToRender);
-        // die();
 
         $this->dataToRender = $dataToRender;
     }

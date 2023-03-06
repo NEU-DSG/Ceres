@@ -271,6 +271,10 @@ abstract class AbstractFetcher {
     $this->fetcherOptions = $fetcherOptions;
   }
 
+  public function getFetcherOptions() {
+    return $this->fetcherOptions;
+  }
+
   public function getQueryOption($option) {
     return $this->queryOptions[$option];
   }

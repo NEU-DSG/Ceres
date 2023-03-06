@@ -19,7 +19,6 @@ abstract class AbstractExtractor {
      */
     protected array $sourceData = array();
 
-
     public function __construct() {
         
     }
@@ -43,6 +42,7 @@ abstract class AbstractExtractor {
     public function setOptionValue(string $optionName, string $optionValue) {
         $this->extractorOptions[$optionName] = $optionValue;
     }
+
 }
 
 

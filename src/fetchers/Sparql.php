@@ -258,4 +258,6 @@ class Sparql extends AbstractFetcher {
             $serviceClauses .= "SERVICE $clause \r\n";
         }
     }
+
+    
 }

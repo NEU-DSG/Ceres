@@ -290,4 +290,14 @@ abstract class AbstractFetcher {
   public function getPageCount() {
     return $this->pageCount;
   }
+
+
+  public function setQuery(string $query):void {
+    $this->query = $query;
+  }
+
+  public function setQueryFromFile(?string $file):void {
+    $this->query = file_get_contents($file);
+  }
+
 }

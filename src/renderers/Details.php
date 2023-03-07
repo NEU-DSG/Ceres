@@ -4,8 +4,8 @@ namespace Ceres\Renderer;
 
 use Ceres\Renderer\Html;
 
-require_once('/var/www/html/Ceres/src/renderers/Html.php');
-
+// require_once('/var/www/html/Ceres/src/renderers/Html.php');
+require_once(CERES_ROOT_DIR . '/src/renderers/Html.php');
 class Details extends Html {
 
     protected string $templateFileName = 'details.html';

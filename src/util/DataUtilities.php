@@ -186,7 +186,8 @@ class DataUtilities {
 
     static function getWpOption(string $wpOptionName) {
         self::setData();
-        if (function_exists('get_option')) {
+
+        if (function_exists('get_option') && get_option($wpOptionName) ) {
             return get_option($wpOptionName);
         } else {
             //save it all to a file in dev for now
@@ -250,14 +251,22 @@ class DataUtilities {
         // self::$allOptions = get_option('ceres_all_options');
         // self::$optionValues = get_option('ceres_option_values');
 
+        self::$viewPackages = json_decode(file_get_contents(CERES_ROOT_DIR . '/data/ceres_view_packages.json'), true);
+        self::$allOptions = json_decode(file_get_contents(CERES_ROOT_DIR . '/data/ceres_all_options.json'), true);
+        self::$optionsValues = json_decode(file_get_contents(CERES_ROOT_DIR . '/data/ceres_options_values.json'), true);
+        self::$propertyLabels = json_decode(file_get_contents(CERES_ROOT_DIR . '/data/ceres_property_labels.json'), true);
+        self::$optionsEnums = json_decode(file_get_contents(CERES_ROOT_DIR . '/data/ceres_options_enums.json'), true);
+        self::$currentValues = json_decode(file_get_contents(CERES_ROOT_DIR . '/data/ceres_current_values.json'), true);
+
+
 //for dev/testing
 
-        self::$viewPackages = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_view_packages.json'), true);
-        self::$allOptions = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_all_options.json'), true);
-        self::$optionsValues = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_options_values.json'), true);
-        self::$propertyLabels = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_property_labels.json'), true);
-        self::$optionsEnums = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_options_enums.json'), true);
-        self::$currentValues = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_current_values.json'), true);
+        // self::$viewPackages = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_view_packages.json'), true);
+        // self::$allOptions = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_all_options.json'), true);
+        // self::$optionsValues = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_options_values.json'), true);
+        // self::$propertyLabels = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_property_labels.json'), true);
+        // self::$optionsEnums = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_options_enums.json'), true);
+        // self::$currentValues = json_decode(file_get_contents(CERES_ROOT_DIR . '/devscraps/data/ceres_current_values.json'), true);
 
         // self::$viewPackages = Config\getViewPackages();
         // self::$allOptions = Config\getAllOptions();

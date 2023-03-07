@@ -6,12 +6,11 @@ use Ceres\Renderer\AbstractRenderer;
 //use Ceres\Renderer\Html;
 use Ceres\Exception\CeresException;
 
-require_once('/var/www/html/Ceres/src/renderers/Html.php');
+require_once( CERES_ROOT_DIR . '/src/renderers/Html.php');
 
 class Exception extends Html {
 
     public function render() {
-        $this->html .= "Booooo. :(";
-    
+
     }
 }

@@ -295,7 +295,9 @@ abstract class AbstractFetcher {
     return $this->pageCount;
   }
 
-
+  public function setEndpoint(string $endpointURL) {
+    $this->endpoint = $endpointURL;
+  }
   public function setQuery(string $query):void {
     $this->query = $query;
   }

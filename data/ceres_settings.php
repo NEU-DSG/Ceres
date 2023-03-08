@@ -348,6 +348,15 @@ function getAllOptions() {
             'appliesTo' => 'renderers', 
             
         ],
+        'firstRowIsHeader' => [
+            'label'   => 'First table row is a header',
+            'desc'    => 'Treat the first row of data as a table header data',
+            'access' => ['projectOwner', 'coder'],
+            'type'    => 'bool',
+            'defaults' => 'from $ceresOptionsValues array',
+            'notes' => "",
+            'appliesTo' => 'renderers', 
+        ],
     
         'getAll' => [
             'label'   => 'Get All',
@@ -822,10 +831,19 @@ function getOptionsValues() {
         'queryFile' => [
             'currentValue' => null,
             'defaults' => [
-                'ceres' => 'no',
+                'ceres' => '',
                 'projectName' => '',
                 'viewPackageName' => '',
                 'leaflet_wikidata_for_public_art_table' => CERES_ROOT_DIR . '/data/rqFiles/publicart/leaflet.rq'
+            ]
+        ],
+        'firstRowIsHeader' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                'projectName' => '',
+                'viewPackageName' => '',
+                'leaflet_wikidata_for_public_art_table' => true
             ]
         ],
         'fetcherGroupBy' => [
@@ -1018,6 +1036,7 @@ function getViewPackages() {
             'tdClass',
             'trClass',
             'theadClass',
+            'firstRowIsHeader',
             'caption',
         ],
 

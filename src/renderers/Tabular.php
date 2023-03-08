@@ -42,8 +42,8 @@ class Tabular extends Html {
 
     public function build() {
         $rowsData = $this->dataToRender; 
-        //$firstRowIsHeader = $this->getRenderOptionValue('firstRowIsHeader');
-        $firstRowIsHeader = true;
+        $firstRowIsHeader = $this->getRendererOptionValue('firstRowIsHeader');
+        //$firstRowIsHeader = true;
 
         if ($firstRowIsHeader) {
             $headerRowData = array_shift($rowsData);

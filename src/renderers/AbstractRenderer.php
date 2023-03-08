@@ -62,7 +62,17 @@
       }
       
     }
-
+/**
+ * Undocumented function
+ *
+ * Expects a text file with a serialize php array
+ * 
+ * @param string $fileName
+ * @return void
+ */
+    public function setDataToRenderFromFile(string $fileName) {
+      $this->dataToRender = unserialize(file_get_contents($fileName));
+    }
 
     public function setDataToRender(?string $extractorName) {
       if (is_null($extractorName)) {

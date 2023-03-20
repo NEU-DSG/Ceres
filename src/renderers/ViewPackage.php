@@ -74,8 +74,8 @@ class ViewPackage extends Html {
         $detailsNodeRenderer = $this->buildDetailsNode($rendererData);
 
         $detailsNodeVp->appendChild($detailsNodeRenderer);
-        $this->containerElement->appendChild($detailsNodeVp);
-        //$this->containerElement->appendChild($detailsNodeRenderer);
+        $this->containerNode->appendChild($detailsNodeVp);
+        $this->containerNode->appendChild($detailsNodeRenderer);
         $detailsNodeVp->appendChild($detailsNodeRenderer);
 
     }
@@ -110,7 +110,7 @@ class ViewPackage extends Html {
                         $subValue = DataUtil::valueForOption($subOption, $this->viewPackageName);
                         $optionDescription = DataUtil::descriptionForOption($subOption);
                         $optionType = DataUtil::typeForOption($subOption);
-                        $accessValues = DataUtil::accessValuesForOption($subOption);
+                        //$accessValues = DataUtil::accessValuesForOption($subOption);
 
                         if ($optionType == 'enum') {
                             $enumOptions = DataUtil::enumValuesForOption($subOption);
@@ -149,7 +149,7 @@ class ViewPackage extends Html {
 
                         //$this->appendTextNode($ddNodeAccess, "Access:");
                         $ddNodeAccess->appendChild($this->textToHeading('Access', 'h4'));
-                        $ddNodeAccess->appendChild($this->arrayToUl($accessValues));
+                        //$ddNodeAccess->appendChild($this->arrayToUl($accessValues));
                         
                         $ddNodeValue->appendChild($this->textToHeading('Applied Value', 'h4'));
                         $this->appendTextNode($ddNodeValue, $subValue);

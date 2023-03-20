@@ -125,10 +125,10 @@ async function fetchBindingsJSON(url) {
 
 // Then promise after fetching the data from the wikidata website.
 fetchBindingsJSON(url).then(response => {
-    if (false) { //@todo devugging to mimic api fail/no data
-   // if (response && response["results"] && response["results"]["bindings"]) {
+    if (false) { // @TODO devugging to mimic api fail/no data
+    //if (response && response["results"] && response["results"]["bindings"]) {
         bindings = reformatThebindings(response["results"]["bindings"]);
-        generateMarkersOnMap(Object.assign([], bindings));
+        generateMarkersOnMap(Object.assign([], bindings)); // @TODO move to f/e/r
     }
     }).catch(err => {
         console.log("Some error happened with the api", err);
@@ -136,14 +136,22 @@ fetchBindingsJSON(url).then(response => {
 
 /***
  * Reformats the bindings to the simplified json structure.
+ * objValue comes in from sparql as {type: 'literal', value: 'a string value' }
+ * the reformatting flattens to just the value, the if always evaling to true
+ * see #26
  */
 function reformatThebindings(newBindings) {
     var finalBindings = [];
     for (const binding of newBindings) {
         var bindingObj = {};
         for (const [key, objValue] of Object.entries(binding)) {
+            
             if (objValue["value"] || objValue["value"] === "") {
                 bindingObj[key] = objValue["value"];
+                //console.log('in if l 148');
+            } else {
+                console.log(objValue);
+                console.log('in else 148');
             }
         }
         finalBindings.push(bindingObj)
@@ -173,7 +181,7 @@ var markers = L.markerClusterGroup({
 // wkt string literal parser.
 var wkt = new Wkt.Wkt();
 var myIcon = L.icon({
-    iconUrl: '../../assets/images/brc/marker-icon-blue.png',
+    iconUrl: '../assets/images/brc/marker-icon-blue.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [0, -35],
@@ -472,7 +480,11 @@ function generateMarkersOnMap(jsonData) {
 
     // generating html for the filters neighborhood section.
     neighborhoods.forEach((count, neighborhood) => {
+        const ndashEntity = "–";
+        console.log(neighborhood);
         var id = neighborhood.replace("; ", "-");
+        id = id.replace('&ndash;', ndashEntity); // see #27
+        console.log(id);
         if (!document.getElementById(id)) {
             var htmlString = "<div class = 'list-item'> <input type = 'checkbox' id = '" +
                 id + "' name='" + id + "'" + "checked>" + "<label for = '" + id + "'> " + neighborhood + " (" + count + ")" + "</label></div>";

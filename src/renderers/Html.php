@@ -61,7 +61,7 @@ class Html extends AbstractRenderer {
         return $aElement;
         }
   
-    public function toHtmlString($node = null) : string {
+    public function toHtmlString(?DOMElement $node = null) : string {
         if (is_null($node)) {
             $node = $this->containerNode;
         }

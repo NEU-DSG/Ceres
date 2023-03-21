@@ -124,11 +124,12 @@ async function fetchBindingsJSON(url) {
 }
 
 // Then promise after fetching the data from the wikidata website.
+//@todo move to f/e/r
 fetchBindingsJSON(url).then(response => {
-    if (false) { // @TODO devugging to mimic api fail/no data
-    //if (response && response["results"] && response["results"]["bindings"]) {
+    //if (false) { // @TODO devugging to mimic api fail/no data
+    if (response && response["results"] && response["results"]["bindings"]) {
         bindings = reformatThebindings(response["results"]["bindings"]);
-        generateMarkersOnMap(Object.assign([], bindings)); // @TODO move to f/e/r
+        generateMarkersOnMap(Object.assign([], bindings));
     }
     }).catch(err => {
         console.log("Some error happened with the api", err);
@@ -481,10 +482,8 @@ function generateMarkersOnMap(jsonData) {
     // generating html for the filters neighborhood section.
     neighborhoods.forEach((count, neighborhood) => {
         const ndashEntity = "–";
-        console.log(neighborhood);
         var id = neighborhood.replace("; ", "-");
-        id = id.replace('&ndash;', ndashEntity); // see #27
-        console.log(id);
+        id = id.replace('&ndash;', ndashEntity); // @todo see #27
         if (!document.getElementById(id)) {
             var htmlString = "<div class = 'list-item'> <input type = 'checkbox' id = '" +
                 id + "' name='" + id + "'" + "checked>" + "<label for = '" + id + "'> " + neighborhood + " (" + count + ")" + "</label></div>";

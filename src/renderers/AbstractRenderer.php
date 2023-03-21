@@ -41,6 +41,8 @@
     //the data coming from an Extractor to render
     protected array $dataToRender = [];
 
+    protected string $jsonToInject = '';
+
     public function __construct(array $fetchers = [], array $extractors = [], $rendererOptions = []) {
       
       foreach ($fetchers as $classObj) {
@@ -63,15 +65,25 @@
       
     }
 /**
- * Undocumented function
+ * setDataToRenderFromFile
  *
- * Expects a text file with a serialize php array
+ * Expects a text file with a serialized php array or json string
  * 
  * @param string $fileName
  * @return void
  */
     public function setDataToRenderFromFile(string $fileName) {
-      $this->dataToRender = unserialize(file_get_contents($fileName));
+        $this->dataToRender = unserialize(file_get_contents($fileName));
+    }
+
+    public function setJsonToInjectFromFile(string $fileName, bool $decodeJson = false) {
+        $jsonToRender = file_get_contents($fileName);
+        if ($decodeJson) {
+            $this->jsonToInject = json_decode($jsonToRender, true);
+        } else {
+            $this->jsonToInject = $jsonToRender;
+        }
+        //$this->dataToRender = unserialize(file_get_contents($fileName));
     }
 
     public function setDataToRender(?string $extractorName) {
@@ -86,7 +98,7 @@
 
     /* enqueing will have to figure out how to stuff styles and scripts in early in WP rendering.
     Might have to go elsewhere */
-
+    // @todo move these to WP-specific in an adapter?
     protected function enqueStyles() {
 
     }

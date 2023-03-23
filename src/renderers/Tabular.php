@@ -27,7 +27,7 @@ class Tabular extends Html {
         $this->appendToClass($this->containerNode, $this->getRendererOptionValue('tableClass'));
     }
 
-    public function setDataToRender(?string $extractorName = null) {
+    public function setDataToRender(?string $extractorName = null): void {
         //have this roll through the fetcher->fetchData --> $extractor->setSourceData() chain
         $fetcher = $this->fetchers[0];
         $extractor = $this->extractors[0];

@@ -57,6 +57,4 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
     protected function setBindings():void {
         $this->bindings = $this->sourceData['results']['bindings'];
     }
-
-
 }

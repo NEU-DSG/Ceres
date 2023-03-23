@@ -83,18 +83,45 @@
         } else {
             $this->jsonToInject = $jsonToRender;
         }
-        //$this->dataToRender = unserialize(file_get_contents($fileName));
     }
 
-    public function setDataToRender(?string $extractorName) {
-      if (is_null($extractorName)) {
-          $allExtractors = array_values($this->extractors);
-          $extractor = $allExtractors[0];
-      } else {
-          $extractor = $this->extractors[$extractorName];
-      }
-      $this->dataToRender = $extractor->getDataToRender();
+    public function setJsonToInject(?string $extractorName) {
+        if (is_null($extractorName)) {
+            $allExtractors = array_values($this->extractors);
+            $extractor = $allExtractors[0];
+        } else {
+            $extractor = $this->extractors[$extractorName];
+        }
+
+        $this->jsonToInject = $extractor->getJsonToInject();
     }
+
+    public function setDataToRenderFromFetcher(?string $fetcherName = null): void {
+        if (is_null($fetcherName)) {
+            $allFetchers = array_values($this->fetchers);
+            $fetcher = $allFetchers[0];
+        } else {
+            $fetcher = $this->fetchers[$fetcherName];
+        }
+        $this->dataToRender = $fetcher->getResponseData();
+
+    }
+
+    public function setDataToRender(?string $extractorName = null): void {
+        if ($this->getRendererOptionValue('bounceBack')) {
+            $this->setDataToRenderFromFetcher();
+            return;
+        }
+        if (is_null($extractorName)) {
+            $allExtractors = array_values($this->extractors);
+            $extractor = $allExtractors[0];
+        } else {
+            $extractor = $this->extractors[$extractorName];
+        }
+        $this->dataToRender = $extractor->getDataToRender();
+    }
+
+
 
     /* enqueing will have to figure out how to stuff styles and scripts in early in WP rendering.
     Might have to go elsewhere */

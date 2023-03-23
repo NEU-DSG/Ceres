@@ -70,26 +70,26 @@ class Sparql extends AbstractFetcher {
         parent::__construct();
     }
 
-        // abstract override
-        public function buildQueryString($queryOptions = false, $queryParams = false) {
-        }
+    // abstract override
+    public function buildQueryString($queryOptions = false, $queryParams = false) {
+    }
+
+    public function setPaginationData() {
+    }
+
+    public function getItemDataById($itemId) {
+    }
+
+    public function parseItemsData() {
+    }
     
-        public function setPaginationData() {
-        }
-    
-        public function getItemDataById($itemId) {
-        }
-    
-        public function parseItemsData() {
-        }
-        
-        public function fetchPage(int $pageNumber) {
-        }
-    
-        public function getPageUrl(int $pageNumber) {
-        }
-    
-        // end abstract override
+    public function fetchPage(int $pageNumber) {
+    }
+
+    public function getPageUrl(int $pageNumber) {
+    }
+
+    // end abstract override
     
 
     public function addPrefixes(array $prefixes) {

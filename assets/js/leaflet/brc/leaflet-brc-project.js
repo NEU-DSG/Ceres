@@ -182,7 +182,7 @@ var markers = L.markerClusterGroup({
 // wkt string literal parser.
 var wkt = new Wkt.Wkt();
 var myIcon = L.icon({
-    iconUrl: '../assets/images/brc/marker-icon-blue.png',
+    iconUrl: '../wp-content/plugins/drs-tk/libraries/Ceres/assets/images/brc/marker-icon-blue.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [0, -35],

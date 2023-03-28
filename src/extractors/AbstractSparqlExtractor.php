@@ -42,9 +42,11 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
 
     public function setSourceData($sourceData):void {
         if (is_string($sourceData)) {
+
             $sourceData = json_decode($sourceData, true);
+
+
         }
-        
         $this->sourceData = $sourceData;
         $this->setVars();
         $this->setBindings();

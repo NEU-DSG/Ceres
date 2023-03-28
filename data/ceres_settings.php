@@ -538,7 +538,9 @@ function getOptionsValues() {
                 'ceres' => '',
                 '$projectName' => '',
                 '$viewPackageName' => '',
-                'leaflet_wikidata_for_public_art_map' => CERES_ROOT_DIR . "/data/rqfiles/publicart/leaflet.rq",
+                'leaflet_wikidata_for_public_art_map' => CERES_ROOT_DIR . "/data/rqFiles/publicart/leaflet.rq",
+                'tabular_wikibase_for_chinatown_people' => CERES_ROOT_DIR  . "/data/rqFiles/chinatown/en/people.rq",
+                'tabular_wikibase_for_chinatown_maintainers' => CERES_ROOT_DIR . "/data/rqFiles/chinatown/en/maintainers.rq",
             ]
         ],
         'caption' => [
@@ -782,8 +784,12 @@ function getOptionsValues() {
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '?projectName' => '',
+                '?viewPackageName' => '',
+                'tabular_wikibase_for_chinatown_maintainers' => 'http://ec2-34-227-69-60.compute-1.amazonaws.com:8834/proxy/wdqs/bigdata/namespace/wdq/sparql',
+                'leaflet_wikidata_for_public_art_table' => 'https://query.wikidata.org/sparql',
+                'leaflet_wikidata_for_public_art_map' => 'https://query.wikidata.org/sparql',
+
             ]
         ],
         'fetcherMetadataToShow' => [
@@ -1076,6 +1082,147 @@ function getViewPackages() {
 
 
     $ceresViewPackages = [
+// @todo following few VP should really be properly put into a better optionsValues system
+// hackery around this from OptionsValues. stop when you get to 'tabular_wikibase_for_chinatown'
+// alternatively, the prophesized parentViewPackage system
+
+
+// 'fileForQuery' => [
+//     'currentValue' => null,
+//     'defaults' => [
+//         'ceres' => '',
+//         '$projectName' => '',
+//         '$viewPackageName' => '',
+//         'leaflet_wikidata_for_public_art_map' => CERES_ROOT_DIR . "/data/rqfiles/publicart/leaflet.rq",
+//         'tabular_wikibase_for_chinatown_people' => CERES_ROOT_DIR  . "/data/rqFiles/chinatown/en/people.rq",
+//         'tabular_wikibase_for_chinatown_maintainers' => CERES_ROOT_DIR . "/data/rqFiles/chinatown/en/maintainers.rq",
+//     ]
+// ],
+
+    "tabular_wikibase_for_chinatown_people" => [
+        'humanName' => "Tabular data from NU's WikiBase for chinatown info",
+        'description' => "Builds tables of data for what's in our WikiBase",
+        'parentViewPackage' => null,
+        'projectName' => null,
+        
+        'renderer' => [
+            'Tabular' => [
+                'fullClassName' => 'Ceres\Renderer\Tabular',
+                'options' =>  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                    array_merge(
+                        $rendererOptions['general'],
+                        $rendererOptions['tabular']
+                    )
+                    //after deduping options in the merge,
+                    // stuff in the current values
+
+            ],
+        ],
+
+        'fetchers' => [            
+            'Wdqs' => [
+                'fullClassName' => 'Ceres\Fetcher\Wdqs',
+                'options' => array_merge(
+                    $fetcherOptions['general'],
+                    $fetcherOptions['wdqs']),
+            ]
+        ],
+
+        'extractors' => [
+            'WdqsToTabular' => [
+                'fullClassName' => 'Ceres\Extractor\SparqlToTable',
+                'options' => array_merge(
+                    $extractorOptions['general'],
+                    $extractorOptions['tabular']),
+                ],
+        ],
+    ],
+
+
+    "tabular_wikibase_for_chinatown_maintainers" => [
+        'humanName' => "Tabular data from NU's WikiBase for chinatown info",
+        'description' => "Builds tables of data for what's in our WikiBase",
+        'parentViewPackage' => null,
+        'projectName' => null,
+        
+        'renderer' => [
+            'Tabular' => [
+                'fullClassName' => 'Ceres\Renderer\Tabular',
+                'options' =>  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                    array_merge(
+                        $rendererOptions['general'],
+                        $rendererOptions['tabular']
+                    )
+                    //after deduping options in the merge,
+                    // stuff in the current values
+
+            ],
+        ],
+
+        'fetchers' => [            
+            'Wdqs' => [
+                'fullClassName' => 'Ceres\Fetcher\Wdqs',
+                'options' => array_merge(
+                    $fetcherOptions['general'],
+                    $fetcherOptions['wdqs']),
+            ]
+        ],
+
+        'extractors' => [
+            'WdqsToTabular' => [
+                'fullClassName' => 'Ceres\Extractor\SparqlToTable',
+                'options' => array_merge(
+                    $extractorOptions['general'],
+                    $extractorOptions['tabular']),
+                ],
+        ],
+    ],
+
+
+
+
+
+
+
+        "tabular_wikibase_for_chinatown" => [
+            'humanName' => "Tabular data from NU's WikiBase for chinatown info",
+            'description' => "Builds tables of data for what's in our WikiBase",
+            'parentViewPackage' => null,
+            'projectName' => null,
+            
+            'renderer' => [
+                'Tabular' => [
+                    'fullClassName' => 'Ceres\Renderer\Tabular',
+                    'options' =>  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                        array_merge(
+                            $rendererOptions['general'],
+                            $rendererOptions['tabular']
+                        )
+                        //after deduping options in the merge,
+                        // stuff in the current values
+
+                ],
+            ],
+
+            'fetchers' => [            
+                'Wdqs' => [
+                    'fullClassName' => 'Ceres\Fetcher\Wdqs',
+                    'options' => array_merge(
+                        $fetcherOptions['general'],
+                        $fetcherOptions['wdqs']),
+                ]
+            ],
+
+            'extractors' => [
+                'WdqsToTabular' => [
+                    'fullClassName' => 'Ceres\Extractor\SparqlToTable',
+                    'options' => array_merge(
+                        $extractorOptions['general'],
+                        $extractorOptions['tabular']),
+                    ],
+            ],
+        ],
+
         "tabular_wikidata_for_short_metadata" =>
                 [
                 'humanName' => "Tabular Wikidata For Short Metadata",

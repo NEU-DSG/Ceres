@@ -4,7 +4,7 @@
 
     abstract class AbstractFetcher {
 
-    protected string $endpoint;
+    protected ?string $endpoint = '';
 
     protected string $query;
 

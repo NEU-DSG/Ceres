@@ -109,8 +109,8 @@ class ViewPackage {
 
         foreach ($classInfo['options'] as $index => $optionName) {
             $optionValue = DataUtil::valueForOption($optionName, $this->nameId);
-            if ($optionName == 'queryFile') {
-                $queryFile = $optionValue;
+            if ($optionName == 'fileForQuery') {
+                $fileForQuery = $optionValue;
             }
             $classInfo['options'][$optionName] = $optionValue;
             unset($classInfo['options'][$index]);
@@ -118,8 +118,8 @@ class ViewPackage {
 
         $fetcher = new $className;
 
-        if (isset($queryFile)) {
-            $fetcher->setQueryFromFile($queryFile);
+        if (isset($fileForQuery)) {
+            $fetcher->setQueryFromFile($fileForQuery);
         }
         return $fetcher;
     }

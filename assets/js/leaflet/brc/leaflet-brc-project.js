@@ -1,3 +1,7 @@
+jQuery(function() {
+
+
+
 /**
  * This document example-filtering.js contains code related to the mapping the point 
  * in for the sample json data which is available in the file path 'res/data/query.json'.
@@ -50,7 +54,7 @@ var geolet = L.geolet({
     enableHighAccuracy: true
 }).addTo(map);
 
-
+/*
 
 const sparqlQuery = `select distinct ?work ?workDescription ?workLabel ?coords ?address
 (group_concat(distinct ?workAlias; separator="; ") as ?aliases)
@@ -96,23 +100,26 @@ where {
                           ?commemorates rdfs:label ?commemoratesLabel.
                          }
  } group by ?work ?workDescription ?workLabel ?coords ?address`
+*/
 
-// axios.get('https://query.wikidata.org/sparql', {
-//     params: {
-//       query: sparqlQuery
-//     },
-//     headers: {"content-type": "application/sparql-results+json;charset=utf-8"}
-//   }).then(response => {
-//         if(response && response.status == 200) {
-//             if(response.data && response["data"]["results"] && response["data"]["results"]["bindings"]) {
-//                 bindings = reformatThebindings(response["data"]["results"]["bindings"]);
-//                 console.log(bindings)
-//                 generateMarkersOnMap(Object.assign([],bindings));
-//             }
-//         }
-//   });
-
+/* axios.get('https://query.wikidata.org/sparql', {
+     params: {
+       query: sparqlQuery
+     },
+     headers: {"content-type": "application/sparql-results+json;charset=utf-8"}
+   }).then(response => {
+         if(response && response.status == 200) {
+             if(response.data && response["data"]["results"] && response["data"]["results"]["bindings"]) {
+                 bindings = reformatThebindings(response["data"]["results"]["bindings"]);
+                 console.log(bindings)
+                 generateMarkersOnMap(Object.assign([],bindings));
+             }
+         }
+   });
+*/
 // Fetch api request for getting the bindings from the wikidata website.
+
+  /*
 url = new URL("https://query.wikidata.org/sparql?format=json&")
 const params = new URLSearchParams();
 params.append('query', sparqlQuery);
@@ -134,6 +141,8 @@ fetchBindingsJSON(url).then(response => {
     }).catch(err => {
         console.log("Some error happened with the api", err);
 });
+
+*/
 
 /***
  * Reformats the bindings to the simplified json structure.
@@ -182,7 +191,8 @@ var markers = L.markerClusterGroup({
 // wkt string literal parser.
 var wkt = new Wkt.Wkt();
 var myIcon = L.icon({
-    iconUrl: '../wp-content/plugins/drs-tk/libraries/Ceres/assets/images/brc/marker-icon-blue.png',
+    //iconUrl: '../wp-content/plugins/drs-tk/libraries/Ceres/assets/images/brc/marker-icon-blue.png',
+    iconUrl: '../assets/images/brc/marker-icon-blue.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [0, -35],
@@ -987,3 +997,9 @@ function closeSidebar() {
     element.classList.remove("active-item");
     // activeContent.classList.remove("active-content");
 }
+
+bindings = reformatThebindings(response["results"]["bindings"]);
+
+generateMarkersOnMap(Object.assign([], bindings));
+
+});

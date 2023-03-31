@@ -23,7 +23,10 @@ class Wdqs extends Sparql {
     }
 
     public function getValueForFetcherOption($optionName) {
-        return $this->fetcherOptions[$optionName];
+        if (array_key_exists( $optionName, $this->fetcherOptions)) {
+            return $this->fetcherOptions[$optionName];
+        }
+        return false;
     }
 
     public function fetchData($url = null, $returnWithoutSetting = false) {

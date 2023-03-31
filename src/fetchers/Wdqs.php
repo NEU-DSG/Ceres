@@ -2,6 +2,8 @@
 
 namespace Ceres\Fetcher;
 
+use Ceres\Util\DataUtilities as DataUtil;
+
 class Wdqs extends Sparql {
 
     protected ?string $endpoint = 'http://ec2-34-227-69-60.compute-1.amazonaws.com:8834/proxy/wdqs/bigdata/namespace/wdq/sparql';
@@ -20,7 +22,27 @@ class Wdqs extends Sparql {
         
     }
 
+    public function getValueForFetcherOption($optionName) {
+        return $this->fetcherOptions[$optionName];
+    }
+
     public function fetchData($url = null, $returnWithoutSetting = false) {
+        //@todo fold this into the DataUtil optionValues array
+        $fetchLocalData = $this->getValueForFetcherOption('fetchLocalData');
+
+        if ($fetchLocalData) {
+            $jsonFilePath = $this->getValueForFetcherOption('localResponseDataPath');
+            $responseData = $this->fetchDataFromJsonFile($jsonFilePath);
+            if($returnWithoutSetting) {
+                return $responseData;
+            }
+            
+            $this->responseData = $responseData;
+            return null;
+            //@todo remove the repetition from the bottom of this function
+        }
+        
+        
         $opts = [
             'http' => [
                 'method' => 'GET',
@@ -33,6 +55,8 @@ class Wdqs extends Sparql {
         ];
         $context = stream_context_create($opts);
         $url = $this->endpoint . '?query=' . urlencode($this->query);
+
+
 //echo $url;
 //die();
 

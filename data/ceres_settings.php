@@ -35,6 +35,27 @@ function getCurrentValues() {
 
 function getAllOptions() {
     $ceresAllOptions = [
+        'fetchLocalData' => [
+            'label' => 'Use pre-saved local data from a Fetcher?',
+            'desc'    => 'Used on conjunction with `localResponseDataPath` to mimic a live query',
+            'access' => ['coder'],
+            'type'    => 'bool',
+            'defaults' => 'from $ceresOptionsValues array',
+            'notes' => "",
+            'appliesTo' => 'fetchers',
+        ],
+
+        'localResponseDataPath' => [
+            'label' => 'Path to a locally-saved copy of a Fetcher response',
+            'desc'    => 'Usually for testing/debugging, a path to a locally-saved Fetcher response',
+            'access' => ['coder'],
+            'type'    => 'string',
+            'defaults' => 'from $ceresOptionsValues array',
+            'notes' => "",
+            'appliesTo' => 'fetchers',
+
+        ],
+
         'bounceBack' => [
             'label' => 'Bounce data back',
             'desc'    => 'Bounce the data received back without further processing',
@@ -523,6 +544,23 @@ function getAllOptions() {
 
 function getOptionsValues() {
     $ceresOptionsValues = [
+        'fetchLocalData' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => false,
+            ]
+        ],
+
+        'localResponseDataPath' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
+                'leaflet_wikidata_for_public_art_map' => true,
+            ]
+        ],
+
         'bounceBack' => [
             'currentValue' => null,
             'defaults' => [
@@ -1021,6 +1059,8 @@ function getViewPackages() {
             'fetcherSortBy',
             'fetcherSortOrder',
             'fetcherSortByProperty',
+            'fetchLocalData',
+            'localResponseDataPath',
             
         ],
         'wdqs' => [

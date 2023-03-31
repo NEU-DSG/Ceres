@@ -40,6 +40,12 @@ class ViewPackage {
 
     public function build() {
         $this->buildRenderer();
+
+        //@todo shit. buildRenderer already has buildExtractor and
+        //buildFetcher inside it, so I'm redundant here
+        //
+        // what's the way, though, to build an e/f and have the renderer
+        // inject it into itself?
         $this->buildExtractor();
         $this->buildFetcher();
     }
@@ -106,35 +112,10 @@ class ViewPackage {
         }
         
         $className = $classInfo['fullClassName'];
-
-        foreach ($classInfo['options'] as $index => $optionName) {
-            $optionValue = DataUtil::valueForOption($optionName, $this->nameId);
-            if ($optionName == 'fileForQuery') {
-                $fileForQuery = $optionValue;
-            }
-            $classInfo['options'][$optionName] = $optionValue;
-            unset($classInfo['options'][$index]);
-        }
-
         $fetcher = new $className;
-
-        if (isset($fileForQuery)) {
-            $fetcher->setQueryFromFile($fileForQuery);
-        }
+        $fetcher->setScope($this->nameId);
+        $fetcher->setFetcherOptions($classInfo['options']);
         return $fetcher;
-    }
-
-    public function render() {
-        $this->renderer->render();
-    }
-
-    public function gatherData() {
-        $this->renderer->setDataToRender();
-    }
-
-
-    public function renderFullHtml() {
-        $this->renderer->renderFullHtml();
     }
 
     public function setNameId($humanName) {
@@ -184,6 +165,31 @@ class ViewPackage {
         }
         return $options;
     }
+
+    /* wrappers around Renderer methods */ 
+    
+    public function render() {
+        $this->renderer->render();
+    }
+
+    public function setFetcherQueryFromFile(?string $fetcherName = null, string $file) {
+        $fetcher = $this->renderer->getFetcher($fetcherName);
+        $fetcher->setQueryFromFile($file);
+    }
+
+    public function setFetcherOptionValue(?string $fetcherName = null, string $optionName, string $optionValue) {
+        $this->renderer->setFetcherOptionValue($fetcherName, $optionName, $optionValue);
+    }
+
+    public function gatherData() {
+        $this->renderer->setDataToRender();
+    }
+
+
+    public function renderFullHtml() {
+        $this->renderer->renderFullHtml();
+    }
+    /* end Renderer wrappers */
 
 /**
  * 

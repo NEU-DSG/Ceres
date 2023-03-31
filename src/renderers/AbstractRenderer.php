@@ -96,6 +96,7 @@
         $this->jsonToInject = $extractor->getJsonToInject();
     }
 
+    //@todo for the bounceback option
     public function setDataToRenderFromFetcher(?string $fetcherName = null): void {
         if (is_null($fetcherName)) {
             $allFetchers = array_values($this->fetchers);
@@ -105,6 +106,17 @@
         }
         $this->dataToRender = $fetcher->getResponseData();
 
+    }
+
+    //@todo this is newish, and needs to be used elsewhere w/in fcns
+    public function getFetcher(?string $fetcherName = null): object {
+        if (is_null($fetcherName)) {
+            $allFetchers = array_values($this->fetchers);
+            $fetcher = $allFetchers[0];
+        } else {
+            $fetcher = $this->fetchers[$fetcherName];
+        }
+        return $fetcher;
     }
 
     public function setDataToRender(?string $extractorName = null): void {
@@ -193,9 +205,9 @@
       
     }
 
-    public function setFetcherOptionValue(string $fetcherName, $optionName, $optionValue) {
-
-
+    public function setFetcherOptionValue(?string $fetcherName = null, $optionName, $optionValue) {
+        $fetcher = $this->getFetcher($fetcherName);
+        $fetcher->setFetcherOptionValue($optionName, $optionValue);
     }
 
     public function setExtractorOptionValue(string $extractorName, $optionName, $optionValue) {

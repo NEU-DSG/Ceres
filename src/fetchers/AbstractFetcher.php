@@ -2,9 +2,13 @@
 
     namespace Ceres\Fetcher;
 
+use Ceres\Util\DataUtilities;
+
     abstract class AbstractFetcher {
 
     protected ?string $endpoint = '';
+
+    protected string $scope = 'ceres';
 
     protected string $query;
 
@@ -109,6 +113,18 @@
     }
 
     /**
+     * fetchDataFromFile
+     *
+     * @param string $jsonFilePath
+     * @return void
+     */
+
+     //@todo needs an easy trigger for when to do this instead of an API req
+    public function fetchDataFromJsonFile(string $jsonFilePath) {
+        return file_get_contents($jsonFilePath);
+    }
+
+    /**
      * The params are to to bypass the usual class-based props, e.g. when needing to 
      * query just a snippet that diverges from the 'starting point' of the fetcher,
      * like DRS grabbing content_object data when looping through a search response
@@ -116,9 +132,19 @@
      * @param $url
      * @param boolean $returnWithoutSetting Just send back the data, but don't keep it in the prop
      */
-
     public function fetchData($url = null, $returnWithoutSetting = false) {
-        
+
+        if (DataUtilities::valueForOption('fetchLocalData', $this->scope)) {
+            $jsonFilePath = DataUtilities::valueForOption('localResponseDataPath', $this->scope);
+            $responseData = $this->fetchDataFromJsonFile($jsonFilePath);
+            if($returnWithoutSetting) {
+                return $responseData;
+            }
+            
+            $this->responseData = $responseData;
+            return null;
+            //@todo remove the repetition from the bottom of this function
+        }
         $ch = curl_init();
         
         switch ($this->method) {
@@ -198,7 +224,7 @@
         );
         
         if($returnWithoutSetting) {
-        return $responseData;
+            return $responseData;
         }
         
         $this->responseData = $responseData;
@@ -256,6 +282,10 @@
         return $this->queryParams[$param];
     }
 
+    public function setScope(string $scope):void {
+        $this->scope = $scope;
+    }
+
     public function setQueryOptions(array $queryOptions) {
         $this->queryOptions = $queryOptions;
     }
@@ -275,6 +305,16 @@
     public function setFetcherOptions(array $fetcherOptions) {
         $this->fetcherOptions = $fetcherOptions;
     }
+
+    //@todo another one to abstract across F/E/Rs, probably as a Trait
+    public function setFetcherOptionValue(string $optionName, string $optionValue, bool $asCurrentValue = false) {
+        if ($asCurrentValue) {
+            $this->fetcherOptions[$optionName]['currentValue'] = $optionValue;    
+        } else {
+            $this->fetcherOptions[$optionName] = $optionValue;
+        }
+    }
+
 
     public function getFetcherOptions() {
         return $this->fetcherOptions;
@@ -307,8 +347,13 @@
         $this->query = $query;
     }
 
-    public function setQueryFromFile(?string $file):void {
+    public function setQueryFromFile(string $file):void {
         $this->query = file_get_contents($file);
     }
+
+    public function setResponseDataFromFile(string $responseJsonFile) {
+        $this->responseData = file_get_contents($responseJsonFile);
+    }
+
 
 }

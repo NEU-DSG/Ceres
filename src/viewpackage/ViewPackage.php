@@ -181,8 +181,24 @@ class ViewPackage {
         $this->renderer->setFetcherOptionValue($fetcherName, $optionName, $optionValue);
     }
 
-    public function gatherData() {
-        $this->renderer->setDataToRender();
+    public function gatherData(?string $extractorName = null, ?string $pathToMockFetcherResponse = null,?string $pathToMockExtractorData = null) {   
+        // params for renderer->setDataToRender are:
+        // $renderer(<extractorName>, <pathToMockFetcherResponse>, <pathToMockExtractorData>)    )
+        // the variations are usually used for debugging or super-complicated combos
+        // the first sans params usually works
+        //@todo is the above true?
+
+        //@todo the logic here for the permutations needs some TLC, along with how Renderers deal with what they get
+        if (is_null($extractorName) 
+            && is_null($pathToMockExtractorData)
+            && is_null($pathToMockFetcherResponse)) {
+            $this->renderer->setDataToRender();
+        } else if (!is_null($pathToMockFetcherResponse)) {
+            $this->renderer->setDataToRender(null, $pathToMockFetcherResponse);
+        } else if (!is_null($pathToMockExtractorData)) {
+            $this->renderer->setDataToRender(null, null, $pathToMockExtractorData);
+        }
+
     }
 
 

@@ -3,7 +3,7 @@
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);
-define('CERES_ROOT_DIR', dirname(__DIR__, 1)); 
+//define('CERES_ROOT_DIR', dirname(__DIR__, 1)); 
 
 $files = glob(CERES_ROOT_DIR . '/src/*/*.php');
 $missingFiles = [];

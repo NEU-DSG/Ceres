@@ -27,17 +27,38 @@ class Tabular extends Html {
         $this->appendToClass($this->containerNode, $this->getRendererOptionValue('tableClass'));
     }
 
-    public function setDataToRender(?string $extractorName = null): void {
-        //have this roll through the fetcher->fetchData --> $extractor->setSourceData() chain
-        $fetcher = $this->fetchers[0];
-        $extractor = $this->extractors[0];
+    public function setDataToRender(?string $extractorName = null, ?string $pathToMockFetcherResponse = null, ?string $pathToMockExtractorData = null): void {
+        //@todo the logic throughout this needs some TLC
+        
+        if (is_null($extractorName) && is_null($pathToMockFetcherResponse) && is_null($pathToMockExtractorData)) {
+            //have this roll through the fetcher->fetchData --> $extractor->setSourceData() chain
+            $fetcher = $this->fetchers[0];
+            $extractor = $this->extractors[0];
 
-        $sourceData = $fetcher->fetchData();
+            $sourceData = $fetcher->fetchData();
 
-        $extractor->setSourceData($sourceData);
-        $extractor->extract();
+            $extractor->setSourceData($sourceData);
+            $extractor->extract();
 
-        $this->dataToRender = $extractor->getDataToRender();
+            $this->dataToRender = $extractor->getDataToRender();
+        } else if (! is_null($pathToMockFetcherResponse)) {
+            $extractor = $this->extractors[0];
+
+            $sourceData = file_get_contents($pathToMockFetcherResponse);
+
+            $extractor->setSourceData($sourceData);
+            $extractor->extract();
+
+            $this->dataToRender = $extractor->getDataToRender();
+
+        } else if (! is_null($pathToMockExtractorData)) {
+
+
+
+
+        }
+        
+
     }
 
     public function build() {

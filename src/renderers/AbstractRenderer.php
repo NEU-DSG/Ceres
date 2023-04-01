@@ -146,7 +146,7 @@
       
     }
     
-    abstract function render();
+    abstract function render(): string;
 
     abstract function build();
 

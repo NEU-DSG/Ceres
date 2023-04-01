@@ -168,8 +168,8 @@ class ViewPackage {
 
     /* wrappers around Renderer methods */ 
     
-    public function render() {
-        $this->renderer->render();
+    public function render(): string {
+        return $this->renderer->render();
     }
 
     public function setFetcherQueryFromFile(?string $fetcherName = null, string $file) {
@@ -202,8 +202,8 @@ class ViewPackage {
     }
 
 
-    public function renderFullHtml() {
-        $this->renderer->renderFullHtml();
+    public function renderFullHtml(): string {
+        return $this->renderer->renderFullHtml();
     }
     /* end Renderer wrappers */
 

@@ -36,7 +36,7 @@ class Html extends AbstractRenderer {
         echo $this->htmlDom->saveHtml();
     }
 
-    public function render() {
+    public function render(): string {
 
         $this->build();
 
@@ -45,7 +45,7 @@ class Html extends AbstractRenderer {
         $this->containerNode->removeAttribute(('id'));
         //$templateNode = $this->htmlDom->getElementById('ceres-template');
         //$this->containerElement->removeChild($templateNode); 
-        echo $this->toHtmlString();
+        return $this->toHtmlString();
     }
 
     public function build() {

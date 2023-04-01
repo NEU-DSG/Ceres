@@ -4,7 +4,7 @@ namespace Ceres\Renderer;
 
 class PodcastRss extends AbstractRenderer
 {
-  public function render() {
+  public function render(): string {
     
     $this->fetcher->fetchData();
  

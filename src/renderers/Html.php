@@ -31,9 +31,9 @@ class Html extends AbstractRenderer {
      * 
      * @return void
      */
-    public function renderFullHtml() {
+    public function renderFullHtml(): string {
         $this->build();
-        echo $this->htmlDom->saveHtml();
+        return $this->htmlDom->saveHtml();
     }
 
     public function render(): string {

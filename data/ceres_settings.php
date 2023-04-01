@@ -901,7 +901,8 @@ function getOptionsValues() {
                 'ceres' => '',
                 'projectName' => '',
                 'viewPackageName' => '',
-                'leaflet_wikidata_for_public_art_table' => true
+                'leaflet_wikidata_for_public_art_table' => true,
+                'tabular_wikibase_for_chinatown' => true,
             ]
         ],
         'fetcherGroupBy' => [

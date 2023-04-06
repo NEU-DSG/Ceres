@@ -40,23 +40,54 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
         return $binding[$var]['value'];
     }
 
-    public function setSourceData($sourceData):void {
-        if (is_string($sourceData)) {
+    protected function preSetSourceData(string $sourceData) {
 
-            $sourceData = json_decode($sourceData, true);
+    }
 
-
-        }
-        $this->sourceData = $sourceData;
+    protected function postSetSourceData(): void {
         $this->setVars();
         $this->setBindings();
     }
 
-    protected function setVars():void {
-        $this->vars = $this->sourceData['head']['vars'];
+    public function setSourceData($sourceData):void {
+        //handle exceptions if isn't json etc.
+        //@todo maybe that could be done in pre (or even a validate() method?)
+        if (is_string($sourceData)) {
+            $sourceData = json_decode($sourceData, true);
+        }
+        $sourceData = $this->preSetSourceData($sourceData);
+        $this->sourceData = $sourceData;
+        $this->postSetSourceData();
     }
 
+    protected function preSetVars(array $vars): array {
+
+        return $vars; //do nothing, let other classes implement this as needed
+    }
+
+    protected function postSetVars():void {
+
+    }
+
+    protected function setVars():void {
+        $vars = $this->sourceData['head']['vars'];
+        $vars = $this->preSetVars($vars);
+        $this->vars = $vars;
+        $this->postSetVars();
+    }
+
+    protected function preSetBindings(array $bindings): array {
+        return $bindings; //do nothing, let other classes implement this as needed
+    }
+
+    protected function postSetBindings(): void {
+
+    }
+    
     protected function setBindings():void {
+        $bindings = $this->sourceData['results']['bindings'];
+        $bindings = $this->preSetBindings($bindings);
         $this->bindings = $this->sourceData['results']['bindings'];
+        $this->postSetBindings();
     }
 }

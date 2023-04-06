@@ -58,7 +58,7 @@ class Wdqs extends Sparql {
         ];
         $context = stream_context_create($opts);
         $url = $this->endpoint . '?query=' . urlencode($this->query);
-
+echo 'query?' . $this->query;
 
 //echo $url;
 //die();

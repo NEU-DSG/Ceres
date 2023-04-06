@@ -85,6 +85,8 @@ abstract class AbstractExtractor {
      * 
      * In Extractors instead of Renderers bc it's massaging for R's, so R's can be dumb
      * 
+     * Mostly only relevant to Table Renderers, but maybe broader?
+     * 
      * Take a row of $this->dataToRender to render and map the values onto a supplied array like
      * [
      *     [<oldLabel => <newLabel>] ,
@@ -107,8 +109,6 @@ abstract class AbstractExtractor {
         }
         return $newRowData;
     }
-
-
 }
 
 

@@ -40,10 +40,6 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
         return $binding[$var]['value'];
     }
 
-    protected function preSetSourceData(string $sourceData) {
-
-    }
-
     protected function postSetSourceData(): void {
         $this->setVars();
         $this->setBindings();
@@ -81,7 +77,7 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
     }
 
     protected function postSetBindings(): void {
-
+        //do nothing, let other classes implement this as needed
     }
     
     protected function setBindings():void {

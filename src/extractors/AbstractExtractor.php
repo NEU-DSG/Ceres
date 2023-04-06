@@ -4,7 +4,7 @@ namespace Ceres\Extractor;
 
 abstract class AbstractExtractor {
     
-    protected array $extractorOptions = array();
+    protected array $extractorOptions = [];
     protected array $dataToRender = [];
     protected string $jsonToInject = '';
 
@@ -12,9 +12,9 @@ abstract class AbstractExtractor {
     /**
      * extract
      * 
-     * Extracts the data needed from the source and puts it into
-     * $dataToRender
-     * 
+     * Extracts the data needed from the source and puts it into $dataToRender
+     * Requires data from sourceData to be ready to go in props
+     * @return void
      */
     abstract public function extract();
 
@@ -32,6 +32,13 @@ abstract class AbstractExtractor {
         //do nothing, let other classes implement this as needed
     }
 
+    protected function setDataToRender(array $dataToRender): void {
+        $dataToRender = $this->preSetDataToRender($dataToRender);
+        $this->dataToRender = $dataToRender;
+        $this->postSetDataToRender();
+    }
+
+
     public function getDataToRender(): array {
         return $this->dataToRender;
     }
@@ -42,6 +49,12 @@ abstract class AbstractExtractor {
 
     public function postSetJsonToInject(): void {
         //do nothing, let other classes implement this as needed
+    }
+
+    public function setJsonToInject(string $jsonToInject): void {
+        $jsonToInject = $this->preSetJsonToInject($jsonToInject);
+        $this->jsonToInject = $jsonToInject;
+        $this->postSetJsonToInject();
     }
 
     public function getJsonToInject(): string {

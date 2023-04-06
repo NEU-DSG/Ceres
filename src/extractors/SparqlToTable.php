@@ -40,7 +40,6 @@ class SparqlToTable extends AbstractSparqlExtractor {
 
     public function extract():void {
 
-        $dataToRender = [];
         $dataToRender[] = $this->vars;
         $bindingVals = [];
         foreach ($this->bindings as $binding) {
@@ -50,8 +49,8 @@ class SparqlToTable extends AbstractSparqlExtractor {
             $dataToRender[] = $bindingVals;
             $bindingVals = [];
         }
-
-        $this->dataToRender = $dataToRender;
+//@todo the logic here needs to be updated for pre/post events see #34
+        $this->setDataToRender($dataToRender);
     }
 
     protected function mapValueToLabel(string $value) {

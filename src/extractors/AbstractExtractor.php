@@ -79,6 +79,36 @@ abstract class AbstractExtractor {
         $this->extractorOptions[$optionName] = $optionValue;
     }
 
+
+    /**
+     * mapRowLabels
+     * 
+     * In Extractors instead of Renderers bc it's massaging for R's, so R's can be dumb
+     * 
+     * Take a row of $this->dataToRender to render and map the values onto a supplied array like
+     * [
+     *     [<oldLabel => <newLabel>] ,
+     *     [<oldLabel => <newLabel>] ,
+     * ]
+     * @todo likely from an ExtractorOption 2023-04-06 16:56:34
+     *
+     * @todo put in postSetDataToRender hook? dunno if it should be a standard from AbstractExtractor
+     * 
+     * @param array $rowData
+     * @param array $labelMapping
+     * @return array
+     */
+    protected function mapRowLabels(array $rowData, array $labelMapping): array {
+        $newRowData = [];
+        foreach($rowData as $data) {
+            if (array_key_exists($data, $labelMapping)) {
+                $newRowData[] = $labelMapping[$data];
+            }
+        }
+        return $newRowData;
+    }
+
+
 }
 
 

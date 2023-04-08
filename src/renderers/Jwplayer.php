@@ -4,7 +4,7 @@ namespace Ceres\Renderer;
 
 class Jwplayer extends Html {
   
-  public function render() {
+  public function render(): string {
     
     $jwplayerData = $this->fetcher->parseJwPlayerData($this->resourceId);
     list($plainMediaUrl, $playlistMediaUrl, $type, $imageUrl) = $jwplayerData;

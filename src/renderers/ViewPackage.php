@@ -1,4 +1,6 @@
 <?php
+
+/*
 namespace Ceres\Renderer;
 
 
@@ -184,3 +186,5 @@ class ViewPackage extends Html {
     }
 
 }
+
+*/

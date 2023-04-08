@@ -10,7 +10,7 @@ require_once( CERES_ROOT_DIR . '/src/renderers/Html.php');
 
 class Exception extends Html {
 
-    public function render() {
-
+    public function render(): string {
+        return "something bad happened";
     }
 }

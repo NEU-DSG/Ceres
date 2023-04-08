@@ -4,8 +4,8 @@ namespace Ceres\Renderer;
 
 class LeafletStorymap extends AbstractRenderer {
   
-  public function render() {
-
+  public function render(): string {
+    return 'storymap';
   }
 
 

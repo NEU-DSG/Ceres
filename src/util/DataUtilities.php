@@ -45,6 +45,7 @@ class DataUtilities {
 
     // $scope is ceres, {project_name}, {view_package_name}
     static function valueForOption(string $optionName, $scope = 'ceres') {
+        self::setData();
 
         if(isset(self::$optionsValues[$optionName])) {
             $optionValues = self::$optionsValues[$optionName];
@@ -257,7 +258,6 @@ class DataUtilities {
         self::$propertyLabels = json_decode(file_get_contents(CERES_ROOT_DIR . '/data/ceres_property_labels.json'), true);
         self::$optionsEnums = json_decode(file_get_contents(CERES_ROOT_DIR . '/data/ceres_options_enums.json'), true);
         self::$currentValues = json_decode(file_get_contents(CERES_ROOT_DIR . '/data/ceres_current_values.json'), true);
-
 
 //for dev/testing
 

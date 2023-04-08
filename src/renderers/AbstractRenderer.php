@@ -41,6 +41,8 @@
     //the data coming from an Extractor to render
     protected array $dataToRender = [];
 
+    protected string $jsonToInject = '';
+
     public function __construct(array $fetchers = [], array $extractors = [], $rendererOptions = []) {
       
       foreach ($fetchers as $classObj) {
@@ -63,30 +65,79 @@
       
     }
 /**
- * Undocumented function
+ * setDataToRenderFromFile
  *
- * Expects a text file with a serialize php array
+ * Expects a text file with a serialized php array or json string
  * 
  * @param string $fileName
  * @return void
  */
     public function setDataToRenderFromFile(string $fileName) {
-      $this->dataToRender = unserialize(file_get_contents($fileName));
+        $this->dataToRender = unserialize(file_get_contents($fileName));
     }
 
-    public function setDataToRender(?string $extractorName) {
-      if (is_null($extractorName)) {
-          $allExtractors = array_values($this->extractors);
-          $extractor = $allExtractors[0];
-      } else {
-          $extractor = $this->extractors[$extractorName];
-      }
-      $this->dataToRender = $extractor->getDataToRender();
+    public function setJsonToInjectFromFile(string $fileName, bool $decodeJson = false) {
+        $jsonToRender = file_get_contents($fileName);
+        if ($decodeJson) {
+            $this->jsonToInject = json_decode($jsonToRender, true);
+        } else {
+            $this->jsonToInject = $jsonToRender;
+        }
     }
+
+    public function setJsonToInject(?string $extractorName) {
+        if (is_null($extractorName)) {
+            $allExtractors = array_values($this->extractors);
+            $extractor = $allExtractors[0];
+        } else {
+            $extractor = $this->extractors[$extractorName];
+        }
+
+        $this->jsonToInject = $extractor->getJsonToInject();
+    }
+
+    //@todo for the bounceback option
+    public function setDataToRenderFromFetcher(?string $fetcherName = null): void {
+        if (is_null($fetcherName)) {
+            $allFetchers = array_values($this->fetchers);
+            $fetcher = $allFetchers[0];
+        } else {
+            $fetcher = $this->fetchers[$fetcherName];
+        }
+        $this->dataToRender = $fetcher->getResponseData();
+
+    }
+
+    //@todo this is newish, and needs to be used elsewhere w/in fcns
+    public function getFetcher(?string $fetcherName = null): object {
+        if (is_null($fetcherName)) {
+            $allFetchers = array_values($this->fetchers);
+            $fetcher = $allFetchers[0];
+        } else {
+            $fetcher = $this->fetchers[$fetcherName];
+        }
+        return $fetcher;
+    }
+
+    public function setDataToRender(?string $extractorName = null): void {
+        if ($this->getRendererOptionValue('bounceBack')) {
+            $this->setDataToRenderFromFetcher();
+            return;
+        }
+        if (is_null($extractorName)) {
+            $allExtractors = array_values($this->extractors);
+            $extractor = $allExtractors[0];
+        } else {
+            $extractor = $this->extractors[$extractorName];
+        }
+        $this->dataToRender = $extractor->getDataToRender();
+    }
+
+
 
     /* enqueing will have to figure out how to stuff styles and scripts in early in WP rendering.
     Might have to go elsewhere */
-
+    // @todo move these to WP-specific in an adapter?
     protected function enqueStyles() {
 
     }
@@ -95,7 +146,7 @@
       
     }
     
-    abstract function render();
+    abstract function render(): string;
 
     abstract function build();
 
@@ -154,9 +205,9 @@
       
     }
 
-    public function setFetcherOptionValue(string $fetcherName, $optionName, $optionValue) {
-
-
+    public function setFetcherOptionValue(?string $fetcherName = null, $optionName, $optionValue) {
+        $fetcher = $this->getFetcher($fetcherName);
+        $fetcher->setFetcherOptionValue($optionName, $optionValue);
     }
 
     public function setExtractorOptionValue(string $extractorName, $optionName, $optionValue) {

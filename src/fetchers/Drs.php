@@ -9,7 +9,7 @@ require_once(CERES_ROOT_DIR . '/src/fetchers/Rest.php');
 
 class Drs extends Rest {
 
-    protected string $endpoint = "https://repository.library.northeastern.edu/api/v1";
+    protected ?string $endpoint = "https://repository.library.northeastern.edu/api/v1";
     private string $pageParamName = 'page';
 
     public function __construct(array $queryOptions = array(), array $queryParams = array(), $resourceId = null) {

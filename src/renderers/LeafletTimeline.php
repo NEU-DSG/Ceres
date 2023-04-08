@@ -4,8 +4,8 @@ namespace Ceres\Renderer;
 
 class LeafletTimeline extends AbstractRenderer {
   
-  public function render() {
- 
+  public function render(): string {
+    return 'timeline';
   }
 
 

@@ -1,2 +1,5 @@
 devscraps
+config/ceresSetup.php
+data/rendererTemplates/brc-leaflet.html
+assets/js/leaflet/brc/leafet-brc-project.js
 Ceres.code-workspace

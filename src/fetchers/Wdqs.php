@@ -2,17 +2,50 @@
 
 namespace Ceres\Fetcher;
 
+use Ceres\Util\DataUtilities as DataUtil;
+
 class Wdqs extends Sparql {
 
-    protected string $endpoint = 'https://query.wikidata.org/sparql';
+    protected ?string $endpoint = 'http://ec2-34-227-69-60.compute-1.amazonaws.com:8834/proxy/wdqs/bigdata/namespace/wdq/sparql';
 
     public function __construct() {
-        // $file = CERES_ROOT_DIR . '/data/rqFiles/publicart/leaflet.rq';
-        // $this->setQueryFromFile($file);
         parent::__construct();
+        
+        // $file = CERES_ROOT_DIR . '/data/rqFiles/publicart/leaflet.rq';
+        //$this->fetcherOptions['fileForQuery'] = CERES_ROOT_DIR . '/data/rqFiles/publicart/leaflet.rq';
+
+        //$this->fetcherOptions['fileForQuery'] =  CERES_ROOT_DIR . "/data/rqFiles/chinatown/en/maintainers.rq";     
+        // echo $this->fetcherOptions['fileForQuery'];
+        // print_r($this->fetcherOptions);
+        // die();
+        //$this->setQueryFromFile($this->fetcherOptions['fileForQuery']);
+        
+    }
+
+    public function getValueForFetcherOption($optionName) {
+        if (array_key_exists( $optionName, $this->fetcherOptions)) {
+            return $this->fetcherOptions[$optionName];
+        }
+        return false;
     }
 
     public function fetchData($url = null, $returnWithoutSetting = false) {
+        //@todo fold this into the DataUtil optionValues array
+        $fetchLocalData = $this->getValueForFetcherOption('fetchLocalData');
+
+        if ($fetchLocalData) {
+            $jsonFilePath = $this->getValueForFetcherOption('localResponseDataPath');
+            $responseData = $this->fetchDataFromJsonFile($jsonFilePath);
+            if($returnWithoutSetting) {
+                return $responseData;
+            }
+            
+            $this->responseData = $responseData;
+            return null;
+            //@todo remove the repetition from the bottom of this function
+        }
+        
+        
         $opts = [
             'http' => [
                 'method' => 'GET',
@@ -24,20 +57,33 @@ class Wdqs extends Sparql {
             ],
         ];
         $context = stream_context_create($opts);
-
         $url = $this->endpoint . '?query=' . urlencode($this->query);
+
+
+//echo $url;
+//die();
+
         $response = file_get_contents($url, false, $context);
 
         //status digup from https://stackoverflow.com/questions/15620124/http-requests-with-file-get-contents-getting-the-response-code
         $status_line = $http_response_header[0];
-        
+
         preg_match('{HTTP\/\S*\s(\d{3})}', $status_line, $match);
     
         $status = $match[1];
-    
         if ($status !== "200") {
-            throw new \RuntimeException("unexpected response status: {$status_line}\n" . $response);
+
+            throw new \RuntimeException("unexpected response status: {$status_line}\n " . $response);
         }
+
+        if (! $returnWithoutSetting) {
+            $this->responseData = $response;
+        }
+        // if ($response) {
+        //     echo "<h4>Response true</h4>";
+        // } else {
+        //     echo "<h4>Response false</h4>";
+        // }
         return $response;
 
     }

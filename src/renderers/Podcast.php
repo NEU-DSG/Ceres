@@ -6,7 +6,7 @@ class Podcast extends Html {
 
   protected $jwPlayerOptions = array();
   
-  public function render() {
+  public function render(): string {
     $this->fetcher->fetchData();
     $html = "";
     do {

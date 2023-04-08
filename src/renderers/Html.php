@@ -31,12 +31,12 @@ class Html extends AbstractRenderer {
      * 
      * @return void
      */
-    public function renderFullHtml() {
+    public function renderFullHtml(): string {
         $this->build();
-        echo $this->htmlDom->saveHtml();
+        return $this->htmlDom->saveHtml();
     }
 
-    public function render() {
+    public function render(): string {
 
         $this->build();
 
@@ -45,7 +45,7 @@ class Html extends AbstractRenderer {
         $this->containerNode->removeAttribute(('id'));
         //$templateNode = $this->htmlDom->getElementById('ceres-template');
         //$this->containerElement->removeChild($templateNode); 
-        echo $this->toHtmlString();
+        return $this->toHtmlString();
     }
 
     public function build() {
@@ -61,7 +61,7 @@ class Html extends AbstractRenderer {
         return $aElement;
         }
   
-    public function toHtmlString($node = null) : string {
+    public function toHtmlString(?DOMElement $node = null) : string {
         if (is_null($node)) {
             $node = $this->containerNode;
         }

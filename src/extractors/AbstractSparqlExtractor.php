@@ -7,7 +7,6 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
 
     // from head/vars in sparql result
     protected array $vars;
-
     protected array $bindings;
     
     /**
@@ -57,12 +56,13 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
     }
 
     protected function preSetVars(array $vars): array {
-
+// echo"<h3>preSetVars: AbsSparqlEx</h3>";
         return $vars; //do nothing, let other classes implement this as needed
     }
 
     protected function postSetVars():void {
-
+// echo"<h3>postSetVars: AbsSparqlEx";
+        //do nothing, let other classes implement this as needed
     }
 
     protected function setVars():void {
@@ -73,10 +73,12 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
     }
 
     protected function preSetBindings(array $bindings): array {
+// echo"<h3>preSetBindings: AbsSparqlEx</h3>";
         return $bindings; //do nothing, let other classes implement this as needed
     }
 
     protected function postSetBindings(): void {
+// echo"<h3>preSetBindings: AbsSparqlEx</h3>";
         //do nothing, let other classes implement this as needed
     }
     
@@ -91,39 +93,38 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
     /**
      * removeVars
      *
-     * remove data var data, post setDataToRender, so R'r doesn't have to deal with it 
+     * remove vars so R'r doesn't have to deal with more than it cares about
+     * must happen BEFORE and processing that is var-binding dependent happens
      * 
      * @param array $rowToRender a row that is part of the data to render
      * @param array $toRemoveArray a supplied array of the $vars to be removed
      * @return void
      */
-    protected function removeVars(array $rowToRender, array $toRemoveArray): array {
+    protected function removeVars(?array $varsToRemoveArray): void {
         //@todo make $toRemoveArray an ExtratorOption? 2023-04-06 18:01:26
         //check if a $toRemoveArray exists (as an ExtractorOption) and run conditionally
         //as a postSetDataToRender?
+        // this is ahead of refactoring the reordering???
         
-        $dataToRender = $this->dataToRender;
 
-        //proceed as in reordering, but for removing
+        $varsToRemoveArray = 
+        [
+            "langCode",
+            "qid", 
+            "personLabel",
+            "donorPropLabel",
+            "creatorPropLabel",
+            "maintainerPropLabel",
+            "founderPropLabel",
+            "namePropLabel"
+        ];
 
-        // flip so the key becomes the text, and value becomes the new sequence
-        // thus, original keys should be move to the $flippedReorderByArray value during mapping
-        $flippedToRemoveArray = array_flip($toRemoveArray);
-        $removeMapping = [];
-        foreach ($dataToRender as $key=>$value) {
-            if (array_key_exists($value, $flippedToRemoveArray)) {
-                $removeMapping[$key] = $flippedToRemoveArray[$value];
+        foreach($this->vars as $index => $var) {
+            if(in_array($var, $varsToRemoveArray)) {
+                unset($this->vars[$index]);
             }
-        }
 
-        foreach($rowToRender as $originalKey=>$originalValue) {
-            // check $reorderMapping to see there's a target for the reordering, skip if not
-            // @todo check what happens if I try to map onto an existing location? overwrite (bad)?
-            if(array_key_exists($originalKey, $removeMapping)) {
-                $removeKey = $removeMapping[$originalKey];
-                unset($rowToRender[$removeKey]);
-            }
         }
-        return $rowToRender;
+        
     }
 }

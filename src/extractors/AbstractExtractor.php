@@ -23,12 +23,31 @@ abstract class AbstractExtractor {
     public function __construct() {
         
     }
+    //@todo another one to abstract across F/E/Rs, probably as a Trait
+    public function valueForExtractorOption(string $optionName) {
+        if (isset($this->extractorOptions[$optionName])) {
+            return $this->extractorOptions[$optionName];
+        }
+        return null;
+    }
+
+
+    //@todo another one to abstract across F/E/Rs, probably as a Trait
+    public function setExtractorOptionValue(string $optionName, string $optionValue, bool $asCurrentValue = false) {
+        if ($asCurrentValue) {
+            $this->extractorOptions[$optionName]['currentValue'] = $optionValue;    
+        } else {
+            $this->extractorOptions[$optionName] = $optionValue;
+        }
+    }
 
     protected function preSetDataToRender(array $dataToRender): array {
+// echo"<h3>preSetDataToRender: AbsExt</h3>";
         return $dataToRender; //do nothing, let other classes implement this as needed
     } 
 
     protected function postSetDataToRender(): void {
+// echo"<h3>postSetDataToRender: AbsExt</h3>";
         //do nothing, let other classes implement this as needed
     }
 
@@ -62,10 +81,13 @@ abstract class AbstractExtractor {
     }
 
     protected function preSetSourceData($data) {
+// echo"<h3>preSetSourceData: AbsExt</h3>";
         return $data; //do nothing, let other classes implement this as needed
     }
 
     protected function postSetSourceData(): void {
+// echo"<h3>preSetSourceData: AbsExt</h3>";
+
         //do nothing, let other classes implement this as needed
     }
 
@@ -73,6 +95,11 @@ abstract class AbstractExtractor {
         $data = $this->preSetSourceData($data);
         $this->sourceData = $data;
         $this->postSetSourceData();
+    }
+
+    public function setSourceDataFromFile(string $filePath): void {
+        $data = json_decode(file_get_contents($filePath), true);
+        $this->setSourceData($data);
     }
 
     public function setOptionValue(string $optionName, string $optionValue) {

@@ -31,15 +31,31 @@ class SparqlToTable extends AbstractSparqlExtractor {
     public function valueForBindingVar(array $binding, string $var):string {
         if (! isset($binding[$var])) {
             return "missing $var data";
+        } else {
+            $var = $binding[$var];
         }
-        $value = $binding[$var]['value'];
+        $value = $var['value'];
+
+// echo "<h3>value1: $value</h3>";
         $value = $this->mapValueToLabel($value);
-        
+// echo "<h3>value2: $value</h3>";
         return $value;
     }
 
-    public function extract():void {
+    /**
+     * 
+     * For actions that must happen ONLY after I can lose the var-binding connection
+     *
+     * @return void
+     */
+    public function preExtract():void {
+        //@todo make varsToRemoveArray an option
+        $this->removeVars($varsToRemoveArray = null);
+    }
 
+    public function extract():void {
+        $this->preExtract();
+        //$dataToRender[] = $this->getVars();
         $dataToRender[] = $this->vars;
         $bindingVals = [];
         foreach ($this->bindings as $binding) {
@@ -49,32 +65,56 @@ class SparqlToTable extends AbstractSparqlExtractor {
             $dataToRender[] = $bindingVals;
             $bindingVals = [];
         }
-//@todo the logic here needs to be updated for pre/post events see #34
+        //@todo the logic here needs to be updated for pre/post events see #34
         $this->setDataToRender($dataToRender);
     }
 
-    protected function mapValueToLabel(string $value) {
+    protected function postSetDataToRender(): void {
+        $valueLabelMapping = $this->valueForExtractorOption('valueLabelMapping');
+
+        foreach ($this->vars as $var) {
+            $newVars[] = $this->mapValueToLabel($var, $valueLabelMapping);
+        }
+        $this->dataToRender[0] = $newVars;
+    }
+
+    protected function mapValueToLabel(string $value, ?string $valueLabelMapping = null): string {
         //originalSequence can come from $this->vars
         //labelMapping can start with $this->vars
         //should ultimately be a map based on {var} and {var}Label
-
+//echo "<h1>mapValueToLabel $value: STT</h1>";
         //from people.rq
+
+        
         $valueLabelMapping = [
-            'qid' => 'ID to be used for linking entities ',
-            'workLabel' => 'Work',
-            'personLabel' => 'Person',
-            'donorPropLabel' => 'Donor',
-            'creatorPropLabel' => 'Records Creator',
-            'maintainerPropLabel' => 'Maintainer',
-            'founderPropLabel' => 'Founder',
-            'namePropLabel' => 'Name',
-            'officialWebsitePropLabel' => 'Official Website',
-            'emailAddressPropLabel' => 'Email',
+            "langCode"  =>  "Language Code",
+            "qid"  =>  "ID for use elsewhere", 
+            "personLabel"  =>  null,
+            "personDescription"  =>  "Description",
+            "createdCollections"  =>  "Collections Created",
+            "foundedOrganizations" =>  "Organizations Founded",
+            "maintainsCollections" =>  "Collections Maintained",
+            "donatedCollections"  =>  "Collections Donated",
+            "donorPropLabel" =>  null,
+            "creatorPropLabel" =>  null,
+            "maintainerPropLabel" =>  null,
+            "founderPropLabel" =>  null,
+            "name"  =>  "Name",
+            "namePropLabel"  =>  null,
+            "officialWebsite"  =>  "Website",
+            "officialWebsitePropLabel"  =>  null,
+            "emailAddress"  =>  "Email",
+            "emailAddressPropLabel"  =>  null
         ];
         
-        if (array_key_exists($value, $valueLabelMapping)) {
-            return $valueLabelMapping[$value];
-        }
+        if (key_exists($value, $valueLabelMapping)) {
+                if (is_null($valueLabelMapping[$value])) {
+                    return $value;
+                }
+                return $valueLabelMapping[$value];    
+            } else {
+                return $value;
+            }
     }
 }
 

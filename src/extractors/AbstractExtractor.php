@@ -23,6 +23,11 @@ abstract class AbstractExtractor {
     public function __construct() {
         
     }
+
+
+    public function getExtractorOptions(): array {
+        return $this->extractorOptions;
+    }
     //@todo another one to abstract across F/E/Rs, probably as a Trait
     public function valueForExtractorOption(string $optionName) {
         if (isset($this->extractorOptions[$optionName])) {
@@ -81,12 +86,12 @@ abstract class AbstractExtractor {
     }
 
     protected function preSetSourceData($data) {
-// echo"<h3>preSetSourceData: AbsExt</h3>";
+ //echo"<h3>preSetSourceData: AbsExt</h3>";
         return $data; //do nothing, let other classes implement this as needed
     }
 
     protected function postSetSourceData(): void {
-// echo"<h3>preSetSourceData: AbsExt</h3>";
+ //echo"<h3>preSetSourceData: AbsExt</h3>";
 
         //do nothing, let other classes implement this as needed
     }

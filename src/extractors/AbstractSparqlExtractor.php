@@ -2,6 +2,7 @@
 
 namespace Ceres\Extractor;
 
+use Ceres\Exception\DataException;
 
 abstract class AbstractSparqlExtractor extends AbstractExtractor {
 
@@ -45,23 +46,25 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
     }
 
     public function setSourceData($sourceData):void {
-        //handle exceptions if isn't json etc.
+        //@todo handle exceptions if isn't json etc.
         //@todo maybe that could be done in pre (or even a validate() method?)
         if (is_string($sourceData)) {
             $sourceData = json_decode($sourceData, true);
         }
+// echo "<h2>setSourceData: AbsSqlExt</h2>";
+//         print_r($sourceData);
         $sourceData = $this->preSetSourceData($sourceData);
         $this->sourceData = $sourceData;
         $this->postSetSourceData();
     }
 
     protected function preSetVars(array $vars): array {
-// echo"<h3>preSetVars: AbsSparqlEx</h3>";
+ //echo"<h3>preSetVars: AbsSparqlEx</h3>";
         return $vars; //do nothing, let other classes implement this as needed
     }
 
     protected function postSetVars():void {
-// echo"<h3>postSetVars: AbsSparqlEx";
+ //echo"<h3>postSetVars: AbsSparqlEx";
         //do nothing, let other classes implement this as needed
     }
 
@@ -89,6 +92,32 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
         $this->postSetBindings();
     }
 
+    protected function reorderVars(?array $reorderMapping = null) {
+//echo "<h3>reorderVars: AbsSplExt</h3>";
+//$this->setExtractorOptionValue('no', 'whatevs');
+//print_r($this->extractorOptions);
+//echo "<h1>dafuq</h1>";
+        if (is_null($reorderMapping)) {
+            //echo "<h4>isnull: absSpqExt</h4>";
+            $reorderMapping = $this->valueForExtractorOption('extractorReorderMappingFilePath');
+        }
+        if (is_null($reorderMapping)) {
+            //echo "<h4>isnull: absSpqExt</h4>";
+            return; //@todo 
+            
+        } else {
+            $reorderMapping = json_decode(file_get_contents($reorderMapping), true);
+        }
+//echo "<h4>after ifs: AbsSplExt</h4>";
+        $reordered = [];
+
+        //go with the mapping provided as the new sequence,
+        //but split out the diff between the two arrays and
+        //slap the remainder onto the end
+        $unreordered = array_diff($this->vars, $reorderMapping);
+        $reordered = array_merge($reorderMapping, $unreordered);
+        $this->vars = $reordered;
+    }
 
     /**
      * removeVars
@@ -100,13 +129,23 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
      * @param array $toRemoveArray a supplied array of the $vars to be removed
      * @return void
      */
-    protected function removeVars(?array $varsToRemoveArray): void {
+    protected function removeVars(?array $varsToRemoveArray = null): void {
         //@todo make $toRemoveArray an ExtratorOption? 2023-04-06 18:01:26
         //check if a $toRemoveArray exists (as an ExtractorOption) and run conditionally
         //as a postSetDataToRender?
         // this is ahead of refactoring the reordering???
         
+        if (is_null($varsToRemoveArray)) {
+            $varsToRemoveArray = $this->valueForExtractorOption('extractorRemoveVarsFilePath');
+        }
+        if (is_null($varsToRemoveArray)) {
+            return;
 
+        } else {
+            $varsToRemoveArray = json_decode(file_get_contents($varsToRemoveArray), true);
+        }
+
+        
         $varsToRemoveArray = 
         [
             "langCode",
@@ -123,8 +162,6 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
             if(in_array($var, $varsToRemoveArray)) {
                 unset($this->vars[$index]);
             }
-
         }
-        
     }
 }

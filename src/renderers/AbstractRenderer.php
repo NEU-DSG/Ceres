@@ -119,6 +119,17 @@
         return $fetcher;
     }
 
+    //@todo this is newish, and needs to be used elsewhere w/in fcns
+    public function getExtractor(?string $extractorName = null): object {
+        if (is_null($extractorName)) {
+            $allExtractors = array_values($this->extractors);
+            $fetcher = $allExtractors[0];
+        } else {
+            $fetcher = $this->fetchers[$extractorName];
+        }
+        return $fetcher;
+    }
+
     public function setDataToRender(?string $extractorName = null): void {
         if ($this->getRendererOptionValue('bounceBack')) {
             $this->setDataToRenderFromFetcher();
@@ -210,8 +221,9 @@
         $fetcher->setFetcherOptionValue($optionName, $optionValue);
     }
 
-    public function setExtractorOptionValue(string $extractorName, $optionName, $optionValue) {
-
+    public function setExtractorOptionValue(?string $extractorName, $optionName, $optionValue) {
+      $extractor = $this->getExtractor($extractorName);
+      $extractor->setExtractorOptionValue($optionName, $optionValue);
 
     }
 

@@ -1,0 +1,20 @@
+{
+    "langCode"  :  "Language Code",
+    "qid"  :  "ID for use elsewhere", 
+    "personLabel"  :  null,
+    "personDescription"  :  "Description",
+    "createdCollections"  :  "Collections Created",
+    "foundedOrganizations" :  "Organizations Founded",
+    "maintainsCollections" :  "Collections Maintained",
+    "donatedCollections"  :  "Collections Donated",
+    "donorPropLabel" :  null,
+    "creatorPropLabel" :  null,
+    "maintainerPropLabel" :  null,
+    "founderPropLabel" :  null,
+    "name"  :  "Name",
+    "namePropLabel"  :  null,
+    "officialWebsite"  :  "Website",
+    "officialWebsitePropLabel"  :  null,
+    "emailAddress"  :  "Email",
+    "emailAddressPropLabel"  :  null
+}

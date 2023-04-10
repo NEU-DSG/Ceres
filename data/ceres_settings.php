@@ -35,6 +35,35 @@ function getCurrentValues() {
 
 function getAllOptions() {
     $ceresAllOptions = [
+        'extractorReorderMappingFilePath' => [
+            'label' => 'File path to JSON array to use to reorder vars',
+            'desc' => 'The path to a JSON file for SPARQL-based view packages/extractors to use for reording the data rendering',
+            'access' => ['coder'],
+            'type' => 'FilePath',
+            'defaults' => 'from optionsValues array',
+            'appliesTo' => 'extractors',
+        ],
+
+        'extractorRemoveVarsFilePath' => [
+            'label' => 'File path to JSON array to use to remove vars',
+            'desc' => 'The path to a JSON file for SPARQL-based view packages/extractors to use for removing the data rendering',
+            'access' => ['coder'],
+            'type' => 'FilePath',
+            'defaults' => 'from optionsValues array',
+            'appliesTo' => 'extractors',
+        ],
+
+        'extractorValueLabelMappingFilePath' => [
+            'label' => 'File path to JSON array to use to map received values to better labels',
+            'desc' => 'The path to a JSON file for SPARQL-based view packages/extractors to use to make prettier labels',
+            'access' => ['coder'],
+            'type' => 'FilePath',
+            'defaults' => 'from optionsValues array',
+            'appliesTo' => 'extractors',
+
+        ],
+
+
         'fetchLocalData' => [
             'label' => 'Use pre-saved local data from a Fetcher?',
             'desc'    => 'Used on conjunction with `localResponseDataPath` to mimic a live query',
@@ -544,6 +573,27 @@ function getAllOptions() {
 
 function getOptionsValues() {
     $ceresOptionsValues = [
+        'extractorReorderMappingFilePath' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => null,
+            ]
+        ],
+        'extractorRemoveVarsFilePath' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => null,
+            ]
+        ],
+
+        'extractorValueMappingFilePath' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => null,
+            ]
+            ],
+
+
         'fetchLocalData' => [
             'currentValue' => null,
             'defaults' => [
@@ -1026,6 +1076,9 @@ function getViewPackages() {
             'itemLinkProp',
             'mediaLinkProp',
             'mediaUriProp',
+            'extractorRemoveVarsFilePath',
+            'extractorReorderMappingFilePath',
+            'extractorValueLabelMappingFilePath',
         ],
         'tabular' => [
             'tableClass',

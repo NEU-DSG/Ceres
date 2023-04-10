@@ -181,6 +181,10 @@ class ViewPackage {
         $this->renderer->setFetcherOptionValue($fetcherName, $optionName, $optionValue);
     }
 
+    public function setExtractorOptionValue(?string $extractorName = null, string $optionName, string $optionValue ) {
+        $this->renderer->setExtractorOptionValue($extractorName, $optionName, $optionValue);
+    }
+
     public function gatherData(?string $extractorName = null, ?string $pathToMockFetcherResponse = null,?string $pathToMockExtractorData = null) {   
         // params for renderer->setDataToRender are:
         // $renderer(<extractorName>, <pathToMockFetcherResponse>, <pathToMockExtractorData>)    )

@@ -42,13 +42,20 @@ class SparqlToTable extends AbstractSparqlExtractor {
         return $value;
     }
 
+
+    //@todo likely move to absSqlExt??
+    protected function postSetVars(): void {
+//echo "<h2>postSetVars: STT</h2>";
+        $this->reorderVars();
+    }
+
     /**
      * 
      * For actions that must happen ONLY after I can lose the var-binding connection
      *
      * @return void
      */
-    public function preExtract():void {
+    protected function preExtract():void {
         //@todo make varsToRemoveArray an option
         $this->removeVars($varsToRemoveArray = null);
     }
@@ -84,6 +91,17 @@ class SparqlToTable extends AbstractSparqlExtractor {
         //should ultimately be a map based on {var} and {var}Label
 //echo "<h1>mapValueToLabel $value: STT</h1>";
         //from people.rq
+
+        if (is_null($valueLabelMapping)) {
+            $valueLabelMapping = $this->valueForExtractorOption('extractorValueLabelMappingFilePath');
+        }
+        if (is_null($valueLabelMapping)) {
+            return $value;
+        } else {
+            $valueLabelMapping = json_decode(file_get_contents($valueLabelMapping), true);
+        }
+
+
 
         
         $valueLabelMapping = [

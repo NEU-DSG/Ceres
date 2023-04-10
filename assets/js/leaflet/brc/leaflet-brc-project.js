@@ -191,8 +191,8 @@ var markers = L.markerClusterGroup({
 // wkt string literal parser.
 var wkt = new Wkt.Wkt();
 var myIcon = L.icon({
-    iconUrl: '../wp-content/plugins/drs-tk/libraries/Ceres/assets/images/brc/marker-icon-blue.png',
-    //iconUrl: '../assets/images/brc/marker-icon-blue.png',
+    //iconUrl: '../wp-content/plugins/drs-tk/libraries/Ceres/assets/images/brc/marker-icon-blue.png',
+    iconUrl: '../assets/images/brc/marker-icon-blue.png',
     iconSize: [25, 41],
     iconAnchor: [12, 41],
     popupAnchor: [0, -35],
@@ -272,8 +272,8 @@ function createPopUpHtmlForBinding(binding) {
     }
     if (binding["work"]) {
         popUpHtml += "<li class='popup-item more-info-section'>";
-        //popUpHtml += "<a href = '" + binding["work"] + "' class='more-info-span' target='_blank'>More information.... <img src='../assets/images/external-link.svg' width='10' heigth='10'></a>"
-        popUpHtml += "<a href = '" + binding["work"] + "' class='more-info-span' target='_blank'>More information.... <img src='../wp-content/plugins/drs-tk/libraries/Ceres//assets/images/external-link.svg' width='10' heigth='10'></a>"
+        popUpHtml += "<a href = '" + binding["work"] + "' class='more-info-span' target='_blank'>More information.... <img src='../assets/images/external-link.svg' width='10' heigth='10'></a>"
+        //popUpHtml += "<a href = '" + binding["work"] + "' class='more-info-span' target='_blank'>More information.... <img src='../wp-content/plugins/drs-tk/libraries/Ceres//assets/images/external-link.svg' width='10' heigth='10'></a>"
     }
     
     popUpHtml += '</div>';

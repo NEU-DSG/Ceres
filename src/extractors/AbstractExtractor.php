@@ -2,6 +2,10 @@
 
 namespace Ceres\Extractor;
 
+use Ceres\Data;
+use Ceres\Util\DataUtilities as DataUtil;
+
+
 abstract class AbstractExtractor {
     
     protected array $extractorOptions = [];
@@ -44,6 +48,10 @@ abstract class AbstractExtractor {
         } else {
             $this->extractorOptions[$optionName] = $optionValue;
         }
+    }
+
+    protected function preExtract() {
+        //do nothing, let other classes implement this as needed
     }
 
     protected function preSetDataToRender(array $dataToRender): array {
@@ -96,7 +104,10 @@ abstract class AbstractExtractor {
         //do nothing, let other classes implement this as needed
     }
 
-    public function setSourceData($data) {
+    public function setSourceData($data = null): void {
+        if(is_string($data)) {
+            $data = json_decode($data, true);
+        }
         $data = $this->preSetSourceData($data);
         $this->sourceData = $data;
         $this->postSetSourceData();

@@ -43,7 +43,7 @@ class SparqlToTable extends AbstractSparqlExtractor {
     }
 
 
-    //@todo likely move to absSqlExt??
+    //@todo likely move to absSqlExt?? or the same thing more general for Tables? A Trait?
     protected function postSetVars(): void {
 //echo "<h2>postSetVars: STT</h2>";
         $this->reorderVars();
@@ -85,6 +85,18 @@ class SparqlToTable extends AbstractSparqlExtractor {
         $this->dataToRender[0] = $newVars;
     }
 
+    /**
+     * mapValueToLabel
+     * 
+     * Take a value, generally from $this->headerDataToRender, and map it onto
+     * a new, usually prettier, value for the Renderer to use
+     * 
+     * @todo worry about whether this should be in a TableRenderer
+     *
+     * @param string $value
+     * @param string|null $valueLabelMapping
+     * @return string
+     */
     protected function mapValueToLabel(string $value, ?string $valueLabelMapping = null): string {
         //originalSequence can come from $this->vars
         //labelMapping can start with $this->vars
@@ -103,7 +115,7 @@ class SparqlToTable extends AbstractSparqlExtractor {
 
 
 
-        
+//@todo remove this!        
         $valueLabelMapping = [
             "langCode"  =>  "Language Code",
             "qid"  =>  "ID for use elsewhere", 

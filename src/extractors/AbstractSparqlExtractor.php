@@ -45,19 +45,6 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
         $this->setBindings();
     }
 
-    public function setSourceData($sourceData):void {
-        //@todo handle exceptions if isn't json etc.
-        //@todo maybe that could be done in pre (or even a validate() method?)
-        if (is_string($sourceData)) {
-            $sourceData = json_decode($sourceData, true);
-        }
-// echo "<h2>setSourceData: AbsSqlExt</h2>";
-//         print_r($sourceData);
-        $sourceData = $this->preSetSourceData($sourceData);
-        $this->sourceData = $sourceData;
-        $this->postSetSourceData();
-    }
-
     protected function preSetVars(array $vars): array {
  //echo"<h3>preSetVars: AbsSparqlEx</h3>";
         return $vars; //do nothing, let other classes implement this as needed

@@ -101,9 +101,19 @@ class DataUtilities {
         return self::$optionsValues[$optionName]['defaults'][$scope];
     }
 
-    static function enumValuesForOption($option, $scope = 'ceres') : array {
+    static function allDefaultsForOption($optionName) {
         self::setData();
-        return self::$optionsEnums[$option][$scope];
+        return self::$optionsValues[$optionName]['defaults'];
+    }
+
+    static function enumValuesForOption($optionName, $scope = 'ceres') : array {
+        self::setData();
+        return self::$optionsEnums[$optionName][$scope];
+    }
+
+    static function allEnumValuesForOption($optionName): array {
+        self::setData();
+        return self::$optionsEnums[$optionName];
     }
 
     static function accessValuesForOption($option) : array {

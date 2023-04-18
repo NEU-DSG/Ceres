@@ -1,6 +1,8 @@
 <?php
 namespace Ceres\Data;
 
+use Ceres\Util\DataUtilities;
+use Ceres\Util\StringUtilities;
 
 /**
  * Algorithm for minting/looking up ids
@@ -32,55 +34,59 @@ function getCurrentValues() {
     return $ceresCurrentValues;
 }
 
-
 function getAllOptions() {
     $ceresAllOptions = [
         'extractorReorderMappingFilePath' => [
-            'label' => 'File path to JSON array to use to reorder vars',
+            'label' => 'Reorder Mapping File',
             'desc' => 'The path to a JSON file for SPARQL-based view packages/extractors to use for reording the data rendering',
             'access' => ['coder'],
             'type' => 'FilePath',
             'defaults' => 'from optionsValues array',
+            'shortcode' => 'extractor_reorder_mapping_file_path',
             'appliesTo' => 'extractors',
         ],
 
         'extractorRemoveVarsFilePath' => [
-            'label' => 'File path to JSON array to use to remove vars',
+            'label' => 'Remove Vars File',
             'desc' => 'The path to a JSON file for SPARQL-based view packages/extractors to use for removing the data rendering',
             'access' => ['coder'],
             'type' => 'FilePath',
             'defaults' => 'from optionsValues array',
+            'shortcode' => 'extractor_remove_vars_file_path',
             'appliesTo' => 'extractors',
         ],
 
         'extractorValueLabelMappingFilePath' => [
-            'label' => 'File path to JSON array to use to map received values to better labels',
+            'label' => 'Value/Label Mapping File',
             'desc' => 'The path to a JSON file for SPARQL-based view packages/extractors to use to make prettier labels',
             'access' => ['coder'],
             'type' => 'FilePath',
             'defaults' => 'from optionsValues array',
+            'shortcode' => 'extractor_value_label_mapping_file_path',
             'appliesTo' => 'extractors',
 
         ],
 
 
         'fetchLocalData' => [
-            'label' => 'Use pre-saved local data from a Fetcher?',
+            'label' => 'Fetch Local Data',
             'desc'    => 'Used on conjunction with `localResponseDataPath` to mimic a live query',
             'access' => ['coder'],
             'type'    => 'bool',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'fetch_local_data',
             'appliesTo' => 'fetchers',
         ],
 
         'localResponseDataPath' => [
-            'label' => 'Path to a locally-saved copy of a Fetcher response',
-            'desc'    => 'Usually for testing/debugging, a path to a locally-saved Fetcher response',
+            'label' => 'Local Response Data Path',
+            'desc'    => 'Path to a locally-saved copy of a Fetcher response',
             'access' => ['coder'],
-            'type'    => 'string',
+            'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'local_response_data_path',
             'appliesTo' => 'fetchers',
 
         ],
@@ -92,33 +98,27 @@ function getAllOptions() {
             'type'    => 'bool',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'bounce_back',
             'appliesTo' => 'renderers',
         ],
-        'fileForQuery' => [
-            'label' => 'File for query',
+        'rqFile' => [
+            'label' => 'rqFile for query',
             'desc' => 'Path to the file containing the query', // needs coder-level documentation
             'access' => ['coder'],
-            'type' => 'varchar',
+            'type' => 'FilePath',
             'defaults' => 'from optionsValues array',
             'notes' => "The path is relative to CERES_ROOT_DIR, like `/data/{rqFiles | sqlFiles}/{your query}`",
+            'shortcode' => 'rq_file',
             'appliesTo' => 'fetchers'
-        ],
-        'caption' => [
-            'label' => 'Caption',
-            'desc'    => 'Text to use for a table <caption>',
-            'access' => ['projectOwner', 'coder', 'contentCreator'],
-            'type'    => 'text',
-            'defaults' => 'from $ceresOptionsValues array',
-            'notes' => "",
-            'appliesTo' => 'renderers',
         ],
         'captionClass' => [
             'label' => 'Caption',
-            'desc'    => 'Class to use for a table <caption>',
+            'desc'    => 'Class to use for a table &lt;caption>',
             'access' => ['projectOwner', 'coder', 'contentCreator'],
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'caption_class',
             'appliesTo' => 'renderers',
         ],
 
@@ -129,6 +129,7 @@ function getAllOptions() {
             'type'    => 'text',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'text',
             'appliesTo' => 'renderers',
         ],
 
@@ -139,6 +140,7 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'alt_text_prop',
             'appliesTo' => 'renderers',
         ],
         'float' => [
@@ -148,6 +150,7 @@ function getAllOptions() {
             'type'    => 'enum',
             'defaults' => '',
             'notes' => '',
+            'shortcode' => 'float',
             'appliesTo' => 'renderers',
         ],
         'caption' => [
@@ -157,6 +160,7 @@ function getAllOptions() {
             'type'    => 'text',
             'defaults' => '',
             'notes' => '',
+            'shortcode' => 'caption',
             'appliesTo' => 'renderers',
         ],
 
@@ -168,6 +172,7 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'extractor_metadata_filter_by',
             'appliesTo' => 'extractors',
         ],
 
@@ -179,6 +184,7 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'extractor_resources_filter_by',
             'appliesTo' => 'extractors',
 
         ],
@@ -189,6 +195,7 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => '',
             'appliesTo' => 'extractors',
 
         ],
@@ -199,6 +206,7 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'extractor_resource_sort_by',
             'appliesTo' => 'extractors',
 
         ],
@@ -209,6 +217,7 @@ function getAllOptions() {
             'type'    => 'enum',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'extractor_metadata_sort_order',
             'appliesTo' => 'extractors',
 
         ],
@@ -219,6 +228,7 @@ function getAllOptions() {
             'type'    => 'enum',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'extractor_resources_sort_order',
             'appliesTo' => 'extractors',
 
         ],
@@ -231,6 +241,7 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => 'Maybe remove this for Extractors',
+            'shortcode' => 'extractor_metadata_sort_by_property',
             'appliesTo' => 'extractors',
 
         ],
@@ -241,6 +252,7 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'extractor_resources_sort_by_property',
             'appliesTo' => 'extractors',
 
         ],
@@ -252,6 +264,7 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => 'Needed?',
+            'shortcode' => '',
             'appliesTo' => 'extractors',
 
         ],
@@ -262,6 +275,7 @@ function getAllOptions() {
             'type'    => 'enum',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'extractor_group_by',
             'appliesTo' => 'extractors',
 
         ],
@@ -272,6 +286,7 @@ function getAllOptions() {
             'type'    => 'enum',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'fetcher_metadata_to_show',
             'appliesTo' => 'fetchers',
 
         ],
@@ -282,6 +297,7 @@ function getAllOptions() {
             'type'    => 'enum',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'metadata_to_show',
             'appliesTo' => 'renderers',
 
         ],
@@ -292,6 +308,7 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'fetcher_group_by',
             'appliesTo' => 'fetchers',
 
         ],
@@ -302,6 +319,7 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'fetcher_filter_by',
             'appliesTo' => 'fetchers',
 
         ],
@@ -312,6 +330,7 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'fetcher_sort_by',
             'appliesTo' => 'fetchers',
 
         ],
@@ -322,6 +341,7 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'fetcher_sort_order',
             'appliesTo' => 'fetchers',
 
         ],
@@ -332,6 +352,7 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'fetcher_sort_by_property',
             'appliesTo' => 'fetchers',
 
         ],
@@ -342,6 +363,7 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'resource_link_prop',
             'appliesTo' => 'fetchers',
 
         ],
@@ -352,6 +374,7 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'media_link_prop',
             'appliesTo' => 'fetchers',
 
         ],
@@ -362,57 +385,63 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'media_uri_prop',
             'appliesTo' => 'fetchers',
 
         ],
         'thClass' => [
             'label'   => 'Table Head Class Name',
-            'desc'    => 'The CSS class to apply to <th> elements',
+            'desc'    => 'The CSS class to apply to &lt;th> elements',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'th_class',
             'appliesTo' => 'renderers',
 
         ],
         'tableClass' => [
             'label'   => 'Table Class Name',
-            'desc'    => 'The CSS class to apply to <table> elements',
+            'desc'    => 'The CSS class to apply to &lt;table> elements',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'table_class',
             'appliesTo' => 'renderers',
 
         ],
         'tdClass' => [
             'label'   => 'Table Data Class Name',
-            'desc'    => 'The CSS class to apply to <td> elements',
+            'desc'    => 'The CSS class to apply to &lt;td> elements',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'td_class',
             'appliesTo' => 'renderers',
 
         ],
 
         'trClass' => [
             'label'   => 'Table Row Class Name',
-            'desc'    => 'The CSS class to apply to <tr> elements',
+            'desc'    => 'The CSS class to apply to &lt;tr> elements',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'tr_class',
             'appliesTo' => 'renderers',
 
         ],
         'theadClass' => [
             'label'   => 'Table Head Class Name',
-            'desc'    => 'The CSS class to apply to <thead> elements',
+            'desc'    => 'The CSS class to apply to &lt;thead> elements',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'thead_class',
             'appliesTo' => 'renderers',
 
         ],
@@ -423,6 +452,7 @@ function getAllOptions() {
             'type'    => 'bool',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'first_row_is_header',
             'appliesTo' => 'renderers',
         ],
 
@@ -433,6 +463,7 @@ function getAllOptions() {
             'type'    => 'bool',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'get_all',
             'appliesTo' => 'fetchers',
 
         ],
@@ -443,6 +474,7 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'response_format',
             'appliesTo' => 'fetchers',
 
         ],
@@ -453,6 +485,7 @@ function getAllOptions() {
             'type'    => 'int',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'per_page',
             'appliesTo' => 'fetchers',
 
         ],
@@ -463,6 +496,7 @@ function getAllOptions() {
             'type'    => 'int',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'start_page',
             'appliesTo' => 'fetchers',
 
         ],
@@ -473,6 +507,7 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'resource_ids',
             'appliesTo' => 'fetchers',
 
         ],
@@ -482,7 +517,8 @@ function getAllOptions() {
             'access' => ['coder'],
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
-            'notes' => "",
+            'notes' => "??should this be private property on Fetchers??",
+            'shortcode' => 'endpoint',
             'appliesTo' => 'fetchers',
 
         ],
@@ -493,6 +529,7 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'search_type',
             'appliesTo' => 'fetchers',
         ],
         'thumbnailSize' => [
@@ -502,6 +539,7 @@ function getAllOptions() {
             'type'    => 'enum',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => 'This will vary based on API result structure',
+            'shortcode' => 'thumbnail_size',
             'appliesTo' => 'renderers',
 
         ],
@@ -512,26 +550,29 @@ function getAllOptions() {
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'separator',
             'appliesTo' => 'renderers',
 
         ],
         'keyClass' => [
             'label'   => 'Key Class',
-            'desc'    => 'A CSS class to apply to keys in rendering arrays',
+            'desc'    => 'A CSS class to apply to keys in rendering Key-Value tables',
             'access' => ['projectOwner', 'coder'],
             'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'key_class',
             'appliesTo' => 'renderers',
 
         ],
         'valueClass' => [
             'label'   => 'Value Class',
-            'desc'    => 'A CSS class to apply to values in rendering arrays',
+            'desc'    => 'A CSS class to apply to values in rendering Key-Value tables',
             'access' => ['projectOwner', 'coder'],
             'type'    => '',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
+            'shortcode' => 'value_class',
             'appliesTo' => 'renderers',
 
         ],
@@ -542,6 +583,7 @@ function getAllOptions() {
             'type'    => '',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => 'need to break this out',
+            'shortcode' => 'leaflet_ceres',
             'appliesTo' => 'renderers',
 
         ],
@@ -553,6 +595,7 @@ function getAllOptions() {
             'type'    => '',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => 'need to break this out? probably not if access remains limited to coders',
+            'shortcode' => 'leaflet_native',
             'appliesTo' => 'renderers',
         ],
 
@@ -573,6 +616,30 @@ function getAllOptions() {
 
 function getOptionsValues() {
     $ceresOptionsValues = [
+        'extractorValueLabelMappingFilePath' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => null,
+            ]
+
+        ],
+
+        'altTextProp' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => null,
+            ]
+            ],
+
+        'rqFile' => [
+            'currentValue' => null,
+            'defaults' => [
+                'ceres' => null,
+            ]
+        ],
+
+
+
         'extractorReorderMappingFilePath' => [
             'currentValue' => null,
             'defaults' => [
@@ -620,7 +687,7 @@ function getOptionsValues() {
                 'leaflet_wikidata_for_public_art_map' => true,
             ]
         ],
-        'fileForQuery' => [
+        'rqFile' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
@@ -1107,7 +1174,7 @@ function getViewPackages() {
             'startPage',
             'resourceIds',
             'query',
-            'fileForQuery',
+            'rqFile',
             'fetcherGroupBy',
             'fetcherFilterBy',
             'fetcherSortBy',
@@ -1143,7 +1210,7 @@ function getViewPackages() {
         'general' => [
             'metadataToShow',
             'altLabelProp',
-            'fileForQuery',
+            'rqFile',
             'bounceBack',
         ],
 
@@ -1181,7 +1248,7 @@ function getViewPackages() {
 // alternatively, the prophesized parentViewPackage system
 
 
-// 'fileForQuery' => [
+// 'rqFile' => [
 //     'currentValue' => null,
 //     'defaults' => [
 //         'ceres' => '',
@@ -1278,199 +1345,48 @@ function getViewPackages() {
 
 
 
-        "tabular_wikibase_for_chinatown" => [
-            'humanName' => "Tabular data from NU's WikiBase for chinatown info",
-            'description' => "Builds tables of data for what's in our WikiBase",
-            'parentViewPackage' => null,
-            'projectName' => null,
-            
-            'renderer' => [
-                'Tabular' => [
-                    'fullClassName' => 'Ceres\Renderer\Tabular',
-                    'options' =>  //redundant, yes. but helps keep the same patter with fetchers and extractors
-                        array_merge(
-                            $rendererOptions['general'],
-                            $rendererOptions['tabular']
-                        )
-                        //after deduping options in the merge,
-                        // stuff in the current values
+    "tabular_wikibase_for_chinatown" => [
+        'humanName' => "Tabular data from NU's WikiBase for chinatown info",
+        'description' => "Builds tables of data for what's in our WikiBase",
+        'parentViewPackage' => null,
+        'projectName' => null,
+        
+        'renderer' => [
+            'Tabular' => [
+                'fullClassName' => 'Ceres\Renderer\Tabular',
+                'options' =>  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                    array_merge(
+                        $rendererOptions['general'],
+                        $rendererOptions['tabular']
+                    )
+                    //after deduping options in the merge,
+                    // stuff in the current values
 
-                ],
-            ],
-
-            'fetchers' => [            
-                'Wdqs' => [
-                    'fullClassName' => 'Ceres\Fetcher\Wdqs',
-                    'options' => array_merge(
-                        $fetcherOptions['general'],
-                        $fetcherOptions['wdqs']),
-                ]
-            ],
-
-            'extractors' => [
-                'WdqsToTabular' => [
-                    'fullClassName' => 'Ceres\Extractor\SparqlToTable',
-                    'options' => array_merge(
-                        $extractorOptions['general'],
-                        $extractorOptions['tabular']),
-                    ],
             ],
         ],
 
-        "tabular_wikidata_for_short_metadata" =>
-                [
-                'humanName' => "Tabular Wikidata For Short Metadata",
-                'description' => "Description",
-                'parentViewPackage' => null,
-                'projectName' => null,
-                'renderer' => [
-                        'Tabular' => [
-                            'fullClassName' => 'Ceres\Renderer\Tabular',
-                            'options' =>  //redundant, yes. but helps keep the same patter with fetchers and extractors
-                                array_merge(
-                                    $rendererOptions['general'],
-                                    $rendererOptions['tabular']
-                                )
-                                //after deduping options in the merge,
-                                // stuff in the current values
+        'fetchers' => [            
+            'Wdqs' => [
+                'fullClassName' => 'Ceres\Fetcher\Wdqs',
+                'options' => array_merge(
+                    $fetcherOptions['general'],
+                    $fetcherOptions['wdqs']),
+            ]
+        ],
 
-                    ],
+        'extractors' => [
+            'WdqsToTabular' => [
+                'fullClassName' => 'Ceres\Extractor\SparqlToTable',
+                'options' => array_merge(
+                    $extractorOptions['general'],
+                    $extractorOptions['tabular']),
                 ],
+        ],
+    ],
 
-                'fetchers' =>
-                    [
-                        'Wdqs' => [
-                            'fullClassName' => 'Ceres\Fetcher\Wdqs',
-                            'options' => array_merge(
-                                $fetcherOptions['general'],
-                                $fetcherOptions['wdqs']),
-                        ]
-                    ],
-
-                'extractors' =>
-                    [
-                        'WdqsToTabular' => [
-                            'fullClassName' => 'Ceres\Extractor\WdqsToTabular',
-                            'options' => array_merge(
-                                $extractorOptions['general'],
-                                $extractorOptions['tabular']),
-                            ],
-                    ],
-                ],
-        "leaflet_wikidata_for_public_art_map" =>
+    "tabular_wikidata_for_short_metadata" =>
             [
-                'humanName' => "Leaflet Wikidata for Public Art Map",
-                'description' => "Description",
-                'parentViewPackage' => null,
-                'projectName' => null,
-                'renderer' => [
-                    //@todo fold LeafletMapBrc into the more general LeafletMap
-                        'LeafletMapBrc' => [
-                            'fullClassName' => 'Ceres\Renderer\LeafletMapBrc',
-                            'options' =>  //redundant, yes. but helps keep the same patter with fetchers and extractors
-                                array_merge(
-                                    $rendererOptions['general'],
-                                    //$rendererOptions['leafletCeres']
-                                )
-                                //after deduping options in the merge,
-                                // stuff in the current values
-
-                        ]
-                    ],
-
-                'fetchers' =>
-                    [
-                        'Wdqs' => [
-                            'fullClassName' => 'Ceres\Fetcher\Wdqs',
-                            'options' => array_merge(
-                                $fetcherOptions['general'],
-                                $fetcherOptions['wdqs']),
-                                //@todo put this into the defaults system
-                                // ['bounceBack' => true,
-                                //  'fileForQuery' => "CERES_ROOT_DIR/data/rqfiles/publicart/leaflet.rq",
-                                // ]
-                        ]
-                    ],
-
-                'extractors' =>
-                    [
-                    ],
-                ],
-        "leaflet_wikidata_for_public_art_table" =>
-        [
-                    'humanName' => "Table Wikidata for Public Art Map",
-                    'description' => "Extract data from Wikidata for a map, but display as table.",
-                    'parentViewPackage' => null,
-                    'projectName' => null,
-                    'renderer' => [
-                            'Tabular' => [
-                                'fullClassName' => 'Ceres\Renderer\Tabular',
-                                'options' =>  //redundant, yes. but helps keep the same patter with fetchers and extractors
-                                    array_merge(
-                                        $rendererOptions['general'],
-                                        $rendererOptions['tabular']
-                                    )
-                                    //after deduping options in the merge,
-                                    // stuff in the current values
-
-                            ]
-                        ],
-
-                    'fetchers' =>
-                        [
-                            'Wdqs' => [
-                                'fullClassName' => 'Ceres\Fetcher\Wdqs',
-                                'options' => array_merge(
-                                    $fetcherOptions['general'],
-                                    $fetcherOptions['wdqs'],
-                                ),
-                            ]
-                        ],
-
-                    'extractors' =>
-                        [
-                            'WdqsToTabular' => [
-                                'fullClassName' => 'Ceres\Extractor\SparqlToTable',
-                                'options' => array_merge(
-                                    $extractorOptions['general'],
-                                    $extractorOptions['tabular']
-                                ),
-                                ],
-                        ],
-                    ],
-        "html_dev_test" =>
-        [
-            'humanName' => "Html Dev Test",
-            'description' => "Description",
-            'parentViewPackage' => null,
-            'projectName' => null,
-            'renderer' => [
-                    'Html' => [
-                        'fullClassName' => 'Ceres\Renderer\Html',
-                        'options' =>   //redundant, yes. but helps keep the same patter with fetchers and extractors
-                            array_merge(
-                                $rendererOptions['general'],
-                                $rendererOptions['html']
-                            )
-                            //after deduping options in the merge,
-                            // stuff in the current values
-
-                    ]
-
-                ],
-
-            'fetchers' =>
-                [
-                ],
-
-            'extractors' =>
-                [
-                ],
-            ],
-
-        "tabular_dev_test" =>
-        [
-            'humanName' => "Tabular Dev Test",
+            'humanName' => "Tabular Wikidata For Short Metadata",
             'description' => "Description",
             'parentViewPackage' => null,
             'projectName' => null,
@@ -1485,66 +1401,7 @@ function getViewPackages() {
                             //after deduping options in the merge,
                             // stuff in the current values
 
-                    ]
                 ],
-
-            'fetchers' =>
-                [
-                ],
-
-            'extractors' =>
-                [
-                ],
-            ],
-
-        "leafletmap_dev_test" =>
-        [
-            'humanName' => "LeafletMap Dev Test",
-            'description' => "Description",
-            'parentViewPackage' => null,
-            'projectName' => null,
-            'renderer' => [
-                    'LeafletMap' => [
-                        'fullClassName' => 'Ceres\Renderer\LeafletMap',
-                        'options' =>  //redundant, yes. but helps keep the same patter with fetchers and extractors
-                            array_merge(
-                                $rendererOptions['general'],
-                                $rendererOptions['tabular']
-                            )
-                            //after deduping options in the merge,
-                            // stuff in the current values
-
-                    ]
-                ],
-
-            'fetchers' =>
-                [
-                ],
-
-            'extractors' =>
-                [
-                ],
-            ],
-        "tabular_wdqs_test" =>
-        [
-            'humanName' => "Tabular Wdqs Test",
-            'description' => "Description",
-            'parentViewPackage' => null,
-            'projectName' => null,
-            'renderer' =>
-                [
-                    'Tabular' =>
-                        [
-                        'fullClassName' => 'Ceres\Renderer\Tabular',
-                        'options' => //redundant, yes. but helps keep the same patter with fetchers and extractors
-                            array_merge(
-                                $rendererOptions['general'],
-                                $rendererOptions['tabular']
-                            )
-                            //after deduping options in the merge,
-                            // stuff in the current values
-
-                    ],
             ],
 
             'fetchers' =>
@@ -1559,21 +1416,28 @@ function getViewPackages() {
 
             'extractors' =>
                 [
+                    'WdqsToTabular' => [
+                        'fullClassName' => 'Ceres\Extractor\WdqsToTabular',
+                        'options' => array_merge(
+                            $extractorOptions['general'],
+                            $extractorOptions['tabular']),
+                        ],
                 ],
             ],
-        "tabular_drs_test" =>
+    "leaflet_wikidata_for_public_art_map" =>
         [
-            'humanName' => "Tabular Drs Test",
+            'humanName' => "Leaflet Wikidata for Public Art Map",
             'description' => "Description",
             'parentViewPackage' => null,
             'projectName' => null,
             'renderer' => [
-                    'Tabular' => [
-                        'fullClassName' => 'Ceres\Renderer\Tabular',
-                        'options' => //redundant, yes. but helps keep the same patter with fetchers and extractors
+                //@todo fold LeafletMapBrc into the more general LeafletMap
+                    'LeafletMapBrc' => [
+                        'fullClassName' => 'Ceres\Renderer\LeafletMapBrc',
+                        'options' =>  //redundant, yes. but helps keep the same patter with fetchers and extractors
                             array_merge(
                                 $rendererOptions['general'],
-                                $rendererOptions['tabular']
+                                //$rendererOptions['leafletCeres']
                             )
                             //after deduping options in the merge,
                             // stuff in the current values
@@ -1583,29 +1447,232 @@ function getViewPackages() {
 
             'fetchers' =>
                 [
-                    'Drs' => [
-                        'fullClassName' => 'Ceres\Fetcher\Drs',
+                    'Wdqs' => [
+                        'fullClassName' => 'Ceres\Fetcher\Wdqs',
                         'options' => array_merge(
                             $fetcherOptions['general'],
                             $fetcherOptions['wdqs']),
+                            //@todo put this into the defaults system
+                            // ['bounceBack' => true,
+                            //  'rqFile' => "CERES_ROOT_DIR/data/rqfiles/publicart/leaflet.rq",
+                            // ]
                     ]
                 ],
 
             'extractors' =>
                 [
-                    'DrsToTabular' => [
-                        'fullClassName' => 'Ceres\Extractor\DrsToTabular',
-                        'options' => array_merge(
-                            $extractorOptions['general'],
-                        //    $extractorOptions['leaflet']
-                        ),
-                        ],
                 ],
             ],
+    "leaflet_wikidata_for_public_art_table" =>
+    [
+                'humanName' => "Table Wikidata for Public Art Map",
+                'description' => "Extract data from Wikidata for a map, but display as table.",
+                'parentViewPackage' => null,
+                'projectName' => null,
+                'renderer' => [
+                        'Tabular' => [
+                            'fullClassName' => 'Ceres\Renderer\Tabular',
+                            'options' =>  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                                array_merge(
+                                    $rendererOptions['general'],
+                                    $rendererOptions['tabular']
+                                )
+                                //after deduping options in the merge,
+                                // stuff in the current values
 
-        //"another_view_package" => [],
+                        ]
+                    ],
 
-    ];
+                'fetchers' =>
+                    [
+                        'Wdqs' => [
+                            'fullClassName' => 'Ceres\Fetcher\Wdqs',
+                            'options' => array_merge(
+                                $fetcherOptions['general'],
+                                $fetcherOptions['wdqs'],
+                            ),
+                        ]
+                    ],
+
+                'extractors' =>
+                    [
+                        'WdqsToTabular' => [
+                            'fullClassName' => 'Ceres\Extractor\SparqlToTable',
+                            'options' => array_merge(
+                                $extractorOptions['general'],
+                                $extractorOptions['tabular']
+                            ),
+                            ],
+                    ],
+                ],
+    "html_dev_test" =>
+    [
+        'humanName' => "Html Dev Test",
+        'description' => "Description",
+        'parentViewPackage' => null,
+        'projectName' => null,
+        'renderer' => [
+                'Html' => [
+                    'fullClassName' => 'Ceres\Renderer\Html',
+                    'options' =>   //redundant, yes. but helps keep the same patter with fetchers and extractors
+                        array_merge(
+                            $rendererOptions['general'],
+                            $rendererOptions['html']
+                        )
+                        //after deduping options in the merge,
+                        // stuff in the current values
+
+                ]
+
+            ],
+
+        'fetchers' =>
+            [
+            ],
+
+        'extractors' =>
+            [
+            ],
+        ],
+
+    "tabular_dev_test" =>
+    [
+        'humanName' => "Tabular Dev Test",
+        'description' => "Description",
+        'parentViewPackage' => null,
+        'projectName' => null,
+        'renderer' => [
+                'Tabular' => [
+                    'fullClassName' => 'Ceres\Renderer\Tabular',
+                    'options' =>  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                        array_merge(
+                            $rendererOptions['general'],
+                            $rendererOptions['tabular']
+                        )
+                        //after deduping options in the merge,
+                        // stuff in the current values
+
+                ]
+            ],
+
+        'fetchers' =>
+            [
+            ],
+
+        'extractors' =>
+            [
+            ],
+        ],
+
+    "leafletmap_dev_test" =>
+    [
+        'humanName' => "LeafletMap Dev Test",
+        'description' => "Description",
+        'parentViewPackage' => null,
+        'projectName' => null,
+        'renderer' => [
+                'LeafletMap' => [
+                    'fullClassName' => 'Ceres\Renderer\LeafletMap',
+                    'options' =>  //redundant, yes. but helps keep the same patter with fetchers and extractors
+                        array_merge(
+                            $rendererOptions['general'],
+                            $rendererOptions['tabular']
+                        )
+                        //after deduping options in the merge,
+                        // stuff in the current values
+
+                ]
+            ],
+
+        'fetchers' =>
+            [
+            ],
+
+        'extractors' =>
+            [
+            ],
+        ],
+    "tabular_wdqs_test" =>
+    [
+        'humanName' => "Tabular Wdqs Test",
+        'description' => "Description",
+        'parentViewPackage' => null,
+        'projectName' => null,
+        'renderer' =>
+            [
+                'Tabular' =>
+                    [
+                    'fullClassName' => 'Ceres\Renderer\Tabular',
+                    'options' => //redundant, yes. but helps keep the same patter with fetchers and extractors
+                        array_merge(
+                            $rendererOptions['general'],
+                            $rendererOptions['tabular']
+                        )
+                        //after deduping options in the merge,
+                        // stuff in the current values
+
+                ],
+        ],
+
+        'fetchers' =>
+            [
+                'Wdqs' => [
+                    'fullClassName' => 'Ceres\Fetcher\Wdqs',
+                    'options' => array_merge(
+                        $fetcherOptions['general'],
+                        $fetcherOptions['wdqs']),
+                ]
+            ],
+
+        'extractors' =>
+            [
+            ],
+        ],
+    "tabular_drs_test" =>
+    [
+        'humanName' => "Tabular Drs Test",
+        'description' => "Description",
+        'parentViewPackage' => null,
+        'projectName' => null,
+        'renderer' => [
+                'Tabular' => [
+                    'fullClassName' => 'Ceres\Renderer\Tabular',
+                    'options' => //redundant, yes. but helps keep the same patter with fetchers and extractors
+                        array_merge(
+                            $rendererOptions['general'],
+                            $rendererOptions['tabular']
+                        )
+                        //after deduping options in the merge,
+                        // stuff in the current values
+
+                ]
+            ],
+
+        'fetchers' =>
+            [
+                'Drs' => [
+                    'fullClassName' => 'Ceres\Fetcher\Drs',
+                    'options' => array_merge(
+                        $fetcherOptions['general'],
+                        $fetcherOptions['wdqs']),
+                ]
+            ],
+
+        'extractors' =>
+            [
+                'DrsToTabular' => [
+                    'fullClassName' => 'Ceres\Extractor\DrsToTabular',
+                    'options' => array_merge(
+                        $extractorOptions['general'],
+                    //    $extractorOptions['leaflet']
+                    ),
+                    ],
+            ],
+        ],
+
+    //"another_view_package" => [],
+
+];
 
 
     return $ceresViewPackages;

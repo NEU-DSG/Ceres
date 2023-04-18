@@ -15,7 +15,6 @@ class CeresOptionsToTable extends AbstractExtractor {
 
         //$dataToRender = [];//do the things to go from $this->sourceData to $this->dataToRender
         $this->setDataToRender($dataToRender);
-        print_r($this->dataToRender);
     }
 
     protected function preSetSourceData($sourceData)
@@ -25,7 +24,8 @@ class CeresOptionsToTable extends AbstractExtractor {
 
     protected function optionsToTableArray() {
         $tableArray = [];
-        $headings = ['OptionId', 'Label', 'Shortcode', 'Description', 'Defaults', 'Type', 'Access' ];
+        //$headings = ['OptionId', 'Label', 'Shortcode', 'Description', 'Defaults', 'Type', 'Access' ];
+        $headings = ['OptionId', 'Label', 'Description', 'Access', 'Type', 'Defaults', 'Shortcode', 'Applies To' ];
         $tableArray[] = $headings;
     
         foreach($this->sourceData as $optionName=>$props) {
@@ -38,7 +38,6 @@ class CeresOptionsToTable extends AbstractExtractor {
     protected function optionToRow($optionName, $props) {
         $rowArray = [$optionName];
         $propsToShow = ['label', 'shortcode', 'desc', 'type', 'defaults', 'access'];
-    
         foreach($props as $prop=>$value) {
             if (in_array($prop, $propsToShow)) {
                 switch ($prop) {

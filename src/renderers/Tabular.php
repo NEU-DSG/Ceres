@@ -88,6 +88,13 @@ class Tabular extends Html {
 
         foreach ($rowData as $columnData) {
             $tdNode = $this->htmlDom->createElement($cellElement);
+
+            //@todo handle column data that's a nested array, and different guidance from Extractor (e.g. 'list', 'img')
+            if (is_array($columnData)) {
+                $columnData = "array";
+                //$columnData = implode(', ', $columnData);
+                //print_r($columnData);
+            }
             $this->appendTextNode($tdNode, $columnData);
             $this->appendToClass($tdNode, $tdClass);
             $trNode->appendChild($tdNode);

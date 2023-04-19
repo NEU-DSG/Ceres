@@ -90,12 +90,35 @@ class Tabular extends Html {
             $tdNode = $this->htmlDom->createElement($cellElement);
 
             //@todo handle column data that's a nested array, and different guidance from Extractor (e.g. 'list', 'img')
+            // this should be abstracted out somewhere/how?
+
+
             if (is_array($columnData)) {
-                $columnData = "array";
-                //$columnData = implode(', ', $columnData);
-                //print_r($columnData);
+                $type = $columnData['type'];
+                $data = $columnData['data'];
+                switch ($type) {
+                    case 'ul':
+                        $columnData = $this->arrayToUl($data);
+                    break;
+
+                    case 'link':
+                        $columnData = $this->arrayToA($data);
+                    break;
+
+                    case 'keyValue':
+                        $columnData = $this->arrayToKeyValue($data); // or should this pass off to a KeyValue Renderer?
+                    break;
+
+                    default:
+
+                    //throw something?
+
+                }
+                $tdNode->appendChild($columnData);
+            } else {
+                $this->appendTextNode($tdNode, $columnData);
             }
-            $this->appendTextNode($tdNode, $columnData);
+            
             $this->appendToClass($tdNode, $tdClass);
             $trNode->appendChild($tdNode);
         }

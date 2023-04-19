@@ -607,8 +607,8 @@ function getAllOptions() {
 //     'currentValue' => null,
 //     'defaults' => [
 //         'ceres' => '',
-//         'projectName' => '',
-//         'viewPackageName' => '',
+//         '$projectName' => '',
+//         '$viewPackageName' => '',
 //     ]
 // ],
 // ],
@@ -702,7 +702,7 @@ function getOptionsValues() {
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
+                '$projectName' => '',
                 'html_dev_test' => 'Howdy!' ,
                 'tabular_dev_test' => '',
             ]
@@ -712,9 +712,9 @@ function getOptionsValues() {
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
+                '$projectName' => '',
                 'html_dev_test' => 'Howdy!' ,
-                'viewPackageName' => '',
+                '$viewPackageName' => '',
             ]
         ],
 
@@ -722,50 +722,50 @@ function getOptionsValues() {
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
+                '$projectName' => '',
                 'html_dev_test' => 'aria-label' ,
-                'viewPackageName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'resourceLinkProp' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'searchType' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'extractorMetadataFilterBy' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'float' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
+                '$projectName' => '',
                 'html_dev_test' => 'left' ,
-                'viewPackageName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'extractorMetadataToShow' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => [],
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
                 ]
             ],
 
@@ -773,9 +773,9 @@ function getOptionsValues() {
             'currentValue' => null,
             'defaults' => [
                 'ceres' => [],
-                'projectName' => '',
+                '$projectName' => '',
                 'html_dev_test' => ['all'],
-                'viewPackageName' => '',
+                '$viewPackageName' => '',
                 ]
             ],
 
@@ -784,103 +784,103 @@ function getOptionsValues() {
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'extractorResourcesFilterBy' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'extractorMetadataSortBy' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'extractorResourcesSortBy' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'extractorMetadataSortOrder' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'extractorResourcesSortOrder' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'extractorMetadataSortByProperty' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'extractorResourcesSortByProperty' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'extractorGroupBy' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'itemLinkProp' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'mediaLinkProp' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'mediaUriProp' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'thClass' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => 'ceres-th',
-                'projectName' => '',
+                '$projectName' => '',
                 'html_dev_test' => 'ceres-test',
                 'tabular_dev_test' => 'ceres-dev ceres-th',
             ]
@@ -890,7 +890,7 @@ function getOptionsValues() {
             'currentValue' => null,
             'defaults' => [
                 'ceres' => 'ceres-tr',
-                'projectName' => '',
+                '$projectName' => '',
                 'html_dev_test' => 'ceres-test',
                 'tabular_dev_test' => 'ceres-dev ceres-tr',
             ]
@@ -899,9 +899,9 @@ function getOptionsValues() {
             'currentValue' => null,
             'defaults' => [
                 'ceres' => 'ceres-thead',
-                'projectName' => '',
+                '$projectName' => '',
                 'html_dev_test' => 'ceres-td ceres-test',
-                'viewPackageName' => '',
+                '$viewPackageName' => '',
                 'tabular_dev_test' => 'ceres-dev ceres-td',
             ]
         ],
@@ -909,9 +909,9 @@ function getOptionsValues() {
             'currentValue' => null,
             'defaults' => [
                 'ceres' => 'ceres-caption',
-                'projectName' => '',
+                '$projectName' => '',
                 'html_dev_test' => 'ceres-td ceres-test',
-                'viewPackageName' => '',
+                '$viewPackageName' => '',
                 'tabular_dev_test' => 'ceres-dev ceres-td',
             ]
         ],
@@ -919,9 +919,9 @@ function getOptionsValues() {
             'currentValue' => null,
             'defaults' => [
                 'ceres' => 'ceres-td',
-                'projectName' => '',
+                '$projectName' => '',
                 'html_dev_test' => 'ceres-td ceres-test',
-                'viewPackageName' => '',
+                '$viewPackageName' => '',
                 'tabular_dev_test' => 'ceres-dev ceres-td',
             ]
         ],
@@ -929,9 +929,9 @@ function getOptionsValues() {
             'currentValue' => null,
             'defaults' => [
                 'ceres' => 'ceres-table',
-                'projectName' => '',
+                '$projectName' => '',
                 'html_dev_test' => 'ceres-td ceres-test',
-                'viewPackageName' => '',
+                '$viewPackageName' => '',
                 'tabular_dev_test' => 'ceres-dev ceres-td',
             ]
         ],
@@ -951,64 +951,64 @@ function getOptionsValues() {
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'getAll' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'responseFormat' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'perPage' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'startPage' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'resourceIds' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'query' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'queryFile' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
                 'leaflet_wikidata_for_public_art_table' => CERES_ROOT_DIR . '/data/rqFiles/publicart/leaflet.rq'
             ]
         ],
@@ -1016,8 +1016,8 @@ function getOptionsValues() {
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
                 'leaflet_wikidata_for_public_art_table' => true,
                 'tabular_wikibase_for_chinatown' => true,
             ]
@@ -1026,64 +1026,64 @@ function getOptionsValues() {
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'fetcherFilterBy' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'fetcherSortBy' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'fetcherSortOrder' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'fetcherSortByProperty' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'separator' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'keyClass' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         'valueClass' => [
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         //settings in the surrounding HTML
@@ -1091,8 +1091,8 @@ function getOptionsValues() {
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
         //passthroughs to Leaflet
@@ -1100,8 +1100,8 @@ function getOptionsValues() {
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                'projectName' => '',
-                'viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
             ]
         ],
 
@@ -1264,7 +1264,7 @@ function getViewPackages() {
         'humanName' => "Tabular data from NU's WikiBase for chinatown info",
         'description' => "Builds tables of data for what's in our WikiBase",
         'parentViewPackage' => null,
-        'projectName' => null,
+        '$projectName' => null,
         
         'renderer' => [
             'Tabular' => [
@@ -1304,7 +1304,7 @@ function getViewPackages() {
         'humanName' => "Tabular data from NU's WikiBase for chinatown info",
         'description' => "Builds tables of data for what's in our WikiBase",
         'parentViewPackage' => null,
-        'projectName' => null,
+        '$projectName' => null,
         
         'renderer' => [
             'Tabular' => [
@@ -1349,7 +1349,7 @@ function getViewPackages() {
         'humanName' => "Tabular data from NU's WikiBase for chinatown info",
         'description' => "Builds tables of data for what's in our WikiBase",
         'parentViewPackage' => null,
-        'projectName' => null,
+        '$projectName' => null,
         
         'renderer' => [
             'Tabular' => [
@@ -1389,7 +1389,7 @@ function getViewPackages() {
             'humanName' => "Tabular Wikidata For Short Metadata",
             'description' => "Description",
             'parentViewPackage' => null,
-            'projectName' => null,
+            '$projectName' => null,
             'renderer' => [
                     'Tabular' => [
                         'fullClassName' => 'Ceres\Renderer\Tabular',
@@ -1429,7 +1429,7 @@ function getViewPackages() {
             'humanName' => "Leaflet Wikidata for Public Art Map",
             'description' => "Description",
             'parentViewPackage' => null,
-            'projectName' => null,
+            '$projectName' => null,
             'renderer' => [
                 //@todo fold LeafletMapBrc into the more general LeafletMap
                     'LeafletMapBrc' => [
@@ -1468,7 +1468,7 @@ function getViewPackages() {
                 'humanName' => "Table Wikidata for Public Art Map",
                 'description' => "Extract data from Wikidata for a map, but display as table.",
                 'parentViewPackage' => null,
-                'projectName' => null,
+                '$projectName' => null,
                 'renderer' => [
                         'Tabular' => [
                             'fullClassName' => 'Ceres\Renderer\Tabular',
@@ -1510,7 +1510,7 @@ function getViewPackages() {
         'humanName' => "Html Dev Test",
         'description' => "Description",
         'parentViewPackage' => null,
-        'projectName' => null,
+        '$projectName' => null,
         'renderer' => [
                 'Html' => [
                     'fullClassName' => 'Ceres\Renderer\Html',
@@ -1540,7 +1540,7 @@ function getViewPackages() {
         'humanName' => "Tabular Dev Test",
         'description' => "Description",
         'parentViewPackage' => null,
-        'projectName' => null,
+        '$projectName' => null,
         'renderer' => [
                 'Tabular' => [
                     'fullClassName' => 'Ceres\Renderer\Tabular',
@@ -1569,7 +1569,7 @@ function getViewPackages() {
         'humanName' => "LeafletMap Dev Test",
         'description' => "Description",
         'parentViewPackage' => null,
-        'projectName' => null,
+        '$projectName' => null,
         'renderer' => [
                 'LeafletMap' => [
                     'fullClassName' => 'Ceres\Renderer\LeafletMap',
@@ -1597,7 +1597,7 @@ function getViewPackages() {
         'humanName' => "Tabular Wdqs Test",
         'description' => "Description",
         'parentViewPackage' => null,
-        'projectName' => null,
+        '$projectName' => null,
         'renderer' =>
             [
                 'Tabular' =>
@@ -1633,7 +1633,7 @@ function getViewPackages() {
         'humanName' => "Tabular Drs Test",
         'description' => "Description",
         'parentViewPackage' => null,
-        'projectName' => null,
+        '$projectName' => null,
         'renderer' => [
                 'Tabular' => [
                     'fullClassName' => 'Ceres\Renderer\Tabular',

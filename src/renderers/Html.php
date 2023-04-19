@@ -52,14 +52,6 @@ class Html extends AbstractRenderer {
         $text = $this->getRendererOptionValue('text');
         $this->appendTextNode($this->containerNode, $text);
     }
-
-    // @todo move to utils?
-    public function linkify(array $linkData) : DOMElement {
-        $aElement = $this->htmlDom->createElement('a');
-        $aElement->setAttribute('href', $linkData['url']);
-        $this->appendTextNode($aElement, $linkData['label']);
-        return $aElement;
-        }
   
     public function toHtmlString(?DOMElement $node = null) : string {
         if (is_null($node)) {
@@ -76,28 +68,57 @@ class Html extends AbstractRenderer {
         restore_error_handler();
     }
 
-    public function setContainerNode() {
+    protected function setContainerNode() {
         $this->containerNode = $this->htmlDom->getElementById('ceres-container');
     }
 
-    public function getContainerNode() : DOMElement {
+    protected function getContainerNode() : DOMElement {
         return $this->containerNode;
     }
 
 
-    public function appendToClass(DOMElement $element, $value ):void {
+    protected function appendToClass(DOMElement $element, $value ):void {
         $class = $element->getAttribute('class');
         $class = $class .= " $value";
         $element->setAttribute('class', $class);
     }
 
-
-    public function appendTextNode(DOMElement $element, ?string $text) {
+    protected function appendTextNode(DOMElement $element, ?string $text) {
         $textNode = $this->htmlDom->createTextNode($text);
         $element->appendChild($textNode);
     }
 
-    public function enumToSelect(array $enumOptions) : DOMElement {
+
+
+/* mini-renderers to build really simple HTML elements */
+
+    // @todo move to utils?
+    protected function arrayToA(array $linkData) : DOMElement {
+        $aElement = $this->htmlDom->createElement('a');
+        $aElement->setAttribute('href', $linkData['url']);
+        $this->appendTextNode($aElement, $linkData['label']);
+        return $aElement;
+    }
+
+    //@todo or pass off to a KeyValue renderer?
+    protected function arrayToKeyValue(array $keyValueData): DOMElement {
+        $kvContainerNode = $this->htmlDom->createElement('div');
+        foreach($keyValueData as $key=>$value) {
+            if (is_array($value)) {
+                $text = "$key: an array!";
+            } else {
+                $text = "$key: $value";
+            }
+            $kvPContainerNode = $this->htmlDom->createElement('p');
+            $this->appendTextNode($kvPContainerNode, $text);
+            $kvContainerNode->appendChild($kvPContainerNode);
+        }
+        return $kvContainerNode;
+    }
+
+
+
+    public function enumArrayToSelect(array $enumOptions) : DOMElement {
         $selectNode = $this->htmlDom->createElement('select');
 
         foreach ($enumOptions as $option) {

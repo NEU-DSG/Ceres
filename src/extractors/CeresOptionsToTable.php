@@ -45,44 +45,52 @@ class CeresOptionsToTable extends AbstractExtractor {
                     case 'type':
                         switch ($value) {
                             case 'bool':
-                                $value = "true/false";
+                                $newValue = "true/false";
                             break;
     
                             case 'varchar':
-                                $value = "short text";
+                                $newValue = "short text";
                             break;
     
                             case 'text':
-                                $value = "long text";
+                                $newValue = "long text";
                             break;
     
                             case 'enum':
-                                $value = DataUtil::allEnumValuesForOption($optionName);                            
+                                $newValue = DataUtil::allEnumValuesForOption($optionName);
+                                $newValue = "enums broken until I fix nested data arrays";                         
                                 //$value = "A list of settings (to be filled in)";
                             break;
     
                             case 'FilePath':
-                                $value = "The id of a file with the relevant data";
+                                $newValue = "The id of a file with the relevant data";
                             break;
-    
-                            
     
                         }
     
                     break;
+
+                    case 'access':
+                        $newValue = [];
+                        $newValue['type'] = 'ul';
+                        $newValue['data'] = $value;
+
+                        
+                    break;
     
                     case 'defaults':
-                        $value = DataUtil::allDefaultsForOption($optionName);
-                        //$value = 'wft defaults';
+                        $newValue = [];
+                        $newValue['type'] = 'keyValue';
+                        $newValue['data'] = DataUtil::allDefaultsForOption($optionName);
                     break;
     
                     default:
-    
+                        $newValue = $value;
     
                     break;
     
                 }
-                $rowArray[] = $value;
+                $rowArray[] = $newValue;
             }
             
         }

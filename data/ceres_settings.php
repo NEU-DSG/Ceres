@@ -569,7 +569,7 @@ function getAllOptions() {
             'label'   => 'Value Class',
             'desc'    => 'A CSS class to apply to values in rendering Key-Value tables',
             'access' => ['projectOwner', 'coder'],
-            'type'    => '',
+            'type'    => 'varchar',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => "",
             'shortcode' => 'value_class',
@@ -580,7 +580,7 @@ function getAllOptions() {
             'label'   => 'Leaflet CERES',
             'desc'    => '',
             'access' => ['coder'],
-            'type'    => '',
+            'type'    => 'data',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => 'need to break this out',
             'shortcode' => 'leaflet_ceres',
@@ -592,7 +592,7 @@ function getAllOptions() {
             'label'   => '',
             'desc'    => '',
             'access' => ['coder'],
-            'type'    => '',
+            'type'    => 'data',
             'defaults' => 'from $ceresOptionsValues array',
             'notes' => 'need to break this out? probably not if access remains limited to coders',
             'shortcode' => 'leaflet_native',
@@ -939,8 +939,8 @@ function getOptionsValues() {
             'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
-                '?projectName' => '',
-                '?viewPackageName' => '',
+                '$projectName' => '',
+                '$viewPackageName' => '',
                 'tabular_wikibase_for_chinatown_maintainers' => 'http://ec2-34-227-69-60.compute-1.amazonaws.com:8834/proxy/wdqs/bigdata/namespace/wdq/sparql',
                 'leaflet_wikidata_for_public_art_table' => 'https://query.wikidata.org/sparql',
                 'leaflet_wikidata_for_public_art_map' => 'https://query.wikidata.org/sparql',
@@ -1696,16 +1696,16 @@ function getOptionsEnums() {
             'ceres' => ['extra small', 'small', 'medium', 'large', 'extra large'],
         ],
         'extractorMetadataSortOrder' => [
-
+            'ceres' => ['query default'],
         ],
         'extractorResourcesSortOrder' => [
-
+            'ceres' => ['query default'],
         ],
         'extractorMetadataToShow' => [
-
+            'ceres' => ['all']
         ],
         'fetcherMetadataToShow' => [
-
+            'ceres' => ['all']
         ],
 
         'metadataToShow' => [

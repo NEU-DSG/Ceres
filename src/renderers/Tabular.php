@@ -98,16 +98,19 @@ class Tabular extends Html {
                 $data = $columnData['data'];
                 switch ($type) {
                     case 'ul':
-                        $columnData = $this->arrayToUl($data);
+                        $columnData = $this->extractorArrayToUl($data);
                     break;
 
                     case 'link':
-                        $columnData = $this->arrayToA($data);
+                        $columnData = $this->extractorArrayToA($data);
                     break;
 
                     case 'keyValue':
-                        $columnData = $this->arrayToKeyValue($data); // or should this pass off to a KeyValue Renderer?
+                        $columnData = $this->extractorArrayToKeyValue($data); // or should this pass off to a KeyValue Renderer?
                     break;
+
+                    case 'complexKeyValue':
+                        $columnData = $this->extractorComplexKeyValueArrayToUl($data);
 
                     default:
 

@@ -56,9 +56,33 @@ class CeresOptionsToTable extends AbstractExtractor {
                                 $newValue = "long text";
                             break;
     
+                            case 'int':
+                                $newValue = "non-negative integer";
+                            break;
+
+                            case 'data':
+                                $newValue = "a complex data structure";
+                            break;
                             case 'enum':
-                                $newValue = DataUtil::allEnumValuesForOption($optionName);
-                                $newValue = "enums broken until I fix nested data arrays";                         
+                                //$newValue = DataUtil::allEnumValuesForOption($optionName);
+                                $newValue['type'] = 'complexKeyValue';
+                                //put all enum values into the correct structure
+                                //@todo extract someday
+                                $allEnumsData =  DataUtil::allEnumValuesForOption($optionName);
+                                $scopeKeys = array_keys($allEnumsData);
+                                $data = [];
+
+                                //a value for each scope, so expand the keys for scope
+                                //into the type/data structure (1)
+                                //then put each of the values (which are arrays) (2)
+                                //into their own type/data structures
+                                foreach($scopeKeys as $scopeKey) { // (1)
+                                    $data[$scopeKey] = ['type' => 'ul', // (1)
+                                                        'data' => $allEnumsData[$scopeKey], // (2)
+                                                       ];
+                                }
+                                $newValue['data'] = $data;
+                                //$newValue = "enums broken until I fix nested data arrays";                         
                                 //$value = "A list of settings (to be filled in)";
                             break;
     

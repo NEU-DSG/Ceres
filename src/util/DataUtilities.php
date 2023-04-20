@@ -95,6 +95,12 @@ class DataUtilities {
         return self::$viewPackages[$vpId];
     }
 
+    static function labelForViewPackage(string $vpId): string {
+        self::setData();
+        $vpData = self::$viewPackages[$vpId];
+        return $vpData['label'];
+    }
+
     static function defaultsForOption($optionName, $scope='ceres') {
         self::setData();
 

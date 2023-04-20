@@ -1261,7 +1261,7 @@ function getViewPackages() {
 // ],
 
     "tabular_wikibase_for_chinatown_people" => [
-        'humanName' => "Tabular data from NU's WikiBase for chinatown info",
+        'label' => "Tabular data from NU's WikiBase for chinatown info",
         'description' => "Builds tables of data for what's in our WikiBase",
         'parentViewPackage' => null,
         '$projectName' => null,
@@ -1301,7 +1301,7 @@ function getViewPackages() {
 
 
     "tabular_wikibase_for_chinatown_maintainers" => [
-        'humanName' => "Tabular data from NU's WikiBase for chinatown info",
+        'label' => "Tabular data from NU's WikiBase for chinatown info",
         'description' => "Builds tables of data for what's in our WikiBase",
         'parentViewPackage' => null,
         '$projectName' => null,
@@ -1346,7 +1346,7 @@ function getViewPackages() {
 
 
     "tabular_wikibase_for_chinatown" => [
-        'humanName' => "Tabular data from NU's WikiBase for chinatown info",
+        'label' => "Tabular data from NU's WikiBase for chinatown info",
         'description' => "Builds tables of data for what's in our WikiBase",
         'parentViewPackage' => null,
         '$projectName' => null,
@@ -1386,7 +1386,7 @@ function getViewPackages() {
 
     "tabular_wikidata_for_short_metadata" =>
             [
-            'humanName' => "Tabular Wikidata For Short Metadata",
+            'label' => "Tabular Wikidata For Short Metadata",
             'description' => "Description",
             'parentViewPackage' => null,
             '$projectName' => null,
@@ -1426,7 +1426,7 @@ function getViewPackages() {
             ],
     "leaflet_wikidata_for_public_art_map" =>
         [
-            'humanName' => "Leaflet Wikidata for Public Art Map",
+            'label' => "Leaflet Wikidata for Public Art Map",
             'description' => "Description",
             'parentViewPackage' => null,
             '$projectName' => null,
@@ -1465,7 +1465,7 @@ function getViewPackages() {
             ],
     "leaflet_wikidata_for_public_art_table" =>
     [
-                'humanName' => "Table Wikidata for Public Art Map",
+                'label' => "Table Wikidata for Public Art Map",
                 'description' => "Extract data from Wikidata for a map, but display as table.",
                 'parentViewPackage' => null,
                 '$projectName' => null,
@@ -1507,7 +1507,7 @@ function getViewPackages() {
                 ],
     "html_dev_test" =>
     [
-        'humanName' => "Html Dev Test",
+        'label' => "Html Dev Test",
         'description' => "Description",
         'parentViewPackage' => null,
         '$projectName' => null,
@@ -1537,7 +1537,7 @@ function getViewPackages() {
 
     "tabular_dev_test" =>
     [
-        'humanName' => "Tabular Dev Test",
+        'label' => "Tabular Dev Test",
         'description' => "Description",
         'parentViewPackage' => null,
         '$projectName' => null,
@@ -1566,7 +1566,7 @@ function getViewPackages() {
 
     "leafletmap_dev_test" =>
     [
-        'humanName' => "LeafletMap Dev Test",
+        'label' => "LeafletMap Dev Test",
         'description' => "Description",
         'parentViewPackage' => null,
         '$projectName' => null,
@@ -1594,7 +1594,7 @@ function getViewPackages() {
         ],
     "tabular_wdqs_test" =>
     [
-        'humanName' => "Tabular Wdqs Test",
+        'label' => "Tabular Wdqs Test",
         'description' => "Description",
         'parentViewPackage' => null,
         '$projectName' => null,
@@ -1630,7 +1630,7 @@ function getViewPackages() {
         ],
     "tabular_drs_test" =>
     [
-        'humanName' => "Tabular Drs Test",
+        'label' => "Tabular Drs Test",
         'description' => "Description",
         'parentViewPackage' => null,
         '$projectName' => null,

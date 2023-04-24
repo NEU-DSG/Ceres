@@ -99,8 +99,6 @@ abstract class AbstractExtractor {
     }
 
     protected function postSetSourceData(): void {
- //echo"<h3>preSetSourceData: AbsExt</h3>";
-
         //do nothing, let other classes implement this as needed
     }
 

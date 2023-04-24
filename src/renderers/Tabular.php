@@ -36,7 +36,9 @@ class Tabular extends Html {
             $extractor = $this->extractors[0];
 
             $sourceData = $fetcher->fetchData();
-
+//  print_r($sourceData);
+//  echo "<h3>sourceData?</h3>";
+//  die();
             $extractor->setSourceData($sourceData);
             $extractor->extract();
 

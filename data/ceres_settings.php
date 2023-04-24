@@ -631,15 +631,6 @@ function getOptionsValues() {
             ]
             ],
 
-        'rqFile' => [
-            'currentValue' => null,
-            'defaults' => [
-                'ceres' => null,
-            ]
-        ],
-
-
-
         'extractorReorderMappingFilePath' => [
             'currentValue' => null,
             'defaults' => [

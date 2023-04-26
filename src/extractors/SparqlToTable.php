@@ -62,7 +62,6 @@ class SparqlToTable extends AbstractSparqlExtractor {
 
     public function extract():void {
         $this->preExtract();
-        //$dataToRender[] = $this->getVars();
         $dataToRender[] = $this->vars;
         $bindingVals = [];
         foreach ($this->bindings as $binding) {

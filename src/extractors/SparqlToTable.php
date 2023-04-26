@@ -30,7 +30,7 @@ class SparqlToTable extends AbstractSparqlExtractor {
      */
     public function valueForBindingVar(array $binding, string $var):string {
         if (! isset($binding[$var])) {
-            return "missing $var data";
+            return "CERES missing data";
         } else {
             $var = $binding[$var];
         }

@@ -35,7 +35,7 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
      */
     public function valueForBindingVar(array $binding, string $var):string {
         if (! isset($binding[$var])) {
-            return "missing $var data";
+            return "CERES missing data";
         }
         return $binding[$var]['value'];
     }

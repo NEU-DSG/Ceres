@@ -112,39 +112,15 @@ class SparqlToTable extends AbstractSparqlExtractor {
         } else {
             $valueLabelMapping = json_decode(file_get_contents($valueLabelMapping), true);
         }
-
-
-
-//@todo remove this!        
-        $valueLabelMapping = [
-            "langCode"  =>  "Language Code",
-            "qid"  =>  "ID for use elsewhere", 
-            "personLabel"  =>  null,
-            "personDescription"  =>  "Description",
-            "createdCollections"  =>  "Collections Created",
-            "foundedOrganizations" =>  "Organizations Founded",
-            "maintainsCollections" =>  "Collections Maintained",
-            "donatedCollections"  =>  "Collections Donated",
-            "donorPropLabel" =>  null,
-            "creatorPropLabel" =>  null,
-            "maintainerPropLabel" =>  null,
-            "founderPropLabel" =>  null,
-            "name"  =>  "Name",
-            "namePropLabel"  =>  null,
-            "officialWebsite"  =>  "Website",
-            "officialWebsitePropLabel"  =>  null,
-            "emailAddress"  =>  "Email",
-            "emailAddressPropLabel"  =>  null
-        ];
         
         if (key_exists($value, $valueLabelMapping)) {
-                if (is_null($valueLabelMapping[$value])) {
-                    return $value;
-                }
-                return $valueLabelMapping[$value];    
-            } else {
+            if (is_null($valueLabelMapping[$value])) {
                 return $value;
-            }
+            } 
+            return $valueLabelMapping[$value];    
+        } else {
+            return $value;
+        }
     }
 }
 

@@ -123,27 +123,15 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
         // this is ahead of refactoring the reordering???
         
         if (is_null($varsToRemoveArray)) {
-            $varsToRemoveArray = $this->valueForExtractorOption('extractorRemoveVarsFilePath');
+            $varsToRemoveFile = $this->valueForExtractorOption('extractorRemoveVarsFilePath');
+            $varsToRemoveArray = json_decode(file_get_contents($varsToRemoveFile), true);
+            //return $varsToRemoveArray;
         }
+
         if (is_null($varsToRemoveArray)) {
             return;
 
-        } else {
-            $varsToRemoveArray = json_decode(file_get_contents($varsToRemoveArray), true);
         }
-
-        
-        $varsToRemoveArray = 
-        [
-            "langCode",
-            "qid", 
-            "personLabel",
-            "donorPropLabel",
-            "creatorPropLabel",
-            "maintainerPropLabel",
-            "founderPropLabel",
-            "namePropLabel"
-        ];
 
         foreach($this->vars as $index => $var) {
             if(in_array($var, $varsToRemoveArray)) {

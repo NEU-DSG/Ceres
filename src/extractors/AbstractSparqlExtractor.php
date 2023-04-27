@@ -124,6 +124,9 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
         
         if (is_null($varsToRemoveArray)) {
             $varsToRemoveFile = $this->valueForExtractorOption('extractorRemoveVarsFilePath');
+            if (is_null($varsToRemoveArray)) {
+                return;
+            }
             $varsToRemoveArray = json_decode(file_get_contents($varsToRemoveFile), true);
             //return $varsToRemoveArray;
         }

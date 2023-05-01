@@ -30,7 +30,7 @@ class SparqlToTable extends AbstractSparqlExtractor {
      */
     public function valueForBindingVar(array $binding, string $var):string {
         if (! isset($binding[$var])) {
-            return "missing $var data";
+            return "CERES missing data";
         } else {
             $var = $binding[$var];
         }
@@ -43,7 +43,7 @@ class SparqlToTable extends AbstractSparqlExtractor {
     }
 
 
-    //@todo likely move to absSqlExt??
+    //@todo likely move to absSqlExt?? or the same thing more general for Tables? A Trait?
     protected function postSetVars(): void {
 //echo "<h2>postSetVars: STT</h2>";
         $this->reorderVars();
@@ -62,7 +62,6 @@ class SparqlToTable extends AbstractSparqlExtractor {
 
     public function extract():void {
         $this->preExtract();
-        //$dataToRender[] = $this->getVars();
         $dataToRender[] = $this->vars;
         $bindingVals = [];
         foreach ($this->bindings as $binding) {
@@ -85,6 +84,18 @@ class SparqlToTable extends AbstractSparqlExtractor {
         $this->dataToRender[0] = $newVars;
     }
 
+    /**
+     * mapValueToLabel
+     * 
+     * Take a value, generally from $this->headerDataToRender, and map it onto
+     * a new, usually prettier, value for the Renderer to use
+     * 
+     * @todo worry about whether this should be in a TableRenderer
+     *
+     * @param string $value
+     * @param string|null $valueLabelMapping
+     * @return string
+     */
     protected function mapValueToLabel(string $value, ?string $valueLabelMapping = null): string {
         //originalSequence can come from $this->vars
         //labelMapping can start with $this->vars
@@ -100,39 +111,15 @@ class SparqlToTable extends AbstractSparqlExtractor {
         } else {
             $valueLabelMapping = json_decode(file_get_contents($valueLabelMapping), true);
         }
-
-
-
-        
-        $valueLabelMapping = [
-            "langCode"  =>  "Language Code",
-            "qid"  =>  "ID for use elsewhere", 
-            "personLabel"  =>  null,
-            "personDescription"  =>  "Description",
-            "createdCollections"  =>  "Collections Created",
-            "foundedOrganizations" =>  "Organizations Founded",
-            "maintainsCollections" =>  "Collections Maintained",
-            "donatedCollections"  =>  "Collections Donated",
-            "donorPropLabel" =>  null,
-            "creatorPropLabel" =>  null,
-            "maintainerPropLabel" =>  null,
-            "founderPropLabel" =>  null,
-            "name"  =>  "Name",
-            "namePropLabel"  =>  null,
-            "officialWebsite"  =>  "Website",
-            "officialWebsitePropLabel"  =>  null,
-            "emailAddress"  =>  "Email",
-            "emailAddressPropLabel"  =>  null
-        ];
         
         if (key_exists($value, $valueLabelMapping)) {
-                if (is_null($valueLabelMapping[$value])) {
-                    return $value;
-                }
-                return $valueLabelMapping[$value];    
-            } else {
+            if (is_null($valueLabelMapping[$value])) {
                 return $value;
-            }
+            } 
+            return $valueLabelMapping[$value];    
+        } else {
+            return $value;
+        }
     }
 }
 

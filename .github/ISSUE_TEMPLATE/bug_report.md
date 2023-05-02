@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-**Initial Estimated Time***
+**Initial Estimated Time**
 
 
 **Describe the bug**

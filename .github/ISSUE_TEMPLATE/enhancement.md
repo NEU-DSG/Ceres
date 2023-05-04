@@ -9,6 +9,9 @@ assignees: ''
 
 **Initial Estimated Time**
 
+**How this moves the project forward**
+Briefly list what completion means for broader overall project goals, including non-code goals.
+
 
 **Describe the enhancement**
 A clear and concise description of enhancement

@@ -1385,10 +1385,6 @@ function getViewPackages() {
                             'options' => array_merge(
                                 $fetcherOptions['general'],
                                 $fetcherOptions['wdqs']),
-                                //@todo put this into the defaults system
-                                // ['bounceBack' => true,
-                                //  'fileForQuery' => "CERES_ROOT_DIR/data/rqfiles/publicart/leaflet.rq",
-                                // ]
                         ]
                     ],
 

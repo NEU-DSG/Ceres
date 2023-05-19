@@ -36,16 +36,13 @@ class SparqlToTable extends AbstractSparqlExtractor {
         }
         $value = $var['value'];
 
-// echo "<h3>value1: $value</h3>";
         $value = $this->mapValueToLabel($value);
-// echo "<h3>value2: $value</h3>";
         return $value;
     }
 
 
     //@todo likely move to absSqlExt??
     protected function postSetVars(): void {
-//echo "<h2>postSetVars: STT</h2>";
         $this->reorderVars();
     }
 
@@ -89,7 +86,6 @@ class SparqlToTable extends AbstractSparqlExtractor {
         //originalSequence can come from $this->vars
         //labelMapping can start with $this->vars
         //should ultimately be a map based on {var} and {var}Label
-//echo "<h1>mapValueToLabel $value: STT</h1>";
         //from people.rq
 
         if (is_null($valueLabelMapping)) {

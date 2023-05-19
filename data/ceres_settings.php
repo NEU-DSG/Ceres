@@ -1272,12 +1272,6 @@ function getViewPackages() {
         ],
     ],
 
-
-
-
-
-
-
         "tabular_wikibase_for_chinatown" => [
             'humanName' => "Tabular data from NU's WikiBase for chinatown info",
             'description' => "Builds tables of data for what's in our WikiBase",
@@ -1385,10 +1379,6 @@ function getViewPackages() {
                             'options' => array_merge(
                                 $fetcherOptions['general'],
                                 $fetcherOptions['wdqs']),
-                                //@todo put this into the defaults system
-                                // ['bounceBack' => true,
-                                //  'fileForQuery' => "CERES_ROOT_DIR/data/rqfiles/publicart/leaflet.rq",
-                                // ]
                         ]
                     ],
 

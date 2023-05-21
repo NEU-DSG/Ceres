@@ -1384,6 +1384,9 @@ function getViewPackages() {
 
                 'extractors' =>
                     [
+                        // 'BounceBack' => [
+                        //     'fullClassName' => 'Ceres\Extractor\BounceBack'
+                        // ]
                     ],
                 ],
         "leaflet_wikidata_for_public_art_table" =>

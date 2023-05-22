@@ -39,7 +39,7 @@
     protected array $expectedProperties = [];
 
     //the data coming from an Extractor to render
-    protected array $dataToRender = [];
+    protected array $renderArray = [];
 
     protected string $jsonToInject = '';
 
@@ -73,7 +73,7 @@
  * @return void
  */
     public function setDataToRenderFromFile(string $fileName) {
-        $this->dataToRender = unserialize(file_get_contents($fileName));
+        $this->renderArray = unserialize(file_get_contents($fileName));
     }
 
     public function setJsonToInjectFromFile(string $fileName, bool $decodeJson = false) {
@@ -104,7 +104,7 @@
         } else {
             $fetcher = $this->fetchers[$fetcherName];
         }
-        $this->dataToRender = $fetcher->getResponseData();
+        $this->renderArray = $fetcher->getResponseData();
 
     }
 
@@ -141,7 +141,7 @@
         } else {
             $extractor = $this->extractors[$extractorName];
         }
-        $this->dataToRender = $extractor->getDataToRender();
+        $this->renderArray = $extractor->getDataToRender();
     }
 
 

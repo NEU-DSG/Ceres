@@ -15,7 +15,7 @@ class VpToVp extends AbstractExtractor {
     }
 
     public function extract():void {
-        $dataToRender = [];
+        $renderArray = [];
         if (isset($this->extractorOptions['vpNameId'])) {
             $vpArray = $this->sourceData[$this->extractorOptions['vpNameId']];
         } else {
@@ -29,12 +29,12 @@ class VpToVp extends AbstractExtractor {
             if (is_null($value)) {
                 $value = 'null';
             }
-            $dataToRender[] = ['key' => $property,
+            $renderArray[] = ['key' => $property,
                                'value' => $value
                               ];
 
         }
-        $this->dataToRender = $dataToRender;
+        $this->renderArray = $renderArray;
     }
 
 

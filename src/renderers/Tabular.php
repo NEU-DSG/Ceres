@@ -40,7 +40,7 @@ class Tabular extends Html {
             $extractor->setSourceData($sourceData);
             $extractor->extract();
 
-            $this->dataToRender = $extractor->getDataToRender();
+            $this->renderArray = $extractor->getDataToRender();
         } else if (! is_null($pathToMockFetcherResponse)) {
             $extractor = $this->extractors[0];
 
@@ -49,7 +49,7 @@ class Tabular extends Html {
             $extractor->setSourceData($sourceData);
             $extractor->extract();
 
-            $this->dataToRender = $extractor->getDataToRender();
+            $this->renderArray = $extractor->getDataToRender();
 
         } else if (! is_null($pathToMockExtractorData)) {
 
@@ -62,7 +62,7 @@ class Tabular extends Html {
     }
 
     public function build() {
-        $rowsData = $this->dataToRender; 
+        $rowsData = $this->renderArray; 
         $firstRowIsHeader = $this->getRendererOptionValue('firstRowIsHeader');
 
         if ($firstRowIsHeader) {

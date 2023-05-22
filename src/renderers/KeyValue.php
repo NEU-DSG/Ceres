@@ -10,8 +10,8 @@ class KeyValue extends Html {
     protected string $templateFileName = 'keyvalue.html';
 
     public function build() {
-        print_r($this->dataToRender);
-        foreach($this->dataToRender as $rowData) {
+        print_r($this->renderArray);
+        foreach($this->renderArray as $rowData) {
             $row = $this->buildRow($rowData);
             $this->containerElement->appendChild($row);
         }

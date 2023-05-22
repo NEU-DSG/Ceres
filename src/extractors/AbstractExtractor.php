@@ -46,24 +46,24 @@ abstract class AbstractExtractor {
         }
     }
 
-    protected function preSetDataToRender(array $renderArray): array {
-// echo"<h3>preSetDataToRender: AbsExt</h3>";
+    protected function preSetRenderArray(array $renderArray): array {
+// echo"<h3>preSetRenderArray: AbsExt</h3>";
         return $renderArray; //do nothing, let other classes implement this as needed
     } 
 
-    protected function postSetDataToRender(): void {
-// echo"<h3>postSetDataToRender: AbsExt</h3>";
+    protected function postSetRenderArray(): void {
+// echo"<h3>postSetRenderArray: AbsExt</h3>";
         //do nothing, let other classes implement this as needed
     }
 
-    protected function setDataToRender(array $renderArray): void {
-        $renderArray = $this->preSetDataToRender($renderArray);
+    protected function setRenderArray(array $renderArray): void {
+        $renderArray = $this->preSetRenderArray($renderArray);
         $this->renderArray = $renderArray;
-        $this->postSetDataToRender();
+        $this->postSetRenderArray();
     }
 
 
-    public function getDataToRender(): array {
+    public function getRenderArray(): array {
         return $this->renderArray;
     }
 
@@ -126,7 +126,7 @@ abstract class AbstractExtractor {
      * ]
      * @todo likely from an ExtractorOption 2023-04-06 16:56:34
      *
-     * @todo put in postSetDataToRender hook? dunno if it should be a standard from AbstractExtractor
+     * @todo put in postSetRenderArray hook? dunno if it should be a standard from AbstractExtractor
      * 
      * @param array $rowData
      * @param array $labelMapping

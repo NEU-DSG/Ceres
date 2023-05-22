@@ -14,7 +14,7 @@ class LeafletMapBrc extends Html {
 
         // echo CERES_ROOT_DIR . '/assets/js/leaflet/brc/brc-leaflet-response.json';
         // die();
-//       $this->setDataToRenderFromFile(CERES_ROOT_DIR . '/assets/js/leaflet/brc/brc-leaflet-response.json');
+//       $this->setRenderArrayFromFile(CERES_ROOT_DIR . '/assets/js/leaflet/brc/brc-leaflet-response.json');
         $this->setJsonToInjectFromFile(CERES_ROOT_DIR . '/assets/js/leaflet/brc/brc-leaflet-response.json');
     }
 

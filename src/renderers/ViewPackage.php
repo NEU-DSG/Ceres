@@ -27,7 +27,7 @@ class ViewPackage extends Html {
         parent::__construct();
 
 
-        $this->setDataToRender();
+        $this->setRenderArray();
     }
 
     // public function render() {
@@ -36,7 +36,7 @@ class ViewPackage extends Html {
     //     parent::render();
     // }
 
-    public function setDataToRender(string $extractorName = null) {
+    public function setRenderArray(string $extractorName = null) {
         $allVpData = DataUtil::getWpOption('ceres_view_packages');
         $rendererData =$allVpData[$this->viewPackageName];
         //$rendererClassInfo = $rendererData['renderer'];

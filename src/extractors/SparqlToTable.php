@@ -73,10 +73,10 @@ class SparqlToTable extends AbstractSparqlExtractor {
             $bindingVals = [];
         }
         //@todo the logic here needs to be updated for pre/post events see #34
-        $this->setDataToRender($renderArray);
+        $this->setRenderArray($renderArray);
     }
 
-    protected function postSetDataToRender(): void {
+    protected function postSetRenderArray(): void {
         $valueLabelMapping = $this->valueForExtractorOption('valueLabelMapping');
 
         foreach ($this->vars as $var) {

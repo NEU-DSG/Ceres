@@ -132,7 +132,7 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
     protected function removeVars(?array $varsToRemoveArray = null): void {
         //@todo make $toRemoveArray an ExtratorOption? 2023-04-06 18:01:26
         //check if a $toRemoveArray exists (as an ExtractorOption) and run conditionally
-        //as a postSetDataToRender?
+        //as a postSetRenderArray?
         // this is ahead of refactoring the reordering???
         
         if (is_null($varsToRemoveArray)) {

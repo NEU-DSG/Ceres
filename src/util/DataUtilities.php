@@ -123,7 +123,6 @@ class DataUtilities {
      * @param boolean $return whether to return the result or echo it directly. Default true
      * @return string|void
      */
-    
     function shortArrayExport(array $array, bool $return = true) {
         $export = var_export($array, TRUE);
         $export = preg_replace("/^([ ]*)(.*)/m", '$1$1$2', $export);

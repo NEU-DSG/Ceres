@@ -58,7 +58,8 @@ class Wdqs extends Sparql {
         ];
         $context = stream_context_create($opts);
         $url = $this->endpoint . '?query=' . urlencode($this->query);
-
+// print_r($this->fetcherOptions);
+// die();
         $response = file_get_contents($url, false, $context);
 
         //status digup from https://stackoverflow.com/questions/15620124/http-requests-with-file-get-contents-getting-the-response-code

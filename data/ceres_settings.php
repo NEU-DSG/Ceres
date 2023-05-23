@@ -1272,12 +1272,6 @@ function getViewPackages() {
         ],
     ],
 
-
-
-
-
-
-
         "tabular_wikibase_for_chinatown" => [
             'humanName' => "Tabular data from NU's WikiBase for chinatown info",
             'description' => "Builds tables of data for what's in our WikiBase",
@@ -1390,6 +1384,9 @@ function getViewPackages() {
 
                 'extractors' =>
                     [
+                        // 'BounceBack' => [
+                        //     'fullClassName' => 'Ceres\Extractor\BounceBack'
+                        // ]
                     ],
                 ],
         "leaflet_wikidata_for_public_art_table" =>

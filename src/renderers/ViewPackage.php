@@ -11,7 +11,7 @@ use Ceres\Util\DataUtilities as DataUtil;
 
 class ViewPackage extends Html {
     //@todo: a temp shim until the extractor is built
-    protected array $dataToRender = [];
+    protected array $renderArray = [];
     protected string $templateFileName = 'details.html';
     protected string $viewPackageName;
     protected DOMElement $vpRendererDetailsNode;
@@ -31,7 +31,7 @@ class ViewPackage extends Html {
     }
 
     // public function render() {
-    //     print_r($this->dataToRender);
+    //     print_r($this->renderArray);
 
     //     parent::render();
     // }
@@ -52,13 +52,13 @@ class ViewPackage extends Html {
         }
 
         $rendererData['renderer']['Tabular']['options'] = $rendererOptions;
-        $this->dataToRender = $rendererData;
+        $this->renderArray = $rendererData;
     }
 
     public function build() {
-        $rendererData = $this->dataToRender['renderer']['Tabular']; //@todo remove hardcoded Tabular
+        $rendererData = $this->renderArray['renderer']['Tabular']; //@todo remove hardcoded Tabular
         $vpData = [];
-        foreach($this->dataToRender as $option => $value) {
+        foreach($this->renderArray as $option => $value) {
             switch ($option) {
                 case 'humanName':
                 case 'description':

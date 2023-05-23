@@ -4,9 +4,9 @@
 
 use Ceres\Util\DataUtilities;
 
-    abstract class AbstractFetcher {
+abstract class AbstractFetcher {
 
-    protected ?string $endpoint = '';
+    protected string $endpoint;
 
     protected string $scope = 'ceres';
 
@@ -19,22 +19,22 @@ use Ceres\Util\DataUtilities;
      * @var array
      */
 
-    protected array $queryOptions = array();
+    protected array $queryOptions;
 
-    protected array $fetcherOptions = array();
+    protected array $fetcherOptions;
     /**
      * The ID of the remote resource (DRS pid, DPLA hash id, etc)
      * @var string
      */
 
-    protected $resourceId;
+    protected string $resourceId;
 
     /**
      * GET params to tack on to the $endpoint + $queryOptions path
      * @var array
      */
 
-    protected $queryParams = array();
+    protected array $queryParams;
 
     /**
      * The parsed response, including the handling of errors and output message (i.e., not the direct
@@ -42,7 +42,7 @@ use Ceres\Util\DataUtilities;
      * @var array
      */
 
-    protected $responseData = array();
+    protected array $responseData;
 
     /**
      * The items data, parsed out from the response
@@ -51,7 +51,7 @@ use Ceres\Util\DataUtilities;
      * @var array
      */
 
-    protected $itemsData = array();
+    protected array $itemsData;
 
     /**
      * The number of pages from a large API request. Will depend on the requested items per page,
@@ -60,7 +60,7 @@ use Ceres\Util\DataUtilities;
      * @var integer
      */
 
-    protected $pageCount;
+    protected int $pageCount;
 
     /** 
      * If the API provides the option, the set number of items to return per page. Best not to change this 
@@ -80,13 +80,13 @@ use Ceres\Util\DataUtilities;
 
     protected $currentPage;
 
-    abstract public function buildQueryString($queryOptions = false, $queryParams = false);
+    abstract protected function buildQueryString(?array $queryOptions = null, ?array $queryParams = null): void;
 
-    abstract public function parseItemsData();
+    abstract protected function parseItemsData(): void;
 
-    abstract public function fetchPage(int $pageNumber);
+    abstract protected function fetchPage(int $pageNumber);
 
-    abstract public function getPageUrl(int $pageNumber);
+    abstract protected function getPageUrl(int $pageNumber);
 
     /**
      * Takes API-specific response to set currentPage, pageCount, and perPage
@@ -95,12 +95,11 @@ use Ceres\Util\DataUtilities;
      * 
      * @param Array $responseData
      */
-
     abstract public function setPaginationData();
 
-    abstract public function getItemDataById($itemId);
+    abstract public function getItemDataById(string $itemId);
 
-    public function __construct(array $queryOptions = [], array $queryParams = [], $resourceId = null, array $fetcherOptions = [] ) {
+    public function __construct(?array $queryOptions = null, ?array $queryParams = null, string $resourceId = null, ?array $fetcherOptions = null ) {
         $this->setQueryParams($queryParams);
         $this->setQueryOptions($queryOptions);
         $this->setResourceId($resourceId);
@@ -120,7 +119,7 @@ use Ceres\Util\DataUtilities;
      */
 
      //@todo needs an easy trigger for when to do this instead of an API req
-    public function fetchDataFromJsonFile(string $jsonFilePath) {
+    public function fetchDataFromJsonFile(string $jsonFilePath): string {
         return file_get_contents($jsonFilePath);
     }
 
@@ -132,7 +131,7 @@ use Ceres\Util\DataUtilities;
      * @param $url
      * @param boolean $returnWithoutSetting Just send back the data, but don't keep it in the prop
      */
-    public function fetchData($url = null, $returnWithoutSetting = false) {
+    public function fetchData(?string $url = null, bool $returnWithoutSetting = false) {
 
         if (DataUtilities::valueForOption('fetchLocalData', $this->scope)) {
             $jsonFilePath = DataUtilities::valueForOption('localResponseDataPath', $this->scope);
@@ -232,7 +231,7 @@ use Ceres\Util\DataUtilities;
         $this->setPaginationData();
     }
 
-    public function hasNextPage() {
+    public function hasNextPage(): bool {
         $nextPage = $this->currentPage + 1;
         if ($nextPage > $this->pageCount) {
         return false;
@@ -242,8 +241,8 @@ use Ceres\Util\DataUtilities;
     
     public function fetchNextPage() {
         if ($this->hasNextPage()) {
-        $nextPage = $this->currentPage + 1;
-        $this->fetchPage($nextPage);
+            $nextPage = $this->currentPage + 1;
+            $this->fetchPage($nextPage);
         }
     }
     
@@ -266,57 +265,50 @@ use Ceres\Util\DataUtilities;
         $this->queryParams = $queryParams;
     }
 
-    public function getQueryParams() {
+    public function getQueryParams(): array {
         return $this->queryParams;
     }
 
-    public function setQueryParam($param, $value = '' ) {
+    public function setQueryParam(string $param, $value = '' ): void {
         if ($value == '') {
-        unset($this->queryParams[$param]);
+            unset($this->queryParams[$param]);
         } else {
-        $this->queryParams[$param] = $value;
+            $this->queryParams[$param] = $value;
         }
     }
 
-    public function getQueryParam($param) {
+    public function getQueryParam($param): string {
         return $this->queryParams[$param];
     }
 
-    public function setScope(string $scope):void {
+    public function setScope(string $scope): void {
         $this->scope = $scope;
     }
 
-    public function setQueryOptions(array $queryOptions) {
+    public function setQueryOptions(array $queryOptions): void {
         $this->queryOptions = $queryOptions;
     }
 
-    public function getQueryOptions() {
+    public function getQueryOptions(): array {
         return $this->queryOptions;
     }
 
-    public function setQueryOption($option, $value = '') {
+    public function setQueryOption(string $option, string $value = ''): void {
         if ($value == '') {
-        unset($this->queryOptions[$option]);
+            unset($this->queryOptions[$option]);
         } else {
-        $this->queryOptions[$option] = $value;
+            $this->queryOptions[$option] = $value;
         }
     }
 
-    public function setFetcherOptions(array $fetcherOptions) {
-        // echo 'setFetcherOptions, yes?';
-        // print_r($fetcherOptions);
+    public function setFetcherOptions(array $fetcherOptions): void {
         foreach ($fetcherOptions as $optionName) {
-            echo $optionName;
             $this->fetcherOptions[$optionName] = DataUtilities::valueForOption($optionName);
-            //$this->fetcherOptions = $fetcherOptions;
         }
-
-        //print_r($this->fetcherOptions);
-        //die();
     }
 
     //@todo another one to abstract across F/E/Rs, probably as a Trait
-    public function setFetcherOptionValue(string $optionName, string $optionValue, bool $asCurrentValue = false) {
+    public function setFetcherOptionValue(string $optionName, string $optionValue, bool $asCurrentValue = false): void {
         if ($asCurrentValue) {
             $this->fetcherOptions[$optionName]['currentValue'] = $optionValue;    
         } else {
@@ -325,19 +317,15 @@ use Ceres\Util\DataUtilities;
     }
 
 
-    public function getFetcherOptions() {
+    public function getFetcherOptions(): array {
         return $this->fetcherOptions;
     }
 
-    public function getQueryOption($option) {
-        return $this->queryOptions[$option];
-    }
-
-    public function setResourceId($resourceId) {
+    public function setResourceId(string $resourceId): void {
         $this->resourceId = $resourceId;
     }
 
-    public function getResourceId() {
+    public function getResourceId(): string {
         return $this->resourceId;
     }
 
@@ -345,24 +333,22 @@ use Ceres\Util\DataUtilities;
         return $this->itemsData;
     }
     
-    public function getPageCount() {
+    public function getPageCount(): int {
         return $this->pageCount;
     }
 
-    public function setEndpoint(string $endpointURL) {
+    public function setEndpoint(string $endpointURL): void {
         $this->endpoint = $endpointURL;
     }
-    public function setQuery(string $query):void {
+    public function setQuery(string $query): void {
         $this->query = $query;
     }
 
-    public function setQueryFromFile(string $file):void {
+    public function setQueryFromFile(string $file): void {
         $this->query = file_get_contents($file);
     }
 
-    public function setResponseDataFromFile(string $responseJsonFile) {
+    public function setResponseDataFromFile(string $responseJsonFile): void {
         $this->responseData = file_get_contents($responseJsonFile);
     }
-
-
 }

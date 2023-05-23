@@ -10,10 +10,10 @@ class KeyValue extends Html {
     protected string $templateFileName = 'keyvalue.html';
 
     public function build() {
-        print_r($this->dataToRender);
-        foreach($this->dataToRender as $rowData) {
+        print_r($this->renderArray);
+        foreach($this->renderArray as $rowData) {
             $row = $this->buildRow($rowData);
-            $this->containerElement->appendChild($row);
+            $this->containerNode->appendChild($row);
         }
     }
 
@@ -29,7 +29,7 @@ class KeyValue extends Html {
 
         $this->appendTextNode($keyNode, $rowData['key']);
         $this->appendTextNode($valueNode, $rowData['value']);
-        $separator = $this->getRendererOption('separator');
+        $separator = $this->getRendererOptionValue('separator');
         $this->appendTextNode($separatorNode, $separator);
 
         $row->appendChild($keyNode);

@@ -59,18 +59,18 @@ class SparqlToTable extends AbstractSparqlExtractor {
 
     public function extract():void {
         $this->preExtract();
-        //$dataToRender[] = $this->getVars();
-        $dataToRender[] = $this->vars;
+        //$renderArray[] = $this->getVars();
+        $renderArray[] = $this->vars;
         $bindingVals = [];
         foreach ($this->bindings as $binding) {
             foreach ($this->vars as $var) {
                 $bindingVals[] = $this->valueForBindingVar($binding, $var);
             }
-            $dataToRender[] = $bindingVals;
+            $renderArray[] = $bindingVals;
             $bindingVals = [];
         }
         //@todo the logic here needs to be updated for pre/post events see #34
-        $this->setDataToRender($dataToRender);
+        $this->setDataToRender($renderArray);
     }
 
     protected function postSetDataToRender(): void {
@@ -79,7 +79,7 @@ class SparqlToTable extends AbstractSparqlExtractor {
         foreach ($this->vars as $var) {
             $newVars[] = $this->mapValueToLabel($var, $valueLabelMapping);
         }
-        $this->dataToRender[0] = $newVars;
+        $this->renderArray[0] = $newVars;
     }
 
     protected function mapValueToLabel(string $value, ?string $valueLabelMapping = null): string {

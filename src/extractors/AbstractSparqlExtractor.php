@@ -33,7 +33,7 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
      * @param string $var
      * @return string
      */
-    public function valueForBindingVar(array $binding, string $var):string {
+    public function valueForBindingVar(array $binding, string $var): string {
         if (! isset($binding[$var])) {
             return "missing $var data";
         }
@@ -45,7 +45,7 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
         $this->setBindings();
     }
 
-    public function setSourceData($sourceData):void {
+    public function setSourceData($sourceData): void {
         //@todo handle exceptions if isn't json etc.
         //@todo maybe that could be done in pre (or even a validate() method?)
         if (is_string($sourceData)) {
@@ -63,12 +63,12 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
         return $vars; //do nothing, let other classes implement this as needed
     }
 
-    protected function postSetVars():void {
+    protected function postSetVars(): void {
  //echo"<h3>postSetVars: AbsSparqlEx";
         //do nothing, let other classes implement this as needed
     }
 
-    protected function setVars():void {
+    protected function setVars(): void {
         $vars = $this->sourceData['head']['vars'];
         $vars = $this->preSetVars($vars);
         $this->vars = $vars;
@@ -85,7 +85,7 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
         //do nothing, let other classes implement this as needed
     }
     
-    protected function setBindings():void {
+    protected function setBindings(): void {
         $bindings = $this->sourceData['results']['bindings'];
         $bindings = $this->preSetBindings($bindings);
         $this->bindings = $this->sourceData['results']['bindings'];
@@ -144,19 +144,6 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
         } else {
             $varsToRemoveArray = json_decode(file_get_contents($varsToRemoveArray), true);
         }
-
-        
-        $varsToRemoveArray = 
-        [
-            "langCode",
-            "qid", 
-            "personLabel",
-            "donorPropLabel",
-            "creatorPropLabel",
-            "maintainerPropLabel",
-            "founderPropLabel",
-            "namePropLabel"
-        ];
 
         foreach($this->vars as $index => $var) {
             if(in_array($var, $varsToRemoveArray)) {

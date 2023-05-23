@@ -42,25 +42,25 @@ class Sparql extends AbstractFetcher {
 
     protected array $optionalClauses = [];
 
-    protected array $filterClauses = [];
+    protected array $filterClauses;
 
-    protected array $serviceClauses = [];
+    protected array $serviceClauses;
 
-    protected array $orderByClauses = [];
+    protected array $orderByClauses;
 
-    protected array $groupByClauses = [];
+    protected array $groupByClauses;
 
-    protected array $bindClauses = [];
+    protected array $bindClauses;
 
-    protected array $unionClauses = [];
+    protected array $unionClauses;
 
-    protected array $valuesClauses = [];
+    protected array $valuesClauses;
 
-    protected array $havingClauses = [];
+    protected array $havingClauses;
 
     protected ?int $limit = null;
 
-    protected array $resultVars = [];
+    protected array $resultVars;
 
     protected string $query = "";
 
@@ -70,8 +70,8 @@ class Sparql extends AbstractFetcher {
         parent::__construct();
     }
 
-    // abstract override
-    public function buildQueryString($queryOptions = false, $queryParams = false) {
+    // abstract overrides
+    public function buildQueryString(?array $queryOptions = null, ?array $queryParams = null): void {
     }
 
     public function setPaginationData() {
@@ -80,7 +80,7 @@ class Sparql extends AbstractFetcher {
     public function getItemDataById($itemId) {
     }
 
-    public function parseItemsData() {
+    public function parseItemsData(): void {
     }
     
     public function fetchPage(int $pageNumber) {
@@ -89,7 +89,7 @@ class Sparql extends AbstractFetcher {
     public function getPageUrl(int $pageNumber) {
     }
 
-    // end abstract override
+    // end abstract overrides
     
 
     public function addPrefixes(array $prefixes) {

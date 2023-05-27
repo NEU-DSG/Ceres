@@ -21,8 +21,6 @@ class Html extends AbstractRenderer {
         parent::__construct();
     }
 
-
-
     /**
      * renderFullHtml
      *
@@ -48,27 +46,27 @@ class Html extends AbstractRenderer {
         return $this->toHtmlString();
     }
 
-    public function build() {
+    public function build(): void {
         $text = $this->getRendererOptionValue('text');
         $this->appendTextNode($this->containerNode, $text);
     }
 
     // @todo move to utils?
-    public function linkify(array $linkData) : DOMElement {
+    public function linkify(array $linkData): DOMElement {
         $aElement = $this->htmlDom->createElement('a');
         $aElement->setAttribute('href', $linkData['url']);
         $this->appendTextNode($aElement, $linkData['label']);
         return $aElement;
         }
   
-    public function toHtmlString(?DOMElement $node = null) : string {
+    public function toHtmlString(?DOMElement $node = null): string {
         if (is_null($node)) {
             $node = $this->containerNode;
         }
         return $this->htmlDom->saveHtml($node);
     }
 
-    public function setHtmlDom() {
+    public function setHtmlDom(): void {
         $this->htmlDom = new DOMDocument();
 
         set_error_handler(["\Ceres\Util\DataUtilities", 'suppressWarnings'], E_WARNING);
@@ -76,28 +74,27 @@ class Html extends AbstractRenderer {
         restore_error_handler();
     }
 
-    public function setContainerNode() {
+    public function setContainerNode(): void {
         $this->containerNode = $this->htmlDom->getElementById('ceres-container');
     }
 
-    public function getContainerNode() : DOMElement {
+    public function getContainerNode(): DOMElement {
         return $this->containerNode;
     }
 
 
-    public function appendToClass(DOMElement $element, $value ):void {
+    public function appendToClass(DOMElement $element, $value ): void {
         $class = $element->getAttribute('class');
         $class = $class .= " $value";
         $element->setAttribute('class', $class);
     }
 
-
-    public function appendTextNode(DOMElement $element, ?string $text) {
+    public function appendTextNode(DOMElement $element, ?string $text): void {
         $textNode = $this->htmlDom->createTextNode($text);
         $element->appendChild($textNode);
     }
 
-    public function enumToSelect(array $enumOptions) : DOMElement {
+    public function enumToSelect(array $enumOptions): DOMElement {
         $selectNode = $this->htmlDom->createElement('select');
 
         foreach ($enumOptions as $option) {
@@ -105,11 +102,10 @@ class Html extends AbstractRenderer {
             $this->appendTextNode($optionNode, $option);
             $selectNode->appendChild($optionNode);
         }
-
         return $selectNode;
     }
 
-    public function arrayToUl(array $dataArray) : DOMElement {
+    public function arrayToUl(array $dataArray): DOMElement {
         $ulNode = $this->htmlDom->createElement('ul');
         foreach($dataArray as $liText) {
             $liNode = $this->htmlDom->createElement('li');
@@ -119,20 +115,20 @@ class Html extends AbstractRenderer {
         return $ulNode;
     }
 
-    public function varcharToInput(?string $text) : DOMElement {
+    public function varcharToInput(?string $text): DOMElement {
         $inputNode = $this->htmlDom->createElement('input');
         $inputNode->setAttribute('type', 'text');
         $inputNode->setAttribute('value', $text);
         return $inputNode;
     }
 
-    public function textToTextArea(?string $text) : DOMElement {
+    public function textToTextArea(?string $text): DOMElement {
         $textAreaNode = $this->htmlDom->createElement('textarea');
         $this->appendTextNode($textAreaNode, $text);
         return $textAreaNode;
     }
 
-    public function textToHeading(string $text, string $headingLevel) : DOMElement {
+    public function textToHeading(string $text, string $headingLevel): DOMElement {
         $headingNode = $this->htmlDom->createElement($headingLevel);
         $this->appendTextNode($headingNode, $text);
         return $headingNode;

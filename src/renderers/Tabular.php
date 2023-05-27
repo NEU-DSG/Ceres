@@ -52,16 +52,10 @@ class Tabular extends Html {
             $this->renderArray = $extractor->getDataToRender();
 
         } else if (! is_null($pathToMockExtractorData)) {
-
-
-
-
         }
-        
-
     }
 
-    public function build() {
+    public function build(): void {
         $rowsData = $this->renderArray; 
         $firstRowIsHeader = $this->getRendererOptionValue('firstRowIsHeader');
 
@@ -77,7 +71,7 @@ class Tabular extends Html {
         }
     }
 
-    public function buildRow($rowData, $cellElement = 'td') {
+    public function buildRow($rowData, $cellElement = 'td'): DOMElement {
         $trClass = $this->getRendererOptionValue('trClass');
         $tdClass = $this->getRendererOptionValue('tdClass');
         $thClass = $this->getRendererOptionValue('thClass');

@@ -72,7 +72,7 @@ class Sparql extends AbstractFetcher {
     }
 
     // abstract override
-    public function buildQuery($queryOptions = false, $queryParams = false) {
+    protected function buildQuery($queryOptions = false, $queryParams = false) {
         $this->prependPrefixes();
         $this->replaceRqValues();
     }
@@ -175,7 +175,7 @@ class Sparql extends AbstractFetcher {
             throw new FetcherException("rqFile is set, preventing building");
         }
         $query = "";
-        $query .= $this->buildPrefixes();
+        $query .= $this->buildPrefixesString();
         $query .= $this->buildResultVars();
         $query .= $this->buildWhere();
         return $query;
@@ -275,6 +275,11 @@ class Sparql extends AbstractFetcher {
                 $this->query = str_replace($search, $replace, $this->query);
             }
         }
+    }
+
+    public function getQuery(): string {
+        $this->buildQuery();
+        return $this->query;
     }
 
     protected function prependPrefixes() {

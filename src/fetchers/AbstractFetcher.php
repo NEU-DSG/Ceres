@@ -80,7 +80,7 @@ use Ceres\Util\DataUtilities;
 
     protected $currentPage;
 
-    abstract public function buildQuery($queryOptions = false, $queryParams = false);
+    abstract protected function buildQuery($queryOptions = false, $queryParams = false);
 
     abstract public function parseItemsData();
 
@@ -150,13 +150,13 @@ use Ceres\Util\DataUtilities;
         switch ($this->method) {
             case 'GET':
                 if (is_null($url)) {
-                    $url = $this->buildQueryString(); // build entire URL, including params as part of it
+                    $url = $this->getQuery(); // build entire URL, including params as part of it
                 }
                 curl_setopt($ch, CURLOPT_HTTPGET, true);
             break;
             case 'POST':
                 curl_setopt($ch, CURLOPT_POST, true);
-                $postFields = $this->buildQueryString();
+                $postFields = $this->getQuery();
             break;
             default:
 

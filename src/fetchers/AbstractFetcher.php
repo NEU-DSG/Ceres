@@ -6,7 +6,7 @@ use Ceres\Util\DataUtilities;
 
     abstract class AbstractFetcher {
 
-    protected ?string $endpoint = '';
+    protected string $endpoint;
 
     protected string $scope = 'ceres';
 
@@ -19,9 +19,9 @@ use Ceres\Util\DataUtilities;
      * @var array
      */
 
-    protected array $queryOptions = array();
+    protected array $queryOptions = [];
 
-    protected array $fetcherOptions = array();
+    protected array $fetcherOptions = [];
     /**
      * The ID of the remote resource (DRS pid, DPLA hash id, etc)
      * @var string
@@ -307,7 +307,7 @@ use Ceres\Util\DataUtilities;
     }
 
     //@todo another one to abstract across F/E/Rs, probably as a Trait
-    public function setFetcherOptionValue(string $optionName, string $optionValue, bool $asCurrentValue = false) {
+    public function setFetcherOptionValue(string $optionName, $optionValue, bool $asCurrentValue = false) {
         if ($asCurrentValue) {
             $this->fetcherOptions[$optionName]['currentValue'] = $optionValue;    
         } else {
@@ -318,6 +318,13 @@ use Ceres\Util\DataUtilities;
 
     public function getFetcherOptions() {
         return $this->fetcherOptions;
+    }
+
+    public function getFetcherOptionValue(string $fetcherOption) {
+        if(isset($this->fetcherOptions[$fetcherOption])) {
+            return $this->fetcherOptions[$fetcherOption];
+        }
+        return false;
     }
 
     public function getQueryOption($option) {

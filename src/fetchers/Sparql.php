@@ -9,15 +9,6 @@ class Sparql extends AbstractFetcher {
 
     protected string $queryForm = 'SELECT DISTINCT'; // 'SELECT', 'CONSTRUCT', 'ASK', 'DESCRIBE'
     
-    /**
-     * rqReplacements
-     * 
-     * values typically from a GET variable to replace in an .rq file that's been loaded
-     * ['getParam' => 'getValue]
-     * 
-     * @var array
-     */
-    protected array $rqReplacements;
 
     protected array $prefixes = [
         'dct' => 'http://purl.org/dc/terms/',
@@ -72,7 +63,7 @@ class Sparql extends AbstractFetcher {
 
     protected array $resultVars = [];
 
-    protected string $query = "";
+    protected string $query;
 
 
     public function __construct() {
@@ -278,13 +269,12 @@ class Sparql extends AbstractFetcher {
     }
 
     protected function replaceRqValues() {
-        $query = $this->query;
-        if (isset($this->rqReplacements)) {
-            foreach($this->rqReplacements as $search => $replace) {
-                $query = str_replace($search, $replace, $this->query);
+        $rqReplacements = $this->getFetcherOptionValue('rqReplacements');
+        if ($rqReplacements) {
+            foreach($rqReplacements as $search => $replace) {
+                $this->query = str_replace($search, $replace, $this->query);
             }
         }
-        $this->query = $query;
     }
 
     protected function prependPrefixes() {

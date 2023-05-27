@@ -6,9 +6,7 @@ use Ceres\Util\DataUtilities as DataUtil;
 
 class Wdqs extends Sparql {
 
-    protected ?string $endpoint = 'http://ec2-34-227-69-60.compute-1.amazonaws.com:8834/proxy/wdqs/bigdata/namespace/wdq/sparql';
-
-    protected array $rqReplacements = ['CeresReplace' => '1234'];
+    protected string $endpoint = 'http://ec2-34-227-69-60.compute-1.amazonaws.com:8834/proxy/wdqs/bigdata/namespace/wdq/sparql';
 
     public function __construct() {
         parent::__construct();

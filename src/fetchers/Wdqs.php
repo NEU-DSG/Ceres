@@ -8,17 +8,10 @@ class Wdqs extends Sparql {
 
     protected ?string $endpoint = 'http://ec2-34-227-69-60.compute-1.amazonaws.com:8834/proxy/wdqs/bigdata/namespace/wdq/sparql';
 
+    protected array $rqReplacements = ['CeresReplace' => '1234'];
+
     public function __construct() {
         parent::__construct();
-        
-        // $file = CERES_ROOT_DIR . '/data/rqFiles/publicart/leaflet.rq';
-        //$this->fetcherOptions['fileForQuery'] = CERES_ROOT_DIR . '/data/rqFiles/publicart/leaflet.rq';
-
-        //$this->fetcherOptions['fileForQuery'] =  CERES_ROOT_DIR . "/data/rqFiles/chinatown/en/maintainers.rq";     
-        // echo $this->fetcherOptions['fileForQuery'];
-        // print_r($this->fetcherOptions);
-        // die();
-        //$this->setQueryFromFile($this->fetcherOptions['fileForQuery']);
         
     }
 
@@ -58,10 +51,6 @@ class Wdqs extends Sparql {
         ];
         $context = stream_context_create($opts);
         $url = $this->endpoint . '?query=' . urlencode($this->query);
-//echo 'query?' . $this->query;
-
-//echo $url;
-//die();
 
         $response = file_get_contents($url, false, $context);
 
@@ -79,22 +68,9 @@ class Wdqs extends Sparql {
         if (! $returnWithoutSetting) {
             $this->responseData = $response;
         }
-        // if ($response) {
-        //     echo "<h4>Response true</h4>";
-        // } else {
-        //     echo "<h4>Response false</h4>";
-        // }
         return $response;
 
     }
-
-    // public function setQuery(string $query):void {
-    //     $this->query = $query;
-    // }
-
-    // public function setQueryFromFile(?string $file):void {
-    //     $this->query = file_get_contents($file);
-    // }
 }
 
 

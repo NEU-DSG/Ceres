@@ -37,7 +37,7 @@ class Rest extends AbstractFetcher {
     }
     
     // abstract override
-    public function buildQueryString($queryOptions = false, $queryParams = false) {
+    public function buildQuery($queryOptions = false, $queryParams = false) {
     }
 
     public function setPaginationData() {

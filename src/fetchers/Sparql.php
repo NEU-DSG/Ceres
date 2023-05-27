@@ -9,6 +9,16 @@ class Sparql extends AbstractFetcher {
 
     protected string $queryForm = 'SELECT DISTINCT'; // 'SELECT', 'CONSTRUCT', 'ASK', 'DESCRIBE'
     
+    /**
+     * rqReplacements
+     * 
+     * values typically from a GET variable to replace in an .rq file that's been loaded
+     * ['getParam' => 'getValue]
+     * 
+     * @var array
+     */
+    protected array $rqReplacements;
+
     protected array $prefixes = [
         'dct' => 'http://purl.org/dc/terms/',
         'dc' => 'http://purl.org/dc/elements/1.1/',
@@ -71,7 +81,9 @@ class Sparql extends AbstractFetcher {
     }
 
     // abstract override
-    public function buildQueryString($queryOptions = false, $queryParams = false) {
+    public function buildQuery($queryOptions = false, $queryParams = false) {
+        $this->prependPrefixes();
+        $this->replaceRqValues();
     }
 
     public function setPaginationData() {
@@ -204,12 +216,13 @@ class Sparql extends AbstractFetcher {
         return $whereQuery;
     }
 
-    protected function buildPrefixes() {
-        $prefixString = "";
+    protected function buildPrefixesString(): string {
+        $prefixesString = "";
         foreach ($this->prefixes as $prefix=>$uri) {
-            $prefixString .= "PREFIX $prefix <$uri>;";
+            $prefixesString .= "PREFIX $prefix: <$uri> \r\n";
         }
-        return $prefixString;
+        $prefixesString .= "\r\n";
+        return $prefixesString;
     }
 
     protected function buildQueryBindings() {
@@ -259,5 +272,24 @@ class Sparql extends AbstractFetcher {
         }
     }
 
+    public function setQueryFromFile(string $file): void {
+        $query = file_get_contents($file);
+        $this->query = $query;
+    }
+
+    protected function replaceRqValues() {
+        $query = $this->query;
+        if (isset($this->rqReplacements)) {
+            foreach($this->rqReplacements as $search => $replace) {
+                $query = str_replace($search, $replace, $this->query);
+            }
+        }
+        $this->query = $query;
+    }
+
+    protected function prependPrefixes() {
+        $prefixesString = $this->buildPrefixesString();
+        $this->query = $prefixesString . $this->query;
+    }
     
 }

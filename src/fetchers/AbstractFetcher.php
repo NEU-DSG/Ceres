@@ -80,7 +80,7 @@ use Ceres\Util\DataUtilities;
 
     protected $currentPage;
 
-    abstract public function buildQueryString($queryOptions = false, $queryParams = false);
+    abstract public function buildQuery($queryOptions = false, $queryParams = false);
 
     abstract public function parseItemsData();
 
@@ -343,11 +343,15 @@ use Ceres\Util\DataUtilities;
     public function setEndpoint(string $endpointURL) {
         $this->endpoint = $endpointURL;
     }
-    public function setQuery(string $query):void {
+    public function setQuery(string $query): void {
         $this->query = $query;
     }
 
-    public function setQueryFromFile(string $file):void {
+    public function getQuery(): string {
+        return $this->query;
+    }
+
+    public function setQueryFromFile(string $file): void {
         $this->query = file_get_contents($file);
     }
 

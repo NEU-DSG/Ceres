@@ -27,7 +27,7 @@ class Tabular extends Html {
         $this->appendToClass($this->containerNode, $this->getRendererOptionValue('tableClass'));
     }
 
-    public function setDataToRender(?string $extractorName = null, ?string $pathToMockFetcherResponse = null, ?string $pathToMockExtractorData = null): void {
+    public function setRenderArray(?string $extractorName = null, ?string $pathToMockFetcherResponse = null, ?string $pathToMockExtractorData = null): void {
         //@todo the logic throughout this needs some TLC
         
         if (is_null($extractorName) && is_null($pathToMockFetcherResponse) && is_null($pathToMockExtractorData)) {
@@ -40,7 +40,7 @@ class Tabular extends Html {
             $extractor->setSourceData($sourceData);
             $extractor->extract();
 
-            $this->dataToRender = $extractor->getDataToRender();
+            $this->renderArray = $extractor->getRenderArray();
         } else if (! is_null($pathToMockFetcherResponse)) {
             $extractor = $this->extractors[0];
 
@@ -49,7 +49,7 @@ class Tabular extends Html {
             $extractor->setSourceData($sourceData);
             $extractor->extract();
 
-            $this->dataToRender = $extractor->getDataToRender();
+            $this->renderArray = $extractor->getRenderArray();
 
         } else if (! is_null($pathToMockExtractorData)) {
 
@@ -62,7 +62,7 @@ class Tabular extends Html {
     }
 
     public function build() {
-        $rowsData = $this->dataToRender; 
+        $rowsData = $this->renderArray; 
         $firstRowIsHeader = $this->getRendererOptionValue('firstRowIsHeader');
 
         if ($firstRowIsHeader) {

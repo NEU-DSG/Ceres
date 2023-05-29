@@ -13,14 +13,14 @@ class Details extends Html {
 
     public function build() {
 
-        $this->dataToRender = [
+        $this->renderArray = [
             'summary' => "Fear what lurks below, should you choose....",
             'details' => "BWAHAHAHAHAHAHAHAHAHAHHA!"
         ];
 
         $detailsEl = $this->htmlDom->getElementsByTagName('details')->item(0);
         $summaryEl = $this->htmlDom->getElementsByTagName('summary')->item(0);
-        $this->appendTextNode($summaryEl, $this->dataToRender['summary']);
-        $this->appendTextNode($detailsEl, $this->dataToRender['details']);
+        $this->appendTextNode($summaryEl, $this->renderArray['summary']);
+        $this->appendTextNode($detailsEl, $this->renderArray['details']);
     }
 }

@@ -65,15 +65,15 @@
       
     }
 /**
- * setDataToRenderFromFile
+ * setRenderArrayFromFile
  *
  * Expects a text file with a serialized php array or json string
  * 
  * @param string $fileName
  * @return void
  */
-    public function setDataToRenderFromFile(string $fileName) {
-        $this->dataToRender = unserialize(file_get_contents($fileName));
+    public function setRenderArrayFromFile(string $fileName) {
+        $this->renderArray = unserialize(file_get_contents($fileName));
     }
 
     public function setJsonToInjectFromFile(string $fileName, bool $decodeJson = false) {
@@ -97,14 +97,14 @@
     }
 
     //@todo for the bounceback option
-    public function setDataToRenderFromFetcher(?string $fetcherName = null): void {
+    public function setRenderArrayFromFetcher(?string $fetcherName = null): void {
         if (is_null($fetcherName)) {
             $allFetchers = array_values($this->fetchers);
             $fetcher = $allFetchers[0];
         } else {
             $fetcher = $this->fetchers[$fetcherName];
         }
-        $this->dataToRender = $fetcher->getResponseData();
+        $this->renderArray = $fetcher->getResponseData();
 
     }
 
@@ -130,9 +130,9 @@
         return $fetcher;
     }
 
-    public function setDataToRender(?string $extractorName = null): void {
+    public function setRenderArray(?string $extractorName = null): void {
         if ($this->getRendererOptionValue('bounceBack')) {
-            $this->setDataToRenderFromFetcher();
+            $this->setRenderArrayFromFetcher();
             return;
         }
         if (is_null($extractorName)) {
@@ -141,7 +141,7 @@
         } else {
             $extractor = $this->extractors[$extractorName];
         }
-        $this->dataToRender = $extractor->getDataToRender();
+        $this->renderArray = $extractor->getRenderArray();
     }
 
 

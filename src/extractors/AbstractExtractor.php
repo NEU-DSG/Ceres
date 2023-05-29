@@ -5,14 +5,14 @@ namespace Ceres\Extractor;
 abstract class AbstractExtractor {
     
     protected array $extractorOptions = [];
-    protected array $dataToRender = [];
+    protected array $renderArray = [];
     protected string $jsonToInject = '';
 
 
     /**
      * extract
      * 
-     * Extracts the data needed from the source and puts it into $dataToRender
+     * Extracts the data needed from the source and puts it into $renderArray
      * Requires data from sourceData to be ready to go in props
      * @return void
      */
@@ -46,25 +46,25 @@ abstract class AbstractExtractor {
         }
     }
 
-    protected function preSetDataToRender(array $dataToRender): array {
-// echo"<h3>preSetDataToRender: AbsExt</h3>";
-        return $dataToRender; //do nothing, let other classes implement this as needed
+    protected function preSetRenderArray(array $renderArray): array {
+// echo"<h3>preSetRenderArray: AbsExt</h3>";
+        return $renderArray; //do nothing, let other classes implement this as needed
     } 
 
-    protected function postSetDataToRender(): void {
-// echo"<h3>postSetDataToRender: AbsExt</h3>";
+    protected function postSetRenderArray(): void {
+// echo"<h3>postSetRenderArray: AbsExt</h3>";
         //do nothing, let other classes implement this as needed
     }
 
-    protected function setDataToRender(array $dataToRender): void {
-        $dataToRender = $this->preSetDataToRender($dataToRender);
-        $this->dataToRender = $dataToRender;
-        $this->postSetDataToRender();
+    protected function setRenderArray(array $renderArray): void {
+        $renderArray = $this->preSetRenderArray($renderArray);
+        $this->renderArray = $renderArray;
+        $this->postSetRenderArray();
     }
 
 
-    public function getDataToRender(): array {
-        return $this->dataToRender;
+    public function getRenderArray(): array {
+        return $this->renderArray;
     }
 
     public function preSetJsonToInject(string $jsonToInject): string {
@@ -119,14 +119,14 @@ abstract class AbstractExtractor {
      * 
      * Mostly only relevant to Table Renderers, but maybe broader?
      * 
-     * Take a row of $this->dataToRender to render and map the values onto a supplied array like
+     * Take a row of $this->renderArray to render and map the values onto a supplied array like
      * [
      *     [<oldLabel => <newLabel>] ,
      *     [<oldLabel => <newLabel>] ,
      * ]
      * @todo likely from an ExtractorOption 2023-04-06 16:56:34
      *
-     * @todo put in postSetDataToRender hook? dunno if it should be a standard from AbstractExtractor
+     * @todo put in postSetRenderArray hook? dunno if it should be a standard from AbstractExtractor
      * 
      * @param array $rowData
      * @param array $labelMapping

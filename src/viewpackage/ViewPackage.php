@@ -186,7 +186,7 @@ class ViewPackage {
     }
 
     public function gatherData(?string $extractorName = null, ?string $pathToMockFetcherResponse = null,?string $pathToMockExtractorData = null) {   
-        // params for renderer->setDataToRender are:
+        // params for renderer->setRenderArray are:
         // $renderer(<extractorName>, <pathToMockFetcherResponse>, <pathToMockExtractorData>)    )
         // the variations are usually used for debugging or super-complicated combos
         // the first sans params usually works
@@ -196,11 +196,11 @@ class ViewPackage {
         if (is_null($extractorName) 
             && is_null($pathToMockExtractorData)
             && is_null($pathToMockFetcherResponse)) {
-            $this->renderer->setDataToRender();
+            $this->renderer->setRenderArray();
         } else if (!is_null($pathToMockFetcherResponse)) {
-            $this->renderer->setDataToRender(null, $pathToMockFetcherResponse);
+            $this->renderer->setRenderArray(null, $pathToMockFetcherResponse);
         } else if (!is_null($pathToMockExtractorData)) {
-            $this->renderer->setDataToRender(null, null, $pathToMockExtractorData);
+            $this->renderer->setRenderArray(null, null, $pathToMockExtractorData);
         }
 
     }

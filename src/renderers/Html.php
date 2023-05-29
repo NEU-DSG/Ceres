@@ -54,14 +54,23 @@ class Html extends AbstractRenderer {
 
     public function imgArrayToImg(array $renderData): DOMElement {
         $imgNode = $this->htmlDom->createElement('img');
-        $this->setGlobalAttributes($renderData['globalAtts'], $imgNode);
+        if (isset($renderData['globalAtts'])) {
+            $this->setGlobalAttributes($renderData['globalAtts'], $imgNode);
+            unset($renderData['globalAtts']);
+        }
+        
         return $imgNode;
     }
 
     // @todo move to utils?
     public function linkArrayToA(array $linkData) : DOMElement {
         $aNode = $this->htmlDom->createElement('a');
-        $this->setGlobalAttributes($linkData['globalAtts'], $aNode);
+        if (isset($renderData['globalAtts'])) {
+            $this->setGlobalAttributes($linkData['globalAtts'], $aNode);
+            unset($renderData['globalAtts']);   
+        }
+        
+        
         $aNode->setAttribute('href', $linkData['url']);
         $this->appendTextNode($aNode, $linkData['label']);
         return $aNode;
@@ -117,7 +126,11 @@ class Html extends AbstractRenderer {
 
     public function listArrayToUl(array $renderData) : DOMElement {
         $ulNode = $this->htmlDom->createElement('ul');
-        $this->setGlobalAttributes($renderData['globalAtts'], $ulNode);
+        if (isset($renderData['globalAtts'])) {
+            $this->setGlobalAttributes($renderData['globalAtts'], $ulNode);
+            unset($renderData['globalAtts']);
+        }
+        
         foreach($renderData as $liText) {
             $liNode = $this->htmlDom->createElement('li');
             $this->appendTextNode($liNode, $liText);
@@ -128,7 +141,11 @@ class Html extends AbstractRenderer {
 
     public function listArrayToOl(array $renderData) : DOMElement {
         $olNode = $this->htmlDom->createElement('ol');
-        $this->setGlobalAttributes($renderData['globalAtts'], $olNode);
+        if (isset($renderData['globalAtts'])) {
+            $this->setGlobalAttributes($renderData['globalAtts'], $olNode);
+            unset($renderData['globalAtts']);  
+        }
+        
         foreach($renderData as $liText) {
             $liNode = $this->htmlDom->createElement('li');
             $this->appendTextNode($liNode, $liText);
@@ -195,11 +212,12 @@ class Html extends AbstractRenderer {
         }
     }
 
-    protected function setGlobalAttributes(array $globalAtts, DOMElement $node) {
+    protected function setGlobalAttributes(array $globalAtts = [], DOMElement $node) {
         foreach($globalAtts as $att => $value) {
             $attributeNode = $this->htmlDom->createAttribute($att);
             $attributeNode->value = $value;
             $node->appendChild($attributeNode);
         }
+
     }
 }

@@ -36,17 +36,19 @@ namespace Ceres\Documentation;
 
 
 $imgRenderArray = ['type' => 'img',
-                   'globalAtts' => ['dataAtts' => ['data-X' => ''],
-                                    'id' => '',
-                                    'role' => '',
-                                    'lang' => '',
-                                    'title' => '',
-                                   ],
+
                    'data' => [
+                        'globalAtts' => ['dataAtts' => ['data-X' => ''],
+                        'id' => 'any id containing the string `ceres` will be stripped out',
+                        'role' => '',
+                        'lang' => '',
+                        'title' => '',
+                    ],
                         'url' => 'http://....',
                         'alt' => 'alt text',
                    ]
                 ];
+
 
 $aRenderArray = ['type' => 'a',
                     'data' => [

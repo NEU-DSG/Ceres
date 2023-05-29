@@ -39,7 +39,7 @@
     protected array $expectedProperties = [];
 
     //the data coming from an Extractor to render
-    protected array $dataToRender = [];
+    protected array $renderArray = [];
 
     protected string $jsonToInject = '';
 

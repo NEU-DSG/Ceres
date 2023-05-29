@@ -1,6 +1,6 @@
 <?php
 
-namespace Ceres\Renderer\Html;
+namespace Ceres\Renderer;
 
 use Ceres\Renderer\Html;
 use DOMNode;
@@ -9,7 +9,7 @@ class Card extends Html {
 
     protected DOMNode $mainNode;
     protected DOMNode $secondaryNode;
-
+    protected string $templateFileName = 'card.html';
 
     public function __construct() {
         parent::__construct();
@@ -18,17 +18,34 @@ class Card extends Html {
         $this->secondaryNode = $this->htmlDom->getElementById('ceres-card-secondary');
     }
 
-    public function build() {
+    public function build(): void {
         $mainRenderArray = $this->renderArray['data']['main'];
-        $secondaryArray = $this->renderArray['data']['secondary'];
+        $this->mainNode = $this->buildMainNode($mainRenderArray);
+
+        $secondaryRenderArray = $this->renderArray['data']['secondary'];
+        $this->secondaryNode = $this->buildSecondaryNode($secondaryRenderArray);
     }
 
-    protected function buildMainNode($mainRenderArray) {
-        foreach($mainRenderArray as $element) {
-            if (is_array($element)) {
-
+    protected function buildMainNode($mainRenderArray): void {
+        $mainNode = $this->htmlDom->getElementById('ceres-card-main');
+        foreach($mainRenderArray as $renderData) {
+            if (is_array($renderData)) {
+                $innerNode = $this->handleInnerRenderArray($renderData);
+                $mainNode->appendChild($innerNode);
             } else {
-                
+                $this->appendTextNode($mainNode, $renderData);
+            }
+        }
+    }
+
+    protected function buildSecondaryNode($secondaryRenderArray): void {
+        $secondaryNode = $this->htmlDom->getElementById('ceres-card-main');
+        foreach($secondaryRenderArray as $renderData) {
+            if (is_array($renderData)) {
+                $innerNode = $this->handleInnerRenderArray($renderData);
+                $secondaryNode->appendChild($innerNode);
+            } else {
+                $this->appendTextNode($secondaryNode, $renderData);
             }
         }
     }

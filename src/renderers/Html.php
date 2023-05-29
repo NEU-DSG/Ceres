@@ -37,7 +37,7 @@ class Html extends AbstractRenderer {
     }
 
     public function render(): string {
-
+        $this->clearCeresIds();
         $this->build();
 
         // just to be nice if/when I end up with compound Renderers,
@@ -54,7 +54,7 @@ class Html extends AbstractRenderer {
     }
 
     // @todo move to utils?
-    public function linkify(array $linkData) : DOMElement {
+    public function linkArrayToA(array $linkData) : DOMElement {
         $aElement = $this->htmlDom->createElement('a');
         $aElement->setAttribute('href', $linkData['url']);
         $this->appendTextNode($aElement, $linkData['label']);
@@ -97,7 +97,7 @@ class Html extends AbstractRenderer {
         $element->appendChild($textNode);
     }
 
-    public function enumToSelect(array $enumOptions) : DOMElement {
+    public function enumArrayToSelect(array $enumOptions) : DOMElement {
         $selectNode = $this->htmlDom->createElement('select');
 
         foreach ($enumOptions as $option) {
@@ -109,7 +109,7 @@ class Html extends AbstractRenderer {
         return $selectNode;
     }
 
-    public function arrayToUl(array $dataArray) : DOMElement {
+    public function listArrayToUl(array $dataArray) : DOMElement {
         $ulNode = $this->htmlDom->createElement('ul');
         foreach($dataArray as $liText) {
             $liNode = $this->htmlDom->createElement('li');
@@ -117,6 +117,16 @@ class Html extends AbstractRenderer {
             $ulNode->appendChild($liNode);
         }
         return $ulNode;
+    }
+
+    public function listArrayToOl(array $dataArray) : DOMElement {
+        $olNode = $this->htmlDom->createElement('ol');
+        foreach($dataArray as $liText) {
+            $liNode = $this->htmlDom->createElement('li');
+            $this->appendTextNode($liNode, $liText);
+            $olNode->appendChild($liNode);
+        }
+        return $olNode;
     }
 
     public function varcharToInput(?string $text) : DOMElement {
@@ -142,4 +152,33 @@ class Html extends AbstractRenderer {
 
     }
 
+
+    protected function handleInnerRenderArray($renderData) {
+        switch ($renderData['type']) {
+            case 'list':
+                switch ($renderData['subtype']) {
+                    case 'ul':
+                        $innerNode = $this->listArrayToUl($renderData['data']);
+                    break;
+        
+                    case 'ol':
+                        $innerNode = $this->listArrayToOl($renderData['data']);
+                    break;
+                }
+            break;
+
+            case 'keyValue':
+
+            break;
+        }
+        return $innerNode;
+    }
+
+    protected function clearCeresIds(): void {
+        $xpath = "//div[contains(@id,'ceres')]";
+        $nodes = $this->xPath->query($xpath, $this->htmlDom);
+        foreach ($nodes as $node) {
+            $node->removeAttribute('id');
+        }
+    }
 }

@@ -53,6 +53,16 @@ class Html extends AbstractRenderer {
         $this->appendTextNode($this->containerNode, $text);
     }
 
+    public function imgArrayToImg(array $renderData): DOMElement {
+        $imgNode = $this->htmlDom->createElement('img');
+            foreach($renderData as $att => $value) {
+                $attributeNode = $this->htmlDom->createAttribute($att);
+                $attributeNode->value = $value;
+                $imgNode->appendChild($attributeNode);
+            }
+        return $imgNode;
+    }
+
     // @todo move to utils?
     public function linkArrayToA(array $linkData) : DOMElement {
         $aElement = $this->htmlDom->createElement('a');
@@ -166,6 +176,11 @@ class Html extends AbstractRenderer {
                     break;
                 }
             break;
+
+            case 'img':
+                $innerNode = $this->imgArrayToImg($renderData['data']);
+            break;
+
 
             case 'keyValue':
 

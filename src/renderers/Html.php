@@ -33,18 +33,17 @@ class Html extends AbstractRenderer {
      */
     public function renderFullHtml(): string {
         $this->build();
+        $this->stripCeresIds();
         return $this->htmlDom->saveHtml();
     }
 
     public function render(): string {
-        $this->clearCeresIds();
+        
         $this->build();
-
-        // just to be nice if/when I end up with compound Renderers,
-        // need to make sure I don't end up with multiple ids
-        $this->containerNode->removeAttribute(('id'));
-        //$templateNode = $this->htmlDom->getElementById('ceres-template');
-        //$this->containerElement->removeChild($templateNode); 
+        // only strip the ids related to ceres, marked by the string
+        // `ceres`, just before rendering so any ids can be there for processing
+        // but need to go to avoid multiple ids on one page
+        $this->stripCeresIds();
         return $this->toHtmlString();
     }
 
@@ -55,21 +54,18 @@ class Html extends AbstractRenderer {
 
     public function imgArrayToImg(array $renderData): DOMElement {
         $imgNode = $this->htmlDom->createElement('img');
-            foreach($renderData as $att => $value) {
-                $attributeNode = $this->htmlDom->createAttribute($att);
-                $attributeNode->value = $value;
-                $imgNode->appendChild($attributeNode);
-            }
+        $this->setGlobalAttributes($renderData['globalAtts'], $imgNode);
         return $imgNode;
     }
 
     // @todo move to utils?
     public function linkArrayToA(array $linkData) : DOMElement {
-        $aElement = $this->htmlDom->createElement('a');
-        $aElement->setAttribute('href', $linkData['url']);
-        $this->appendTextNode($aElement, $linkData['label']);
-        return $aElement;
-        }
+        $aNode = $this->htmlDom->createElement('a');
+        $this->setGlobalAttributes($linkData['globalAtts'], $aNode);
+        $aNode->setAttribute('href', $linkData['url']);
+        $this->appendTextNode($aNode, $linkData['label']);
+        return $aNode;
+    }
   
     public function toHtmlString(?DOMElement $node = null) : string {
         if (is_null($node)) {
@@ -119,9 +115,10 @@ class Html extends AbstractRenderer {
         return $selectNode;
     }
 
-    public function listArrayToUl(array $dataArray) : DOMElement {
+    public function listArrayToUl(array $renderData) : DOMElement {
         $ulNode = $this->htmlDom->createElement('ul');
-        foreach($dataArray as $liText) {
+        $this->setGlobalAttributes($renderData['globalAtts'], $ulNode);
+        foreach($renderData as $liText) {
             $liNode = $this->htmlDom->createElement('li');
             $this->appendTextNode($liNode, $liText);
             $ulNode->appendChild($liNode);
@@ -129,9 +126,10 @@ class Html extends AbstractRenderer {
         return $ulNode;
     }
 
-    public function listArrayToOl(array $dataArray) : DOMElement {
+    public function listArrayToOl(array $renderData) : DOMElement {
         $olNode = $this->htmlDom->createElement('ol');
-        foreach($dataArray as $liText) {
+        $this->setGlobalAttributes($renderData['globalAtts'], $olNode);
+        foreach($renderData as $liText) {
             $liNode = $this->htmlDom->createElement('li');
             $this->appendTextNode($liNode, $liText);
             $olNode->appendChild($liNode);
@@ -189,11 +187,19 @@ class Html extends AbstractRenderer {
         return $innerNode;
     }
 
-    protected function clearCeresIds(): void {
+    protected function stripCeresIds(): void {
         $xpath = "//div[contains(@id,'ceres')]";
         $nodes = $this->xPath->query($xpath, $this->htmlDom);
         foreach ($nodes as $node) {
             $node->removeAttribute('id');
+        }
+    }
+
+    protected function setGlobalAttributes(array $globalAtts, DOMElement $node) {
+        foreach($globalAtts as $att => $value) {
+            $attributeNode = $this->htmlDom->createAttribute($att);
+            $attributeNode->value = $value;
+            $node->appendChild($attributeNode);
         }
     }
 }

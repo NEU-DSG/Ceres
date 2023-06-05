@@ -54,9 +54,9 @@ abstract class AbstractExtractor {
         //do nothing, let other classes implement this as needed
     }
 
-    protected function preSetDataToRender(array $dataToRender): array {
+    protected function preSetRenderArray(array $renderArray): array {
 // echo"<h3>preSetDataToRender: AbsExt</h3>";
-        return $dataToRender; //do nothing, let other classes implement this as needed
+        return $renderArray; //do nothing, let other classes implement this as needed
     } 
 
     protected function postSetRenderArray(): void {

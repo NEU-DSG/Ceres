@@ -306,7 +306,7 @@ use Ceres\Util\DataUtilities;
         // echo 'setFetcherOptions, yes?';
         // print_r($fetcherOptions);
         foreach ($fetcherOptions as $optionName) {
-            echo $optionName;
+           // echo $optionName;
             $this->fetcherOptions[$optionName] = DataUtilities::valueForOption($optionName);
             //$this->fetcherOptions = $fetcherOptions;
         }
@@ -316,7 +316,7 @@ use Ceres\Util\DataUtilities;
     }
 
     //@todo another one to abstract across F/E/Rs, probably as a Trait
-    public function setFetcherOptionValue(string $optionName, string $optionValue, bool $asCurrentValue = false) {
+    public function setFetcherOptionValue(string $optionName, $optionValue, bool $asCurrentValue = false) {
         if ($asCurrentValue) {
             $this->fetcherOptions[$optionName]['currentValue'] = $optionValue;    
         } else {

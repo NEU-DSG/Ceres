@@ -10,3 +10,4 @@ SELECT DISTINCT ?qid ?collectionLabel WHERE {
   SERVICE wikibase:label { bd:serviceParam wikibase:language "en" }
   BIND(REPLACE(STR(?collection), ?baseURI, "") AS ?qid)
 } ORDER BY ?collectionLabel
+

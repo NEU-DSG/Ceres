@@ -76,6 +76,12 @@
         $this->renderArray = unserialize(file_get_contents($fileName));
     }
 
+
+    public function setDataToRenderFromArray(array $dataToRenderArray) {
+        $this->dataToRender = $dataToRenderArray;
+    }
+
+
     public function setJsonToInjectFromFile(string $fileName, bool $decodeJson = false) {
         $jsonToRender = file_get_contents($fileName);
         if ($decodeJson) {
@@ -84,6 +90,8 @@
             $this->jsonToInject = $jsonToRender;
         }
     }
+
+  
 
     public function setJsonToInject(?string $extractorName) {
         if (is_null($extractorName)) {

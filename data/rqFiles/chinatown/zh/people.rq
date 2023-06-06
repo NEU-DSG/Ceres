@@ -49,33 +49,29 @@ WHERE {
      
    {
      SELECT ?innerPerson
-            (group_concat(distinct ?createdCollectionLink; separator="; ") as ?createdCollections)
-            (group_concat(distinct ?foundedOrgLink; separator="; ") as ?foundedOrganizations)
-            (group_concat(distinct ?maintainsCollectionLink; separator="; ") as ?maintainsCollections)
-            (group_concat(distinct ?donatedCollectionLink; separator="; ") as ?donatedCollections)
+            (group_concat(distinct ?createdCollectionQid; separator="; ") as ?createdCollections)
+            (group_concat(distinct ?foundedOrgQid; separator="; ") as ?foundedOrganizations)
+            (group_concat(distinct ?maintainsCollectionQid; separator="; ") as ?maintainsCollections)
+            (group_concat(distinct ?donatedCollectionQid; separator="; ") as ?donatedCollections)
      WHERE {
        ?innerPerson ?instanceOf ?human.
        OPTIONAL{?innerPerson ^wdt:P28 ?createdCollection.
                BIND(REPLACE(STR(?createdCollection), "http://ec2-34-227-69-60.compute-1.amazonaws.com/entity/", "") AS ?createdCollectionQid).
                ?createdCollection rdfs:label ?createdCollectionLabel.
                FILTER(LANG(?createdCollectionLabel) = "zh").
-               BIND(CONCAT("<a href='./", STR(?createdCollectionQid), ".html'>", STR(?createdCollectionLabel), "</a>") AS ?createdCollectionLink)}
        OPTIONAL{?innerPerson ^wdt:P10 ?foundedOrganization.
                BIND(REPLACE(STR(?foundedOrganization), "http://ec2-34-227-69-60.compute-1.amazonaws.com/entity/", "") AS ?foundedOrgQid).
                ?foundedOrganization rdfs:label ?foundedOrgLabel.
                FILTER(LANG(?foundedOrgLabel) = "zh").
-               BIND(CONCAT("<a href='./", STR(?foundedOrgQid), ".html'>", STR(?foundedOrgLabel), "</a>") AS ?foundedOrgLink)}
        OPTIONAL{?innerPerson ^wdt:P11 ?maintainsCollection.
                BIND(REPLACE(STR(?maintainsCollection), "http://ec2-34-227-69-60.compute-1.amazonaws.com/entity/", "") AS ?maintainsCollectionQid).
                ?maintainsCollection rdfs:label ?maintainsCollectionLabel.
                FILTER(LANG(?maintainsCollectionLabel) = "zh").
-               BIND(CONCAT("<a href='./", STR(?maintainsCollectionQid), ".html'>", STR(?maintainsCollectionLabel), "</a>") AS ?maintainsCollectionLink)
                }
        OPTIONAL{?innerPerson ^wdt:P24 ?donatedCollection.
                BIND(REPLACE(STR(?donatedCollection), "http://ec2-34-227-69-60.compute-1.amazonaws.com/entity/", "") AS ?donatedCollectionQid).
                ?donatedCollection rdfs:label ?donatedCollectionLabel.
                FILTER(LANG(?donatedCollectionLabel) = "zh").
-               BIND(CONCAT("<a href='./", STR(?donatedCollectionQid), ".html'>", STR(?donatedCollectionLabel), "</a>") AS ?donatedCollectionLink)
                }
      } GROUP BY ?innerPerson 
    }

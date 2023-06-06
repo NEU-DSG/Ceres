@@ -2,23 +2,25 @@
 
 namespace Ceres\Extractor;
 
+use Ceres\Data;
+use Ceres\Util\DataUtilities as DataUtil;
+
+
 abstract class AbstractExtractor {
     
     protected array $extractorOptions = [];
-    protected array $dataToRender = [];
+    protected array $renderArray = [];
     protected string $jsonToInject = '';
-
+    protected array $sourceData = [];
 
     /**
      * extract
      * 
-     * Extracts the data needed from the source and puts it into $dataToRender
+     * Extracts the data needed from the source and puts it into $renderArray
      * Requires data from sourceData to be ready to go in props
      * @return void
      */
     abstract public function extract();
-
-    protected array $sourceData = array();
 
     public function __construct() {
         
@@ -38,7 +40,7 @@ abstract class AbstractExtractor {
 
 
     //@todo another one to abstract across F/E/Rs, probably as a Trait
-    public function setExtractorOptionValue(string $optionName, string $optionValue, bool $asCurrentValue = false) {
+    public function setExtractorOptionValue(string $optionName, string $optionValue, bool $asCurrentValue = false): void {
         if ($asCurrentValue) {
             $this->extractorOptions[$optionName]['currentValue'] = $optionValue;    
         } else {
@@ -46,25 +48,29 @@ abstract class AbstractExtractor {
         }
     }
 
-    protected function preSetDataToRender(array $dataToRender): array {
-// echo"<h3>preSetDataToRender: AbsExt</h3>";
-        return $dataToRender; //do nothing, let other classes implement this as needed
-    } 
-
-    protected function postSetDataToRender(): void {
-// echo"<h3>postSetDataToRender: AbsExt</h3>";
+    protected function preExtract() {
         //do nothing, let other classes implement this as needed
     }
 
-    protected function setDataToRender(array $dataToRender): void {
-        $dataToRender = $this->preSetDataToRender($dataToRender);
-        $this->dataToRender = $dataToRender;
-        $this->postSetDataToRender();
+    protected function preSetRenderArray(array $renderArray): array {
+// echo"<h3>preSetDataToRender: AbsExt</h3>";
+        return $renderArray; //do nothing, let other classes implement this as needed
+    } 
+
+    protected function postSetRenderArray(): void {
+// echo"<h3>postSetRenderArray: AbsExt</h3>";
+        //do nothing, let other classes implement this as needed
+    }
+
+    protected function setRenderArray(array $renderArray): void {
+        $renderArray = $this->preSetRenderArray($renderArray);
+        $this->renderArray = $renderArray;
+        $this->postSetRenderArray();
     }
 
 
-    public function getDataToRender(): array {
-        return $this->dataToRender;
+    public function getRenderArray(): array {
+        return $this->renderArray;
     }
 
     public function preSetJsonToInject(string $jsonToInject): string {
@@ -91,12 +97,13 @@ abstract class AbstractExtractor {
     }
 
     protected function postSetSourceData(): void {
- //echo"<h3>preSetSourceData: AbsExt</h3>";
-
         //do nothing, let other classes implement this as needed
     }
 
-    public function setSourceData($data) {
+    public function setSourceData($data = null): void {
+        if(is_string($data)) {
+            $data = json_decode($data, true);
+        }
         $data = $this->preSetSourceData($data);
         $this->sourceData = $data;
         $this->postSetSourceData();
@@ -119,14 +126,14 @@ abstract class AbstractExtractor {
      * 
      * Mostly only relevant to Table Renderers, but maybe broader?
      * 
-     * Take a row of $this->dataToRender to render and map the values onto a supplied array like
+     * Take a row of $this->renderArray to render and map the values onto a supplied array like
      * [
      *     [<oldLabel => <newLabel>] ,
      *     [<oldLabel => <newLabel>] ,
      * ]
      * @todo likely from an ExtractorOption 2023-04-06 16:56:34
      *
-     * @todo put in postSetDataToRender hook? dunno if it should be a standard from AbstractExtractor
+     * @todo put in postSetRenderArray hook? dunno if it should be a standard from AbstractExtractor
      * 
      * @param array $rowData
      * @param array $labelMapping

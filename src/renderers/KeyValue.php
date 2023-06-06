@@ -4,20 +4,19 @@ namespace Ceres\Renderer;
 use Ceres\Renderer\Html;
 use Ceres\Util\DataUtilities as DataUtil;
 use Ceres\Util\StringUtilities as StringUtil;
-
+use DOMElement;
 
 class KeyValue extends Html {
     protected string $templateFileName = 'keyvalue.html';
 
-    public function build() {
-        print_r($this->dataToRender);
-        foreach($this->dataToRender as $rowData) {
+    public function build(): void {
+        foreach($this->renderArray as $rowData) {
             $row = $this->buildRow($rowData);
-            $this->containerElement->appendChild($row);
+            $this->containerNode->appendChild($row);
         }
     }
 
-    public function buildRow($rowData) {
+    public function buildRow($rowData): DOMElement {
         $row = $this->htmlDom->createElement('div');
         $this->appendToClass($row, 'ceres-keyvalue-row');
         $keyNode = $this->htmlDom->createElement('span');
@@ -29,7 +28,7 @@ class KeyValue extends Html {
 
         $this->appendTextNode($keyNode, $rowData['key']);
         $this->appendTextNode($valueNode, $rowData['value']);
-        $separator = $this->getRendererOption('separator');
+        $separator = $this->getRendererOptionValue('separator');
         $this->appendTextNode($separatorNode, $separator);
 
         $row->appendChild($keyNode);

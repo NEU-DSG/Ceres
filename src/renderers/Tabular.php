@@ -27,7 +27,7 @@ class Tabular extends Html {
         $this->appendToClass($this->containerNode, $this->getRendererOptionValue('tableClass'));
     }
 
-    public function setDataToRender(?string $extractorName = null, ?string $pathToMockFetcherResponse = null, ?string $pathToMockExtractorData = null): void {
+    public function setRenderArray(?string $extractorName = null, ?string $pathToMockFetcherResponse = null, ?string $pathToMockExtractorData = null): void {
         //@todo the logic throughout this needs some TLC
         
         if (is_null($extractorName) && is_null($pathToMockFetcherResponse) && is_null($pathToMockExtractorData)) {
@@ -36,11 +36,13 @@ class Tabular extends Html {
             $extractor = $this->extractors[0];
 
             $sourceData = $fetcher->fetchData();
-
+//  print_r($sourceData);
+//  echo "<h3>sourceData?</h3>";
+//  die();
             $extractor->setSourceData($sourceData);
             $extractor->extract();
 
-            $this->dataToRender = $extractor->getDataToRender();
+            $this->renderArray = $extractor->getRenderArray();
         } else if (! is_null($pathToMockFetcherResponse)) {
             $extractor = $this->extractors[0];
 
@@ -49,20 +51,14 @@ class Tabular extends Html {
             $extractor->setSourceData($sourceData);
             $extractor->extract();
 
-            $this->dataToRender = $extractor->getDataToRender();
+            $this->renderArray = $extractor->getRenderArray();
 
         } else if (! is_null($pathToMockExtractorData)) {
-
-
-
-
         }
-        
-
     }
 
     public function build() {
-        $rowsData = $this->dataToRender; 
+        $rowsData = $this->renderArray; 
         $firstRowIsHeader = $this->getRendererOptionValue('firstRowIsHeader');
 
         if ($firstRowIsHeader) {
@@ -77,7 +73,7 @@ class Tabular extends Html {
         }
     }
 
-    public function buildRow($rowData, $cellElement = 'td') {
+    public function buildRow($rowData, $cellElement = 'td'): DOMElement {
         $trClass = $this->getRendererOptionValue('trClass');
         $tdClass = $this->getRendererOptionValue('tdClass');
         $thClass = $this->getRendererOptionValue('thClass');
@@ -88,7 +84,40 @@ class Tabular extends Html {
 
         foreach ($rowData as $columnData) {
             $tdNode = $this->htmlDom->createElement($cellElement);
-            $this->appendTextNode($tdNode, $columnData);
+
+            //@todo handle column data that's a nested array, and different guidance from Extractor (e.g. 'list', 'img')
+            // this should be abstracted out somewhere/how?
+
+
+            if (is_array($columnData)) {
+                $type = $columnData['type'];
+                $data = $columnData['data'];
+                switch ($type) {
+                    case 'ul':
+                        $columnData = $this->extractorArrayToUl($data);
+                    break;
+
+                    case 'link':
+                        $columnData = $this->extractorArrayToA($data);
+                    break;
+
+                    case 'keyValue':
+                        $columnData = $this->extractorArrayToKeyValue($data); // or should this pass off to a KeyValue Renderer?
+                    break;
+
+                    case 'complexKeyValue':
+                        $columnData = $this->extractorComplexKeyValueArrayToUl($data);
+
+                    default:
+
+                    //throw something?
+
+                }
+                $tdNode->appendChild($columnData);
+            } else {
+                $this->appendTextNode($tdNode, $columnData);
+            }
+            
             $this->appendToClass($tdNode, $tdClass);
             $trNode->appendChild($tdNode);
         }

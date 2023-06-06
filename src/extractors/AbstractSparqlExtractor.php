@@ -33,9 +33,9 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
      * @param string $var
      * @return string
      */
-    public function valueForBindingVar(array $binding, string $var):string {
+    public function valueForBindingVar(array $binding, string $var): string {
         if (! isset($binding[$var])) {
-            return "missing $var data";
+            return "CERES missing data";
         }
         return $binding[$var]['value'];
     }
@@ -45,30 +45,17 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
         $this->setBindings();
     }
 
-    public function setSourceData($sourceData):void {
-        //@todo handle exceptions if isn't json etc.
-        //@todo maybe that could be done in pre (or even a validate() method?)
-        if (is_string($sourceData)) {
-            $sourceData = json_decode($sourceData, true);
-        }
-// echo "<h2>setSourceData: AbsSqlExt</h2>";
-//         print_r($sourceData);
-        $sourceData = $this->preSetSourceData($sourceData);
-        $this->sourceData = $sourceData;
-        $this->postSetSourceData();
-    }
-
     protected function preSetVars(array $vars): array {
  //echo"<h3>preSetVars: AbsSparqlEx</h3>";
         return $vars; //do nothing, let other classes implement this as needed
     }
 
-    protected function postSetVars():void {
+    protected function postSetVars(): void {
  //echo"<h3>postSetVars: AbsSparqlEx";
         //do nothing, let other classes implement this as needed
     }
 
-    protected function setVars():void {
+    protected function setVars(): void {
         $vars = $this->sourceData['head']['vars'];
         $vars = $this->preSetVars($vars);
         $this->vars = $vars;
@@ -85,7 +72,7 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
         //do nothing, let other classes implement this as needed
     }
     
-    protected function setBindings():void {
+    protected function setBindings(): void {
         $bindings = $this->sourceData['results']['bindings'];
         $bindings = $this->preSetBindings($bindings);
         $this->bindings = $this->sourceData['results']['bindings'];
@@ -132,31 +119,22 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
     protected function removeVars(?array $varsToRemoveArray = null): void {
         //@todo make $toRemoveArray an ExtratorOption? 2023-04-06 18:01:26
         //check if a $toRemoveArray exists (as an ExtractorOption) and run conditionally
-        //as a postSetDataToRender?
+        //as a postSetRenderArray?
         // this is ahead of refactoring the reordering???
         
         if (is_null($varsToRemoveArray)) {
-            $varsToRemoveArray = $this->valueForExtractorOption('extractorRemoveVarsFilePath');
+            $varsToRemoveFile = $this->valueForExtractorOption('extractorRemoveVarsFilePath');
+            if (is_null($varsToRemoveArray)) {
+                return;
+            }
+            $varsToRemoveArray = json_decode(file_get_contents($varsToRemoveFile), true);
+            //return $varsToRemoveArray;
         }
+
         if (is_null($varsToRemoveArray)) {
             return;
 
-        } else {
-            $varsToRemoveArray = json_decode(file_get_contents($varsToRemoveArray), true);
         }
-
-        
-        $varsToRemoveArray = 
-        [
-            "langCode",
-            "qid", 
-            "personLabel",
-            "donorPropLabel",
-            "creatorPropLabel",
-            "maintainerPropLabel",
-            "founderPropLabel",
-            "namePropLabel"
-        ];
 
         foreach($this->vars as $index => $var) {
             if(in_array($var, $varsToRemoveArray)) {

@@ -6,22 +6,24 @@ use Ceres\Util\DataUtilities as DataUtil;
 
 class Wdqs extends Sparql {
 
-    //protected string $endpoint = 'http://ec2-34-227-69-60.compute-1.amazonaws.com:8834/proxy/wdqs/bigdata/namespace/wdq/sparql';
-    protected string $endpoint;
+    //protected ?string $endpoint = 'http://ec2-34-227-69-60.compute-1.amazonaws.com:8834/proxy/wdqs/bigdata/namespace/wdq/sparql';
+    protected ?string $endpoint = 'https://query.wikidata.org/sparql';
+
 
     public function __construct() {
         parent::__construct();
         
     }
 
-    public function getValueForFetcherOption($optionName) {
+    public function getValueForFetcherOption(string $optionName): string|bool {
         if (array_key_exists( $optionName, $this->fetcherOptions)) {
             return $this->fetcherOptions[$optionName];
         }
         return false;
     }
 
-    public function fetchData($url = null, $returnWithoutSetting = false) {
+    // @TODO reconcile with AbstractFetcher
+    public function fetchData(string $url = null, bool $returnWithoutSetting = false) {
         //@todo fold this into the DataUtil optionValues array
         $fetchLocalData = $this->getValueForFetcherOption('fetchLocalData');
 
@@ -33,7 +35,6 @@ class Wdqs extends Sparql {
             }
             
             $this->responseData = $responseData;
-            return null;
             //@todo remove the repetition from the bottom of this function
         }
         
@@ -53,14 +54,13 @@ class Wdqs extends Sparql {
 
         $response = file_get_contents($url, false, $context);
 
-        //status digup from https://stackoverflow.com/questions/15620124/http-requests-with-file-get-contents-getting-the-response-code
+        //status digup thanks to https://stackoverflow.com/questions/15620124/http-requests-with-file-get-contents-getting-the-response-code
         $status_line = $http_response_header[0];
 
         preg_match('{HTTP\/\S*\s(\d{3})}', $status_line, $match);
     
         $status = $match[1];
         if ($status !== "200") {
-
             throw new \RuntimeException("unexpected response status: {$status_line}\n " . $response);
         }
 
@@ -77,7 +77,6 @@ class Wdqs extends Sparql {
 
 
 The full list of built in prefixes is WDQS
-
 PREFIX wd: <http://www.wikidata.org/entity/>
 PREFIX wd: <http://ec2-34-227-69-60.compute-1.amazonaws.com/entity/>
 PREFIX wdt: <http://www.wikidata.org/prop/direct/>

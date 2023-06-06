@@ -43,25 +43,25 @@ class Sparql extends AbstractFetcher {
 
     protected array $optionalClauses = [];
 
-    protected array $filterClauses = [];
+    protected array $filterClauses;
 
-    protected array $serviceClauses = [];
+    protected array $serviceClauses;
 
-    protected array $orderByClauses = [];
+    protected array $orderByClauses;
 
-    protected array $groupByClauses = [];
+    protected array $groupByClauses;
 
-    protected array $bindClauses = [];
+    protected array $bindClauses;
 
-    protected array $unionClauses = [];
+    protected array $unionClauses;
 
-    protected array $valuesClauses = [];
+    protected array $valuesClauses;
 
-    protected array $havingClauses = [];
+    protected array $havingClauses;
 
     protected ?int $limit = null;
 
-    protected array $resultVars = [];
+    protected array $resultVars;
 
     protected string $query;
 
@@ -83,7 +83,7 @@ class Sparql extends AbstractFetcher {
     public function getItemDataById($itemId) {
     }
 
-    public function parseItemsData() {
+    public function parseItemsData(): void {
     }
     
     public function fetchPage(int $pageNumber) {
@@ -92,7 +92,7 @@ class Sparql extends AbstractFetcher {
     public function getPageUrl(int $pageNumber) {
     }
 
-    // end abstract override
+    // end abstract overrides
     
 
     public function addPrefixes(array $prefixes) {
@@ -159,6 +159,9 @@ class Sparql extends AbstractFetcher {
         $this->fetcherOptions['lang'] = $lang;
     }
 
+    public function getQuery(): string {
+        return $this->query;
+    }
 
     public function setQueryForm(string $queryForm) {
         $allowedQueryForms = ['SELECT DISTINCT', 'SELECT', 'ASK', 'DESCRIBE'];

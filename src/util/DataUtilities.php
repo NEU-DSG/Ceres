@@ -95,15 +95,31 @@ class DataUtilities {
         return self::$viewPackages[$vpId];
     }
 
+    static function labelForViewPackage(string $vpId): string {
+        self::setData();
+        $vpData = self::$viewPackages[$vpId];
+        return $vpData['label'];
+    }
+
     static function defaultsForOption($optionName, $scope='ceres') {
         self::setData();
 
         return self::$optionsValues[$optionName]['defaults'][$scope];
     }
 
-    static function enumValuesForOption($option, $scope = 'ceres') : array {
+    static function allDefaultsForOption($optionName) {
         self::setData();
-        return self::$optionsEnums[$option][$scope];
+        return self::$optionsValues[$optionName]['defaults'];
+    }
+
+    static function enumValuesForOption($optionName, $scope = 'ceres') : array {
+        self::setData();
+        return self::$optionsEnums[$optionName][$scope];
+    }
+
+    static function allEnumValuesForOption($optionName): array {
+        self::setData();
+        return self::$optionsEnums[$optionName];
     }
 
     static function accessValuesForOption($option) : array {
@@ -112,7 +128,29 @@ class DataUtilities {
 
     }
 
-
+    /**
+     * shortArrayExport
+     * 
+     * Does PHP's var_export for an array, but uses new, shorter syntax
+     *  
+     * Thanks https://gist.github.com/Bogdaan/ffa287f77568fcbb4cffa0082e954022
+     * 
+     * @param array $array  the array to export
+     * @param boolean $return whether to return the result or echo it directly. Default true
+     * @return string|void
+     */
+    function shortArrayExport(array $array, bool $return = true) {
+        $export = var_export($array, TRUE);
+        $export = preg_replace("/^([ ]*)(.*)/m", '$1$1$2', $export);
+        $array = preg_split("/\r\n|\n|\r/", $export);
+        $array = preg_replace(["/\s*array\s\($/", "/\)(,)?$/", "/\s=>\s$/"], [NULL, ']$1', ' => ['], $array);
+        $export = join(PHP_EOL, array_filter(["["] + $array));
+        if ((bool)$return) {
+            return $export; 
+        } else {
+            echo $export;
+        }
+    }
 
     static function typeForOption($option, $scope = 'ceres') {
         self::setData();

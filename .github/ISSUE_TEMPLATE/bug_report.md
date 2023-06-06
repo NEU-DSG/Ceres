@@ -8,19 +8,19 @@ assignees: ''
 ---
 
 **Initial Estimated Time**
-Estimates here are in 1/2 day, 1 day, 1/2 week, 1 week, and 2+week increments. This is dev-time, actual timelines to completion will typically be longer.
+_Estimates here are in 1/2 day, 1 day, 1/2 week, 1 week, and 2+week increments. This is dev-time, actual timelines to completion will typically be longer._
 
 
 **How this moves the project forward**
-Briefly list what completion means for broader overall project goals, including non-code goals.
+_Briefly list what completion means for broader overall project goals, including non-code goals._
 
 **Describe the bug**
-A clear and concise description of what the bug is.
+_A clear and concise description of what the bug is._
 
 **URLs to problems**
 
 **Expected behavior**
-A clear and concise description of what you expected to happen.
+_A clear and concise description of what you expected to happen._
 
 **Screenshots**
-If applicable, add screenshots to help explain your problem.
+_If applicable, add screenshots to help explain your problem._

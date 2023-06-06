@@ -52,7 +52,7 @@ class Html extends AbstractRenderer {
         $this->appendTextNode($this->containerNode, $text);
     }
 
-    public function imgArrayToImg(array $renderData): DOMElement {
+    public function imgRenderArrayToImg(array $renderData): DOMElement {
         $imgNode = $this->htmlDom->createElement('img');
         if (isset($renderData['globalAtts'])) {
             $this->setGlobalAttributes($renderData['globalAtts'], $imgNode);
@@ -116,7 +116,7 @@ class Html extends AbstractRenderer {
 /* mini-renderers to build really simple HTML elements */
 
     // @todo move to utils?
-    protected function extractorArrayToA(array $linkData) : DOMElement {
+    protected function linkRenderArrayToA(array $linkData) : DOMElement {
         $aElement = $this->htmlDom->createElement('a');
         $aElement->setAttribute('href', $linkData['url']);
         $this->appendTextNode($aElement, $linkData['label']);
@@ -124,7 +124,7 @@ class Html extends AbstractRenderer {
     }
 
     //@todo or pass off to a KeyValue renderer?
-    protected function extractorArrayToKeyValue(array $keyValueData): DOMElement {
+    protected function kvRenderArrayToKeyValue(array $keyValueData): DOMElement {
         $kvContainerNode = $this->htmlDom->createElement('div');
         foreach($keyValueData as $key=>$value) {
             if (is_array($value)) {
@@ -141,7 +141,7 @@ class Html extends AbstractRenderer {
 
 
 
-    protected function extractorEnumArrayToSelect(array $enumOptions) : DOMElement {
+    protected function enumRenderArrayToSelect(array $enumOptions) : DOMElement {
         $selectNode = $this->htmlDom->createElement('select');
         foreach ($enumOptions as $option) {
             $optionNode = $this->htmlDom->createElement('option');
@@ -151,32 +151,32 @@ class Html extends AbstractRenderer {
         return $selectNode;
     }
 
-    protected function extractorComplexKeyValueArrayToUl(array $dataArray): DOMElement {
-        $ulNode = $this->htmlDom->createElement('ul');
-        foreach($dataArray as $key => $value) {
-            //li for $key
-            $liNode = $this->htmlDom->createElement('li');
-            $this->appendTextNode($liNode, $key);
+    // protected function extractorComplexKeyValueArrayToUl(array $dataArray): DOMElement {
+    //     $ulNode = $this->htmlDom->createElement('ul');
+    //     foreach($dataArray as $key => $value) {
+    //         //li for $key
+    //         $liNode = $this->htmlDom->createElement('li');
+    //         $this->appendTextNode($liNode, $key);
             
-            //new ul for $value
-            //@todo remove assumption that all the complex (values) are ul
-            $subUlNode = $this->extractorArrayToUl($value['data']);
-            $liNode->appendChild($subUlNode);
-            $ulNode->appendChild($liNode);
-        }
+    //         //new ul for $value
+    //         //@todo remove assumption that all the complex (values) are ul
+    //         $subUlNode = $this->renderArrayToUl($value['data']);
+    //         $liNode->appendChild($subUlNode);
+    //         $ulNode->appendChild($liNode);
+    //     }
 
-        return $ulNode;
-    }
+    //     return $ulNode;
+    // }
 
 
-    protected function extractorArrayToUl(array $dataArray) {
+    protected function listRenderArrayToUl(array $renderArray) {
         $ulNode = $this->htmlDom->createElement('ul');
         if (isset($renderData['globalAtts'])) {
             $this->setGlobalAttributes($renderData['globalAtts'], $ulNode);
             unset($renderData['globalAtts']);
         }
         
-        foreach($renderData as $liText) {
+        foreach($renderArray as $liText) {
             $liNode = $this->htmlDom->createElement('li');
             $this->appendTextNode($liNode, $liText);
             $ulNode->appendChild($liNode);
@@ -184,7 +184,7 @@ class Html extends AbstractRenderer {
         return $ulNode;
     }
 
-    public function listArrayToOl(array $renderData) : DOMElement {
+    public function listRenderArrayToOl(array $renderData) : DOMElement {
         $olNode = $this->htmlDom->createElement('ol');
         if (isset($renderData['globalAtts'])) {
             $this->setGlobalAttributes($renderData['globalAtts'], $olNode);
@@ -228,17 +228,17 @@ class Html extends AbstractRenderer {
             case 'list':
                 switch ($renderData['subtype']) {
                     case 'ul':
-                        $innerNode = $this->listArrayToUl($renderData['data']);
+                        $innerNode = $this->listRenderArrayToUl($renderData['data']);
                     break;
         
                     case 'ol':
-                        $innerNode = $this->listArrayToOl($renderData['data']);
+                        $innerNode = $this->listRenderArrayToOl($renderData['data']);
                     break;
                 }
             break;
 
             case 'img':
-                $innerNode = $this->imgArrayToImg($renderData['data']);
+                $innerNode = $this->imgRenderArrayToImg($renderData['data']);
             break;
 
 

@@ -45,36 +45,41 @@
 
     public function __construct(array $fetchers = [], array $extractors = [], $rendererOptions = []) {
       
-      foreach ($fetchers as $classObj) {
-        if (! is_a($classObj, 'Fetcher')) {
-          throw new CeresException("not a fetcher");
+        foreach ($fetchers as $classObj) {
+            if (! is_a($classObj, 'Fetcher')) {
+            throw new CeresException("not a fetcher");
+            }
+            $this->injectFetcher($classObj);
         }
-        $this->injectFetcher($classObj);
-      }
 
-      foreach ($extractors as $classObj) {
-        if (! is_a($classObj, 'Extractor')) {
-          throw new CeresException("not an extractor");
+        foreach ($extractors as $classObj) {
+            if (! is_a($classObj, 'Extractor')) {
+            throw new CeresException("not an extractor");
+            }
+            $this->injectExtractor($classObj);
         }
-        $this->injectExtractor($classObj);
-      }
 
-      if (! empty($rendererOptions)) {
-        $this->setRendererOptions($rendererOptions);
-      }
-      
+        if (! empty($rendererOptions)) {
+            $this->setRendererOptions($rendererOptions);
+        }
     }
-/**
- * setRenderArrayFromFile
- *
- * Expects a text file with a serialized php array or json string
- * 
- * @param string $fileName
- * @return void
- */
+    /**
+     * setRenderArrayFromFile
+     *
+     * Expects a text file with a serialized php array or json string
+     * 
+     * @param string $fileName
+     * @return void
+     */
     public function setRenderArrayFromFile(string $fileName) {
         $this->renderArray = unserialize(file_get_contents($fileName));
     }
+
+
+    public function setDataToRenderFromArray(array $renderArray) {
+        $this->renderArray = $renderArray;
+    }
+
 
     public function setJsonToInjectFromFile(string $fileName, bool $decodeJson = false) {
         $jsonToRender = file_get_contents($fileName);
@@ -92,7 +97,6 @@
         } else {
             $extractor = $this->extractors[$extractorName];
         }
-
         $this->jsonToInject = $extractor->getJsonToInject();
     }
 
@@ -105,7 +109,14 @@
             $fetcher = $this->fetchers[$fetcherName];
         }
         $this->renderArray = $fetcher->getResponseData();
+    }
 
+    //@todo for the bounceback option
+    public function setJsonToInjectFromFetcher(?string $fetcherName = null): void {
+        $fetcher =  $this->getFetcher($fetcherName);
+        $fetcher->fetchData();
+            
+        $this->jsonToInject = $fetcher->getResponseData();
     }
 
     //@todo this is newish, and needs to be used elsewhere w/in fcns
@@ -133,6 +144,10 @@
     public function setRenderArray(?string $extractorName = null): void {
         if ($this->getRendererOptionValue('bounceBack')) {
             $this->setRenderArrayFromFetcher();
+            return;
+        }
+        if ($this->getRendererOptionValue('bounceBackJsonToInject')) {
+            $this->setJsonToInjectFromFetcher();
             return;
         }
         if (is_null($extractorName)) {
@@ -171,7 +186,7 @@
 
 
     public function setRendererOptions(array $options) {
-      $this->rendererOptions = $options;
+        $this->rendererOptions = $options;
     }
 
     /**
@@ -181,7 +196,7 @@
      */
 
     public function getRendererOptions() {
-      return $this->rendererOptions;
+        return $this->rendererOptions;
     }
 
     /**
@@ -190,19 +205,18 @@
      * @param string $option
      * @param string $value
      */
-
     public function setRendererOptionValue($option, $value = '') {
-      if ($value == '') {
-        unset($this->rendererOptions[$option]);
-      } else {
-        $this->rendererOptions[$option] = $value;
-      }
+        if ($value == '') {
+            unset($this->rendererOptions[$option]);
+        } else {
+            $this->rendererOptions[$option] = $value;
+        }
     }
 
     public function getRendererOptionValue($option) {
-      if (isset($this->rendererOptions[$option])) {
-        return $this->rendererOptions[$option];
-      }
+        if (isset($this->rendererOptions[$option])) {
+            return $this->rendererOptions[$option];
+        }
       // throw something
     }
     
@@ -222,8 +236,8 @@
     }
 
     public function setExtractorOptionValue(?string $extractorName, $optionName, $optionValue) {
-      $extractor = $this->getExtractor($extractorName);
-      $extractor->setExtractorOptionValue($optionName, $optionValue);
+        $extractor = $this->getExtractor($extractorName);
+        $extractor->setExtractorOptionValue($optionName, $optionValue);
 
     }
 
@@ -233,25 +247,25 @@
 
     function injectFetcher($fetcher, $description = null) {
       
-      //for if/when I have multiple fetchers
-      $name = StrUtil::createNameIdForInstantiation($fetcher, $description);
-      $name = StrUtil::uniquifyName($name, $this->fetchers );
-      //$this->fetchers[$name] = $fetcher;
+        //for if/when I have multiple fetchers
+        $name = StrUtil::createNameIdForInstantiation($fetcher, $description);
+        $name = StrUtil::uniquifyName($name, $this->fetchers );
+        //$this->fetchers[$name] = $fetcher;
 
 
-      $this->fetchers[] = $fetcher;
-      return $name;
+        $this->fetchers[] = $fetcher;
+        return $name;
     }
 
     public function injectExtractor($extractor, $description = null) {
       
-      //for if/when I have multiple extractors
-      $name = StrUtil::createNameIdForInstantiation($extractor, $description);
-      $name = StrUtil::uniquifyName($name, $this->extractors );
-      //$this->extractors[$name] = $extractor;
+        //for if/when I have multiple extractors
+        $name = StrUtil::createNameIdForInstantiation($extractor, $description);
+        $name = StrUtil::uniquifyName($name, $this->extractors );
+        //$this->extractors[$name] = $extractor;
 
-      $this->extractors[] = $extractor;
-      return $name;
+        $this->extractors[] = $extractor;
+        return $name;
     }
 
   }

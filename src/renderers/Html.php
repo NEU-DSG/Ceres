@@ -91,40 +91,85 @@ class Html extends AbstractRenderer {
         restore_error_handler();
     }
 
-    public function setContainerNode() {
+    protected function setContainerNode() {
         $this->containerNode = $this->htmlDom->getElementById('ceres-container');
     }
 
-    public function getContainerNode() : DOMElement {
+    protected function getContainerNode() : DOMElement {
         return $this->containerNode;
     }
 
 
-    public function appendToClass(DOMElement $element, $value ):void {
+    protected function appendToClass(DOMElement $element, $value ):void {
         $class = $element->getAttribute('class');
         $class = $class .= " $value";
         $element->setAttribute('class', $class);
     }
 
-
-    public function appendTextNode(DOMElement $element, ?string $text) {
+    protected function appendTextNode(DOMElement $element, ?string $text) {
         $textNode = $this->htmlDom->createTextNode($text);
         $element->appendChild($textNode);
     }
 
-    public function enumArrayToSelect(array $enumOptions) : DOMElement {
-        $selectNode = $this->htmlDom->createElement('select');
 
+
+/* mini-renderers to build really simple HTML elements */
+
+    // @todo move to utils?
+    protected function extractorArrayToA(array $linkData) : DOMElement {
+        $aElement = $this->htmlDom->createElement('a');
+        $aElement->setAttribute('href', $linkData['url']);
+        $this->appendTextNode($aElement, $linkData['label']);
+        return $aElement;
+    }
+
+    //@todo or pass off to a KeyValue renderer?
+    protected function extractorArrayToKeyValue(array $keyValueData): DOMElement {
+        $kvContainerNode = $this->htmlDom->createElement('div');
+        foreach($keyValueData as $key=>$value) {
+            if (is_array($value)) {
+                $text = "$key: an array!";
+            } else {
+                $text = "$key: $value";
+            }
+            $kvPContainerNode = $this->htmlDom->createElement('p');
+            $this->appendTextNode($kvPContainerNode, $text);
+            $kvContainerNode->appendChild($kvPContainerNode);
+        }
+        return $kvContainerNode;
+    }
+
+
+
+    protected function extractorEnumArrayToSelect(array $enumOptions) : DOMElement {
+        $selectNode = $this->htmlDom->createElement('select');
         foreach ($enumOptions as $option) {
             $optionNode = $this->htmlDom->createElement('option');
             $this->appendTextNode($optionNode, $option);
             $selectNode->appendChild($optionNode);
         }
-
         return $selectNode;
     }
 
-    public function listArrayToUl(array $renderData) : DOMElement {
+    protected function extractorComplexKeyValueArrayToUl(array $dataArray): DOMElement {
+        $ulNode = $this->htmlDom->createElement('ul');
+        foreach($dataArray as $key => $value) {
+            //li for $key
+            $liNode = $this->htmlDom->createElement('li');
+            $this->appendTextNode($liNode, $key);
+            
+            //new ul for $value
+            //@todo remove assumption that all the complex (values) are ul
+            $subUlNode = $this->extractorArrayToUl($value['data']);
+            $liNode->appendChild($subUlNode);
+            $ulNode->appendChild($liNode);
+        }
+
+        return $ulNode;
+    }
+
+
+    protected function extractorArrayToUl(array $dataArray) {
         $ulNode = $this->htmlDom->createElement('ul');
         if (isset($renderData['globalAtts'])) {
             $this->setGlobalAttributes($renderData['globalAtts'], $ulNode);
@@ -161,19 +206,19 @@ class Html extends AbstractRenderer {
         return $inputNode;
     }
 
-    public function textToTextArea(?string $text) : DOMElement {
+    protected function textToTextArea(?string $text) : DOMElement {
         $textAreaNode = $this->htmlDom->createElement('textarea');
         $this->appendTextNode($textAreaNode, $text);
         return $textAreaNode;
     }
 
-    public function textToHeading(string $text, string $headingLevel) : DOMElement {
+    protected function textToHeading(string $text, string $headingLevel) : DOMElement {
         $headingNode = $this->htmlDom->createElement($headingLevel);
         $this->appendTextNode($headingNode, $text);
         return $headingNode;
     }
 
-    public function boolToCheckbox(?bool $value) {
+    protected function boolToCheckbox(?bool $value) {
 
     }
 

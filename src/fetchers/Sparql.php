@@ -156,6 +156,9 @@ class Sparql extends AbstractFetcher {
         $this->fetcherOptions['lang'] = $lang;
     }
 
+    public function getQuery(): string {
+        return $this->query;
+    }
 
     public function setQueryForm(string $queryForm) {
         $allowedQueryForms = ['SELECT DISTINCT', 'SELECT', 'ASK', 'DESCRIBE'];

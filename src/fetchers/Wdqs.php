@@ -6,8 +6,9 @@ use Ceres\Util\DataUtilities as DataUtil;
 
 class Wdqs extends Sparql {
 
-    //protected string $endpoint = 'https://query.wikidata.org/sparql';
-    //protected string $endpoint = 'http://ec2-34-227-69-60.compute-1.amazonaws.com:8834/proxy/wdqs/bigdata/namespace/wdq/sparql';
+    //protected ?string $endpoint = 'http://ec2-34-227-69-60.compute-1.amazonaws.com:8834/proxy/wdqs/bigdata/namespace/wdq/sparql';
+    protected ?string $endpoint = 'https://query.wikidata.org/sparql';
+
 
     public function __construct() {
         parent::__construct();
@@ -59,6 +60,7 @@ class Wdqs extends Sparql {
         ];
         $context = stream_context_create($opts);
         $url = $this->endpoint . '?query=' . urlencode($this->query);
+
         $response = file_get_contents($url, false, $context);
 
         //status digup thanks to https://stackoverflow.com/questions/15620124/http-requests-with-file-get-contents-getting-the-response-code

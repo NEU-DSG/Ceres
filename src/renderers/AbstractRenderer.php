@@ -44,46 +44,44 @@ abstract class AbstractRenderer {
     protected ?string $jsonToInject;
 
     public function __construct(array $fetchers = [], array $extractors = [], $rendererOptions = []) {
-        
+      
         foreach ($fetchers as $classObj) {
-        if (! is_a($classObj, 'Fetcher')) {
+            if (! is_a($classObj, 'Fetcher')) {
             throw new CeresException("not a fetcher");
-        }
+            }
             $this->injectFetcher($classObj);
         }
 
         foreach ($extractors as $classObj) {
             if (! is_a($classObj, 'Extractor')) {
-                throw new CeresException("not an extractor");
+            throw new CeresException("not an extractor");
             }
-                $this->injectExtractor($classObj);
+            $this->injectExtractor($classObj);
         }
 
         if (! empty($rendererOptions)) {
             $this->setRendererOptions($rendererOptions);
         }
-        
     }
-
-
-
-    abstract public function render(): string;
-
-    abstract public function build();
-
     /**
-     * setDataToRenderFromFile
+     * setRenderArrayFromFile
      *
      * Expects a text file with a serialized php array or json string
      * 
      * @param string $fileName
      * @return void
      */
-    public function setDataToRenderFromFile(string $fileName): void {
+    public function setRenderArrayFromFile(string $fileName) {
         $this->renderArray = unserialize(file_get_contents($fileName));
     }
 
-    public function setJsonToInjectFromFile(string $fileName, bool $decodeJson = false): void {
+
+    public function setDataToRenderFromArray(array $renderArray) {
+        $this->renderArray = $renderArray;
+    }
+
+
+    public function setJsonToInjectFromFile(string $fileName, bool $decodeJson = false) {
         $jsonToRender = file_get_contents($fileName);
         if ($decodeJson) {
             $this->jsonToInject = json_decode($jsonToRender, true);
@@ -103,7 +101,7 @@ abstract class AbstractRenderer {
     }
 
     //@todo for the bounceback option
-    public function setDataToRenderFromFetcher(?string $fetcherName = null): void {
+    public function setRenderArrayFromFetcher(?string $fetcherName = null): void {
         if (is_null($fetcherName)) {
             $allFetchers = array_values($this->fetchers);
             $fetcher = $allFetchers[0];
@@ -112,12 +110,14 @@ abstract class AbstractRenderer {
         }
         $this->renderArray = $fetcher->getResponseData();
     }
+
     //@todo for the bounceback option
     public function setJsonToInjectFromFetcher(?string $fetcherName = null): void {
         $fetcher =  $this->getFetcher($fetcherName);
         $fetcher->fetchData();
         $this->jsonToInject = $fetcher->getResponseData();
     }
+
     //@todo this is newish, and needs to be used elsewhere w/in fcns
     public function getFetcher(?string $fetcherName): object {
         if (is_null($fetcherName)) {
@@ -140,9 +140,9 @@ abstract class AbstractRenderer {
         return $extractor;
     }
 
-    public function setDataToRender(?string $extractorName = null): void {
+    public function setRenderArray(?string $extractorName = null): void {
         if ($this->getRendererOptionValue('bounceBack')) {
-            $this->setDataToRenderFromFetcher();
+            $this->setRenderArrayFromFetcher();
             return;
         }
         if ($this->getRendererOptionValue('bounceBackJsonToInject')) {
@@ -155,7 +155,7 @@ abstract class AbstractRenderer {
         } else {
             $extractor = $this->extractors[$extractorName];
         }
-        $this->renderArray = $extractor->getDataToRender();
+        $this->renderArray = $extractor->getRenderArray();
     }
 
 
@@ -200,12 +200,11 @@ abstract class AbstractRenderer {
      * @param string $option
      * @param string $value
      */
-
     public function setRendererOptionValue($option, $value = '') {
         if ($value == '') {
-        unset($this->rendererOptions[$option]);
+            unset($this->rendererOptions[$option]);
         } else {
-        $this->rendererOptions[$option] = $value;
+            $this->rendererOptions[$option] = $value;
         }
     }
 
@@ -213,7 +212,7 @@ abstract class AbstractRenderer {
         if (isset($this->rendererOptions[$option])) {
             return $this->rendererOptions[$option];
         }
-        // throw something
+      // throw something
     }
 
     public function setFetcherOptionsValues(string $fetcherName, array $optionValues): void {
@@ -230,13 +229,14 @@ abstract class AbstractRenderer {
     public function setExtractorOptionValue(?string $extractorName, $optionName, $optionValue) {
         $extractor = $this->getExtractor($extractorName);
         $extractor->setExtractorOptionValue($optionName, $optionValue);
+
     }
 
     public function renderMissingData($expectedPropName) {
     }
 
-    function injectFetcher(object $fetcher, string $description = null): string {
-        
+    function injectFetcher($fetcher, $description = null) {
+      
         //for if/when I have multiple fetchers
         $name = StrUtil::createNameIdForInstantiation($fetcher, $description);
         $name = StrUtil::uniquifyName($name, $this->fetchers );

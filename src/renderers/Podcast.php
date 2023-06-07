@@ -3,24 +3,24 @@
 namespace Ceres\Renderer;
 
 class Podcast extends Html {
-
+  protected $fetcher;
   protected $jwPlayerOptions = array();
   
   public function render(): string {
-    $this->fetcher->fetchData();
+    //$this->fetcher->fetchData();
     $html = "";
     do {
-      $this->fetcher->parseItemsData();
+      //$this->fetcher->parseItemsData();
       $itemsData = $this->fetcher->getItemsData();
       foreach($itemsData as $itemData) {
         $html .= $this->renderPodcastArticle($itemData);
       }
       // I (PMJ) not entirely happy with this pagination technique,
       // but we'll see if something better reveals itself
-      $hasNextPage = $this->fetcher->hasNextPage();
+      //$hasNextPage = $this->fetcher->hasNextPage();
       $hasNextPage = false;
       if ($hasNextPage) {
-        $this->fetcher->fetchNextPage();
+        //$this->fetcher->fetchNextPage();
       }
     } while ($hasNextPage);
 
@@ -70,7 +70,7 @@ class Podcast extends Html {
   }
 
 
-  public function build() {
+  public function build(): void {
     
   }
 

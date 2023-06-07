@@ -7,7 +7,7 @@ use Ceres\Util\DataUtilities as DataUtil;
 class Wdqs extends Sparql {
 
     //protected ?string $endpoint = 'http://ec2-34-227-69-60.compute-1.amazonaws.com:8834/proxy/wdqs/bigdata/namespace/wdq/sparql';
-    protected ?string $endpoint = 'https://query.wikidata.org/sparql';
+    protected string $endpoint = 'https://query.wikidata.org/sparql';
 
 
     public function __construct() {
@@ -24,11 +24,14 @@ class Wdqs extends Sparql {
         
     }
 
-    public function getValueForFetcherOption(string $optionName): string|bool {
+    public function getValueForFetcherOption(string $optionName): string {
         if (array_key_exists( $optionName, $this->fetcherOptions)) {
-            return $this->fetcherOptions[$optionName];
+            $optionValue = $this->fetcherOptions[$optionName];
+            if (is_null($optionValue)) {
+                $optionValue = '';
+            }
         }
-        return false;
+        return $optionValue;
     }
 
     // @TODO reconcile with AbstractFetcher
@@ -74,10 +77,17 @@ class Wdqs extends Sparql {
         }
 
         if (! $returnWithoutSetting) {
-            $this->responseData = $response;
+            $this->setResponseData($response);
         }
         return $response;
 
+    }
+
+    public function setResponseData($response) {
+        // if (is_string($response)) {
+        //     $response = json_encode($response);
+        // }
+        $this->responseData = $response;
     }
 }
 

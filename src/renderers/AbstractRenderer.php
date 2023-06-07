@@ -9,7 +9,7 @@ use Ceres\Exception\Data\UnexpectedData as UnexpectedDataException;
 
 abstract class AbstractRenderer {
 
-    protected ?array $rendererOptions;
+    protected ?array $rendererOptions = [];
 
     /**
      * The Ceres_Abstract_Fetcher(s) that are handling the data retrieval. Its itemData property
@@ -21,7 +21,7 @@ abstract class AbstractRenderer {
      * @var array Ceres_Abstract_Fetcher
      */
 
-    protected array $fetchers;
+    protected array $fetchers = [];
 
     /**
      * The Extractor(s) that will be used to wrangle raw responses from the Fetchers
@@ -32,7 +32,7 @@ abstract class AbstractRenderer {
      * 
      */
 
-    protected array $extractors;
+    protected array $extractors = [];
 
     protected array $requiredProperties = [];
 
@@ -47,7 +47,7 @@ abstract class AbstractRenderer {
       
         foreach ($fetchers as $classObj) {
             if (! is_a($classObj, 'Fetcher')) {
-            throw new CeresException("not a fetcher");
+                throw new CeresException("not a fetcher");
             }
             $this->injectFetcher($classObj);
         }
@@ -119,7 +119,7 @@ abstract class AbstractRenderer {
     }
 
     //@todo this is newish, and needs to be used elsewhere w/in fcns
-    public function getFetcher(?string $fetcherName): object {
+    public function getFetcher(?string $fetcherName = null): object {
         if (is_null($fetcherName)) {
             $allFetchers = array_values($this->fetchers);
             $fetcher = $allFetchers[0];

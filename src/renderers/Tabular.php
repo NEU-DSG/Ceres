@@ -57,7 +57,7 @@ class Tabular extends Html {
         }
     }
 
-    public function build() {
+    public function build(): void {
         $rowsData = $this->renderArray; 
         $firstRowIsHeader = $this->getRendererOptionValue('firstRowIsHeader');
 
@@ -98,17 +98,17 @@ class Tabular extends Html {
                     break;
 
                     case 'link':
-                        $columnData = $this->extractorArrayToA($data);
+                        $columnData = $this->linkRenderArrayToA($data);
                     break;
 
                     case 'keyValue':
-                        $columnData = $this->extractorArrayToKeyValue($data); // or should this pass off to a KeyValue Renderer?
+                        $columnData = $this->kvRenderArrayToKeyValue($data); // or should this pass off to a KeyValue Renderer?
                     break;
 
-                    case 'complexKeyValue':
-                        $columnData = $this->extractorComplexKeyValueArrayToUl($data);
+                    // case 'complexKeyValue':
+                    //     $columnData = $this->extractorComplexKeyValueArrayToUl($data);
 
-                    default:
+                    // default:
 
                     //throw something?
 

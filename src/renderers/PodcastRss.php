@@ -4,6 +4,7 @@ namespace Ceres\Renderer;
 
 class PodcastRss extends AbstractRenderer
 {
+  protected $fetcher; //@TODO align this with abstract
   public function render(): string {
     
     $this->fetcher->fetchData();
@@ -57,7 +58,7 @@ class PodcastRss extends AbstractRenderer
   }
   
 
-  public function build() {
+  public function build(): void {
     
   }
   

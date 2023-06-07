@@ -19,7 +19,7 @@ abstract class AbstractFetcher {
      * @var array
      */
 
-    protected array $queryOptions;
+    protected ?array $queryOptions;
 
     protected array $fetcherOptions;
     /**
@@ -27,14 +27,14 @@ abstract class AbstractFetcher {
      * @var string
      */
 
-    protected string $resourceId;
+    protected ?string $resourceId;
 
     /**
      * GET params to tack on to the $endpoint + $queryOptions path
      * @var array
      */
 
-    protected array $queryParams;
+    protected ?array $queryParams;
 
     /**
      * The parsed response, including the handling of errors and output message (i.e., not the direct
@@ -42,7 +42,7 @@ abstract class AbstractFetcher {
      * @var array
      */
 
-    protected array $responseData;
+    protected $responseData;
 
     /**
      * The items data, parsed out from the response
@@ -99,7 +99,7 @@ abstract class AbstractFetcher {
 
     abstract public function getItemDataById(string $itemId);
 
-    public function __construct(?array $queryOptions = null, ?array $queryParams = null, string $resourceId = null, ?array $fetcherOptions = null ) {
+    public function __construct(?array $queryOptions = null, ?array $queryParams = null, ?string $resourceId = null, ?array $fetcherOptions = null ) {
         $this->setQueryParams($queryParams);
         $this->setQueryOptions($queryOptions);
         $this->setResourceId($resourceId);
@@ -261,7 +261,7 @@ abstract class AbstractFetcher {
 
     // @TODO: setters should probably do some minimal sanity checking so they all have key - value of the right types
     
-    public function setQueryParams(array $queryParams) {
+    public function setQueryParams(?array $queryParams = null) {
         $this->queryParams = $queryParams;
     }
 
@@ -285,7 +285,7 @@ abstract class AbstractFetcher {
         $this->scope = $scope;
     }
 
-    public function setQueryOptions(array $queryOptions): void {
+    public function setQueryOptions(?array $queryOptions = null): void {
         $this->queryOptions = $queryOptions;
     }
 
@@ -301,10 +301,13 @@ abstract class AbstractFetcher {
         }
     }
 
-    public function setFetcherOptions(array $fetcherOptions): void {
-        foreach ($fetcherOptions as $optionName) {
-           // echo $optionName;
-            $this->fetcherOptions[$optionName] = DataUtilities::valueForOption($optionName);
+    public function setFetcherOptions(?array $fetcherOptions): void {
+        if (! is_null($fetcherOptions)) {
+
+            foreach ($fetcherOptions as $optionName) {
+            // echo $optionName;
+                $this->fetcherOptions[$optionName] = DataUtilities::valueForOption($optionName);
+            }
         }
     }
 
@@ -322,7 +325,7 @@ abstract class AbstractFetcher {
         return $this->fetcherOptions;
     }
 
-    public function setResourceId(string $resourceId): void {
+    public function setResourceId(?string $resourceId = null): void {
         $this->resourceId = $resourceId;
     }
 

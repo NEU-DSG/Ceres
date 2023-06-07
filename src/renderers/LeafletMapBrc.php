@@ -6,7 +6,6 @@ use DOMElement;
 
 class LeafletMapBrc extends Html {
   
-    protected string $jsonToInject;
     protected string $templateFileName = 'brc-leaflet.html';
 
     public function __construct() {
@@ -18,7 +17,7 @@ class LeafletMapBrc extends Html {
         $this->setJsonToInjectFromFile(CERES_ROOT_DIR . '/assets/js/leaflet/brc/brc-leaflet-response.json');
     }
 
-    public function build() {
+    public function build(): void {
         $fetcher = $this->getFetcher();
         $fetcher->setEndpoint('https://query.wikidata.org/sparql');
 //        $this->setFetcherOptionValue(null, 'endpoint', 'https://query.wikidata.org/sparql' );

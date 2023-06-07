@@ -20,7 +20,7 @@ class Pagination extends Html {
     $lastButton = "<a class='pagination-button' data-url='$lastPageUrl'>LAST</a>";
     $html = "<div class='ceres-pagination'>$firstButton";
     for($pageNumber = 1; $pageNumber < $pageCount + 1; $pageNumber++) {
-      $url = $this->fetcher->getPageUrl($pageNumber);
+      //$url = $this->getFetcher->getPageUrl($pageNumber);
       $classes = 'pagination-button ';
       
       if ($pageNumber == $currentPageNumber) {
@@ -36,7 +36,4 @@ class Pagination extends Html {
   }
 
 
-  public function build() {
-    
-  }
 }

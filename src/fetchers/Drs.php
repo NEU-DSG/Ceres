@@ -9,7 +9,7 @@ require_once(CERES_ROOT_DIR . '/src/fetchers/Rest.php');
 
 class Drs extends Rest {
 
-    protected ?string $endpoint = "https://repository.library.northeastern.edu/api/v1";
+    protected string $endpoint = "https://repository.library.northeastern.edu/api/v1";
     private string $pageParamName = 'page';
 
     public function __construct(array $queryOptions = array(), array $queryParams = array(), $resourceId = null) {
@@ -22,7 +22,7 @@ class Drs extends Rest {
         }
     }
 
-    public function buildQueryString($queryOptions = false, $queryParams = false) {
+    public function buildQueryString(?array $queryOptions = null, ?array $queryParams = null): void {
         if (! $queryOptions) {
         $queryOptions = $this->queryOptions;
         }
@@ -76,7 +76,7 @@ class Drs extends Rest {
         if ($token != false && is_string($token))
             $url .= "token=$token";
         }
-        return $url;
+        //return $url;
     }
 
     public function fetchPage(int $pageNumber) {
@@ -135,13 +135,13 @@ class Drs extends Rest {
      */
 
     public function getPidFromSettings() {
-        $collectionSetting = $this->getFetcherOptionValue('drstk_collection');
+        //$collectionSetting = $this->getFetcherOptionValue('drstk_collection');
         //$collectionSetting = get_option('drstk_collection');
         $explodedCollectionSetting = explode("/", $collectionSetting);
         return end($explodedCollectionSetting);
     }
 
-    public function parseItemsData() {
+    public function parseItemsData(): void {
         $this->itemsData = $this->responseData['output']['response']['response']['docs'];
     }
 

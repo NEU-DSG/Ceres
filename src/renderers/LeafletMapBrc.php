@@ -10,20 +10,12 @@ class LeafletMapBrc extends Html {
 
     public function __construct() {
         parent::__construct();
-        
-        // echo CERES_ROOT_DIR . '/assets/js/leaflet/brc/brc-leaflet-response.json';
-        // die();
-//       $this->setRenderArrayFromFile(CERES_ROOT_DIR . '/assets/js/leaflet/brc/brc-leaflet-response.json');
         $this->setJsonToInjectFromFile(CERES_ROOT_DIR . '/assets/js/leaflet/brc/brc-leaflet-response.json');
     }
 
     public function build(): void {
         $fetcher = $this->getFetcher();
         $fetcher->setEndpoint('https://query.wikidata.org/sparql');
-//        $this->setFetcherOptionValue(null, 'endpoint', 'https://query.wikidata.org/sparql' );
-//        $this->setRendererOptionValue('bounceBackJsonToInject', true);
-//print_r($this->rendererOptions);
-//die();
         $this->setJsonToInjectFromFetcher();
         $this->containerNode->appendChild($this->jsonToInjectToScriptNode('response'));
     }

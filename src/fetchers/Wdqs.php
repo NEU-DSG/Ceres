@@ -12,16 +12,6 @@ class Wdqs extends Sparql {
 
     public function __construct() {
         parent::__construct();
-        
-        // $file = CERES_ROOT_DIR . '/data/rqFiles/publicart/leaflet.rq';
-        //$this->fetcherOptions['fileForQuery'] = CERES_ROOT_DIR . '/data/rqFiles/publicart/leaflet.rq';
-
-        //$this->fetcherOptions['fileForQuery'] =  CERES_ROOT_DIR . "/data/rqFiles/chinatown/en/maintainers.rq";     
-        // echo $this->fetcherOptions['fileForQuery'];
-        // print_r($this->fetcherOptions);
-        // die();
-        //$this->setQueryFromFile($this->fetcherOptions['fileForQuery']);
-        
     }
 
     public function getValueForFetcherOption(string $optionName): string {
@@ -65,7 +55,6 @@ class Wdqs extends Sparql {
         $url = $this->endpoint . '?query=' . urlencode($this->query);
 
         $response = file_get_contents($url, false, $context);
-
         //status digup thanks to https://stackoverflow.com/questions/15620124/http-requests-with-file-get-contents-getting-the-response-code
         $status_line = $http_response_header[0];
 

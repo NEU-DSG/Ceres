@@ -84,6 +84,7 @@ class Html extends AbstractRenderer {
     public function setHtmlDom(): void {
         $this->htmlDom = new DOMDocument();
 
+        //suppress warnings about tag usage
         set_error_handler(["\Ceres\Util\DataUtilities", 'suppressWarnings'], E_WARNING);
         $this->htmlDom->loadHtmlFile(CERES_ROOT_DIR . "/data/rendererTemplates/$this->templateFileName");
         restore_error_handler();

@@ -41,6 +41,9 @@ abstract class AbstractRenderer {
     //the data coming from an Extractor to render
     protected array $renderArray = [];
 
+    //used only during bounceback from Fetcher directly to Renderer, skipping Extractor
+    protected ?string $responseData = null;
+
     protected ?string $jsonToInject;
 
     public function __construct(array $fetchers = [], array $extractors = [], $rendererOptions = []) {
@@ -142,7 +145,13 @@ abstract class AbstractRenderer {
 
     public function setRenderArray(?string $extractorName = null): void {
         if ($this->getRendererOptionValue('bounceBack')) {
-            $this->setRenderArrayFromFetcher();
+            $fetcher = $this->getFetcher();
+            $responseData = $fetcher->fetchData();
+            //echo $responseData;
+            $this->responseData = $responseData;
+            $responseData = $this->responseData;
+            //$this->setRenderArrayFromFetcher();
+
             return;
         }
         if ($this->getRendererOptionValue('bounceBackJsonToInject')) {

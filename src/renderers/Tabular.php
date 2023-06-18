@@ -94,7 +94,11 @@ class Tabular extends Html {
                 $data = $columnData['data'];
                 switch ($type) {
                     case 'ul':
-                        $columnData = $this->extractorArrayToUl($data);
+                        $columnData = $this->listRenderArrayToUl($data);
+                    break;
+
+                    case 'ol':
+                        $columnData = $this->listRenderArrayToOl($data);
                     break;
 
                     case 'link':

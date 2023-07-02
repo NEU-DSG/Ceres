@@ -1,6 +1,6 @@
 <?php
 
-namespace Ceres\Extractor;
+namespace Ceres\Extractor\Documentation;
 
 use Ceres\Data;
 use Ceres\Util\DataUtilities as DataUtil;
@@ -13,8 +13,7 @@ class CeresOptionsToTable extends AbstractExtractor {
         $this->preExtract();
         $dataToRender = $this->optionsToTableArray();
 
-        //$dataToRender = [];//do the things to go from $this->sourceData to $this->dataToRender
-        $this->setDataToRender($dataToRender);
+        $this->setRenderArray($dataToRender);
     }
 
     protected function preSetSourceData($sourceData)
@@ -41,7 +40,6 @@ class CeresOptionsToTable extends AbstractExtractor {
         foreach($props as $prop=>$value) {
             if (in_array($prop, $propsToShow)) {
                 switch ($prop) {
-    
                     case 'type':
                         switch ($value) {
                             case 'bool':
@@ -82,14 +80,10 @@ class CeresOptionsToTable extends AbstractExtractor {
                                                        ];
                                 }
                                 $newValue['data'] = $data;
-                                //$newValue = "enums broken until I fix nested data arrays";                         
-                                //$value = "A list of settings (to be filled in)";
                             break;
-    
                             case 'FilePath':
                                 $newValue = "The id of a file with the relevant data";
                             break;
-    
                         }
     
                     break;

@@ -9,7 +9,7 @@ require_once(CERES_ROOT_DIR . '/src/fetchers/Rest.php');
 
 class Drs extends Rest {
 
-    protected ?string $endpoint = "https://repository.library.northeastern.edu/api/v1";
+    protected string $endpoint = "https://repository.library.northeastern.edu/api/v1";
     private string $pageParamName = 'page';
 
     public function __construct(array $queryOptions = array(), array $queryParams = array(), $resourceId = null) {
@@ -22,7 +22,7 @@ class Drs extends Rest {
         }
     }
 
-    public function buildQueryString($queryOptions = false, $queryParams = false) {
+    public function buildQueryString($queryOptions = false, $queryParams = false): void {
         if (! $queryOptions) {
         $queryOptions = $this->queryOptions;
         }
@@ -72,11 +72,13 @@ class Drs extends Rest {
         
         if(!(empty($dau) || empty($dap))) {
 
-        $token = $this->drsAuth();
-        if ($token != false && is_string($token))
-            $url .= "token=$token";
-        }
-        return $url;
+            $token = $this->drsAuth();
+            if ($token != false && is_string($token))
+                $url .= "token=$token";
+            }
+        
+            //@TODO: fix how the query string gets set and used
+            //return $url;
     }
 
     public function fetchPage(int $pageNumber) {
@@ -141,7 +143,7 @@ class Drs extends Rest {
         return end($explodedCollectionSetting);
     }
 
-    public function parseItemsData() {
+    public function parseItemsData(): void {
         $this->itemsData = $this->responseData['output']['response']['response']['docs'];
     }
 

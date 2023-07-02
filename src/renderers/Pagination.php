@@ -36,7 +36,7 @@ class Pagination extends Html {
   }
 
 
-  public function build() {
+  public function build(): void {
     
   }
 }

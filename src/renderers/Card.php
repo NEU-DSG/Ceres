@@ -2,9 +2,9 @@
 
 namespace Ceres\Renderer;
 
-use Ceres\Renderer\Html;
 use DOMNode;
 
+require_once(CERES_ROOT_DIR . '/src/renderers/Html.php');
 class Card extends Html {
 
     protected DOMNode $mainNode;

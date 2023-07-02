@@ -18,14 +18,14 @@ class Rest extends AbstractFetcher {
      * @var string
      */
 
-    protected $resourceId;
+    protected string $resourceId;
     
     /**
      * GET params to tack on to the $endpoint + $queryOptions path
      * @var array
      */
 
-    protected $queryParams = array();
+    protected array $queryParams = [];
 
 
 
@@ -37,7 +37,7 @@ class Rest extends AbstractFetcher {
     }
     
     // abstract override
-    public function buildQueryString($queryOptions = false, $queryParams = false) {
+    public function buildQueryString(?array $queryOptions = null, ?array $queryParams = null): void {
     }
 
     public function setPaginationData() {
@@ -46,7 +46,7 @@ class Rest extends AbstractFetcher {
     public function getItemDataById($itemId) {
     }
 
-    public function parseItemsData()
+    public function parseItemsData(): void
     {
         
     }
@@ -60,11 +60,11 @@ class Rest extends AbstractFetcher {
     }
     // end abstract override
 
-    public function getQueryParams() {
+    public function getQueryParams(): array {
         return $this->queryParams;
     }
 
-    public function setQueryParam($param, $value = null ) {
+    public function setQueryParam($param, $value = null ): void {
         if (is_null(($value))) {
             unset($this->queryParams[$param]);
         } else {
@@ -72,15 +72,15 @@ class Rest extends AbstractFetcher {
         }
     }
 
-    public function getQueryParam($param) {
+    public function getQueryParam($param): string {
         return $this->queryParams[$param];
     }
 
-    public function setQueryOptions(array $queryOptions) {
+    public function setQueryOptions(array $queryOptions): void {
         $this->queryOptions = $queryOptions;
     }
 
-    public function getQueryOptions() {
+    public function getQueryOptions(): array {
         return $this->queryOptions;
     }
 
@@ -88,7 +88,7 @@ class Rest extends AbstractFetcher {
         if (is_null($value)) {
             unset($this->queryOptions[$option]);
         } else {
-        $this->queryOptions[$option] = $value;
+            $this->queryOptions[$option] = $value;
         }
     }
 
@@ -96,11 +96,11 @@ class Rest extends AbstractFetcher {
         return $this->queryOptions[$option];
     }
 
-    public function setResourceId($resourceId) {
+    public function setResourceId($resourceId): void {
         $this->resourceId = $resourceId;
     }
 
-    public function getResourceId() {
+    public function getResourceId(): string {
         return $this->resourceId;
     }
 

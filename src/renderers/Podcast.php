@@ -1,7 +1,7 @@
 <?php
 
 namespace Ceres\Renderer;
-
+/* temp ignore this 
 class Podcast extends Html {
 
   protected $jwPlayerOptions = array();
@@ -87,3 +87,5 @@ class Podcast extends Html {
     return $this->jwPlayerOptions;
   }
 }
+*/
+

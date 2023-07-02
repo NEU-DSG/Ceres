@@ -6,6 +6,7 @@ use DOMElement;
 
 class LeafletMapBrc extends Html {
   
+    protected ?string $jsonToInject;
     protected string $templateFileName = 'brc-leaflet.html';
 
     public function __construct() {

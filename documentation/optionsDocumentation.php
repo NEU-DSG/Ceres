@@ -1,6 +1,7 @@
 <?php
 namespace Ceres\Documentation;
  
+use Ceres\Renderer\Html\Details as Details;
 use Ceres\Util\DataUtilities as DataUtil;
 
 require_once('/var/www/html/Ceres/config/ceresSetup.php');
@@ -11,10 +12,6 @@ DataUtil::rebuildAllWpOptions();
 
 $options = DataUtil::getWpOption('ceres_all_options');
 
-// print_r($options);
-// die();
-
-
 $testOption1 = $options['extractorReorderMappingFilePath'];
 $testOption2 = $options['extractorRemoveVarsFilePath'];
 
@@ -24,10 +21,7 @@ $dlRenderArray[] = extractOptionToDlRenderArray($testOption1);
 //$dlRenderArray[] = extractOptionToDlRenderArray($testOption2);
 
 
-$detailsCardArray = extractOptionToDetailsCard($testOption1);
-
-print_r($detailsCardArray);
-
+$detailsCardArray = extractOptionToDetailsCardArray($testOption1);
 
 function extractOptionToDlRenderArray($option) {
     $dlRenderArray['type'] = 'dl';
@@ -65,13 +59,12 @@ function extractOptionToDlRenderArray($option) {
                     'dts' => [$optionSettingLabel],
                     'dds' => [$value]
                 ];
-
         }
     }
     return $dlRenderArray;
 }
 
-function extractOptionToDetailsCard($option) {
+function extractOptionToDetailsCardArray($option) {
     $detailsCardRenderArray = ['type' => 'card',
                                'subtype' => 'details'
     ];
@@ -81,6 +74,12 @@ function extractOptionToDetailsCard($option) {
     ];
     return $detailsCardRenderArray;
 }
+
+$detailsRenderer = new \Ceres\Renderer\Details;
+$detailsRenderer->setRenderArrayFromArray($detailsCardArray);
+
+$detailsRenderer->build();
+echo $detailsRenderer->render();
 
 echo 'ok';
 

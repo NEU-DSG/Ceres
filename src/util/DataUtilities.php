@@ -422,11 +422,7 @@ class DataUtilities {
         int $errno,
         string $errstr,
         ?string $errfile,
-        ?int $errline,
-        ?array $errcontext) {
-
-
-
+        ?int $errline) {
     }
 
 }

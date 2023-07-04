@@ -40,6 +40,13 @@ namespace Ceres\Documentation;
  */
  
 
+
+ 
+$textRenderArray = ['type' => 'text',
+                    'subtype' => '', //the HTML element to wrap the text in
+                    'data' => 'text to render'
+                    ];
+
 $imgRenderArray = ['type' => 'img',
                    'data' => [
                         'globalAtts' => ['dataAtts' => ['data-X' => ''],
@@ -78,26 +85,12 @@ $dlRenderArray = ['type' => 'dl',
                   'data' => [
                     // an array of dt/dd groups
                     // a simplified form with only a single dt
-                    // and dd as strings can omit the array structure
+                    // and dd as strings can omit the outer array structure
                     ['dts' => [] , 'dds' => []],
                     ['dts' => [] , 'dds' => []],
                     ['dts' => [] , 'dds' => []],
                   ]
-
-
-            ];  
-/**
- * A separator can optionally be specified for grid-like
- * key value pairs. For non-grid-like pairs, use a definitionList or
- * other.
- */
-$keyValueRenderArray = ['type' => 'keyValue',
-                        'data' => [
-                            'key1' => 'value1',
-                            'key2' => 'value2',
-                            'key3' => 'value3',
-                        ]
-                ];
+            ];
 
 /**
  * 
@@ -141,7 +134,8 @@ $cardRenderArray = ['type' => 'card',
                                                 ['type' => 'img',
                                                  'data' => []
                                                 ],
-                                                ['type' => 'kv',
+                                                ['type' => 'dl',
+                                                 'subtype' => 'keyValue',
                                                  'data' => []
                                                 ]
                                               ]
@@ -149,16 +143,6 @@ $cardRenderArray = ['type' => 'card',
                 ];
 
 $detailsRenderArray = $cardRenderArray;
-$definitionListRenderArray = ['type' => 'dl',
-                              'data' => [
-                                'term1' => ['def 1',
-                                            'def 2',
-                                            ['type' => 'img', 
-                                             'data' => []
-                                            ]
-                                            ]
-                              ]
-                            ];
 
 
 /**

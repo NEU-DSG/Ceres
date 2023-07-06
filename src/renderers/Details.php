@@ -18,7 +18,6 @@ class Details extends Html {
     }
 
     public function build(): void {
-        echo PHP_EOL . "build()";
         $mainRenderArray = $this->renderArray['data']['main'];
         $this->buildSummaryNode($mainRenderArray);
         $secondaryRenderArray = $this->renderArray['data']['secondary'];
@@ -26,14 +25,12 @@ class Details extends Html {
     }
 
     protected function buildSummaryNode($mainRenderArray): void {
-    echo PHP_EOL . "buildSummaryNode";
         $summaryNode = $this->htmlDom->getElementById('ceres-summary');
         $innerNode = $this->handleInnerRenderArray($mainRenderArray);
         $summaryNode->appendChild($innerNode);
     }
 
     protected function buildDetailsNode($secondaryRenderArray): void {
-        echo PHP_EOL . "buildDetailsNode";
         $detailsNode = $this->htmlDom->getElementById('ceres-details');
         $innerNode = $this->handleInnerRenderArray($secondaryRenderArray);
         $detailsNode->appendChild($innerNode);

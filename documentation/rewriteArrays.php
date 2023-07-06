@@ -3,10 +3,7 @@
 
 
 $oldRenderArray = var_export($renderArray, true);
-
 $newRenderArray = shortVarExport($renderArray, true);
-
-
 
 // Thanks https://gist.github.com/Bogdaan/ffa287f77568fcbb4cffa0082e954022
 function shortVarExport($expression, $return=FALSE) {

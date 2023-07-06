@@ -59,7 +59,6 @@ function extractOptionToDlRenderArray($option) {
                 break;
 
         }
-        
 
         switch($optionSettingLabel) {
             case 'Access':
@@ -71,13 +70,7 @@ function extractOptionToDlRenderArray($option) {
                     'dts' => [
                                 $optionSettingLabel,
                              ],
-                    // value here uses the simplified syntax,
-                    // for single ul
-                    'dds' => [
-                              'type' => extractTextToTextRenderArray('list'),
-                              'subtype' => extractTextToTextRenderArray('ul'),
-                              'data' => $value
-                            ],
+                    'dds' => [ $value ],
                 ];
             break;
 

@@ -184,13 +184,13 @@ class Html extends AbstractRenderer {
         return $inputNode;
     }
 
-    protected function textRenderArrayToTextArea(?string $text = null): DOMNode {
+    protected function textRenderArrayToTextArea(string $text): DOMNode {
         $textAreaNode = $this->htmlDom->createElement('textarea');
         $this->appendTextNode($textAreaNode, $text);
         return $textAreaNode;
     }
 
-    protected function textRenderArrayToText($renderArray): DOMNode {
+    protected function textRenderArrayToText(array $renderArray): DOMNode {
         $textNode = $this->htmlDom->createTextNode($renderArray['data']);
         if (isset($renderArray['subtype'])) {
             $htmlElement = $renderArray['subtype'];
@@ -216,8 +216,6 @@ class Html extends AbstractRenderer {
             }
             foreach($dtDdGroup['dds'] as $dd) {
                 $ddNode = $this->htmlDom->createElement('dd');
-                //$this->appendTextNode($ddNode, $dd);
-                //print_r($dd);
                 $innerDdNode = $this->handleInnerRenderArray($dd);
                 $ddNode->appendChild($innerDdNode);
                 $dlNode->appendChild($ddNode);

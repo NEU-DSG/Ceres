@@ -25,14 +25,12 @@ class Details extends Html {
     }
 
     protected function buildSummaryNode($mainRenderArray): void {
-        $summaryNode = $this->htmlDom->getElementById('ceres-summary');
         $innerNode = $this->handleInnerRenderArray($mainRenderArray);
-        $summaryNode->appendChild($innerNode);
+        $this->summaryNode->appendChild($innerNode);
     }
 
     protected function buildDetailsNode($secondaryRenderArray): void {
-        $detailsNode = $this->htmlDom->getElementById('ceres-details');
         $innerNode = $this->handleInnerRenderArray($secondaryRenderArray);
-        $detailsNode->appendChild($innerNode);
+        $this->detailsNode->appendChild($innerNode);
     }
 }

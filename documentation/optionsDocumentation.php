@@ -110,8 +110,14 @@ function extractOptionToDetailsCardArray($option) {
 $detailsRenderer = new \Ceres\Renderer\Details;
 $detailsRenderer->setRenderArrayFromArray($detailsCardArray);
 
-//$detailsRenderer->build();
+$cardRenderer = new \Ceres\Renderer\Card;
+$cardRenderer->setRenderArrayFromArray($detailsCardArray);
+
+//$detailsRenderer->build(); RENDER CALLS BUILD()
 echo $detailsRenderer->render();
+
+echo $cardRenderer->render();
+
 
 
 

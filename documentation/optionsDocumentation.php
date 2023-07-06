@@ -23,6 +23,14 @@ $dlRenderArray[] = extractOptionToDlRenderArray($testOption1);
 
 $detailsCardArray = extractOptionToDetailsCardArray($testOption1);
 
+function extractArrayToListRenderArray($array) {
+    $listRenderArray = ['type' => 'list',
+                        'data' => $array,
+    ];
+    return $listRenderArray;
+}
+
+
 function extractOptionToDlRenderArray($option) {
     $dlRenderArray['type'] = 'dl';
     $dlRenderArray['subtype'] = "keyValue";
@@ -40,21 +48,43 @@ function extractOptionToDlRenderArray($option) {
         // simple string will suffice. But, for multiple dt's
         // or dd's, the array is used, so it's an example
         // of the complete usage
+
+        $valueType = gettype($value);
+        switch ($valueType) {
+            case 'string':
+                $value = extractTextToTextRenderArray($value);
+                break;
+            case 'array':
+                $value = extractArrayToListRenderArray($value);
+                break;
+
+        }
+        
+
         switch($optionSettingLabel) {
-            case 'Access': 
+            case 'Access':
+                if (is_string($optionSettingLabel)) {
+                    $optionSettingLabel = extractTextToTextRenderArray($optionSettingLabel);
+                }
+
                 $dlRenderArray['data'][] = [
-                    'dts' => [$optionSettingLabel],
+                    'dts' => [
+                                $optionSettingLabel,
+                             ],
                     // value here uses the simplified syntax,
                     // for single ul
                     'dds' => [
-                              'type' => 'list',
-                              'subtype' => 'ul',
+                              'type' => extractTextToTextRenderArray('list'),
+                              'subtype' => extractTextToTextRenderArray('ul'),
                               'data' => $value
                             ],
                 ];
             break;
 
             default:
+                if (is_string($optionSettingLabel)) {
+                    $optionSettingLabel = extractTextToTextRenderArray($optionSettingLabel);
+                }
                 $dlRenderArray['data'][] = [
                     'dts' => [$optionSettingLabel],
                     'dds' => [$value]
@@ -64,12 +94,22 @@ function extractOptionToDlRenderArray($option) {
     return $dlRenderArray;
 }
 
+function extractTextToTextRenderArray(string $text, ?string $htmlElement = null) {
+    $textRenderArray = ['type' => 'text',
+                        'data' => $text,
+                        ];
+    if (! is_null($htmlElement)) {
+        $textRenderArray['subtype'] = $htmlElement;
+    }
+    return $textRenderArray;
+}
+
 function extractOptionToDetailsCardArray($option) {
     $detailsCardRenderArray = ['type' => 'card',
                                'subtype' => 'details'
     ];
     $detailsCardRenderArray['data'] = [
-        'main' => $option['label'],
+        'main' => extractTextToTextRenderArray($option['label']),
         'secondary' => extractOptionToDlRenderArray($option)
     ];
     return $detailsCardRenderArray;
@@ -81,6 +121,5 @@ $detailsRenderer->setRenderArrayFromArray($detailsCardArray);
 $detailsRenderer->build();
 echo $detailsRenderer->render();
 
-echo 'ok';
 
 

@@ -37,7 +37,6 @@ class Html extends AbstractRenderer {
     }
 
     public function render(): string {
-        
         $this->build();
         // only strip the ids related to ceres, marked by the string
         // `ceres`, just before rendering so any ids can be there for processing
@@ -74,7 +73,6 @@ class Html extends AbstractRenderer {
     protected function getContainerNode() : DOMNode {
         return $this->containerNode;
     }
-
 
     protected function appendToClass(DOMElement $node, $value ):void {
         $class = $node->getAttribute('class');
@@ -149,7 +147,7 @@ class Html extends AbstractRenderer {
         return $selectNode;
     }
 
-    protected function listRenderArrayToUl(array $renderArray) {
+    protected function listRenderArrayToUl(array $renderArray): DOMNode {
         $ulNode = $this->htmlDom->createElement('ul');
         if (isset($renderArray['globalAtts'])) {
             $this->setGlobalAttributes($renderArray['globalAtts'], $ulNode);
@@ -186,13 +184,13 @@ class Html extends AbstractRenderer {
         return $inputNode;
     }
 
-    protected function textToTextArea(?string $text = null) : DOMNode {
+    protected function textRenderArrayToTextArea(?string $text = null): DOMNode {
         $textAreaNode = $this->htmlDom->createElement('textarea');
         $this->appendTextNode($textAreaNode, $text);
         return $textAreaNode;
     }
 
-    protected function textRenderArrayToText($renderArray) {
+    protected function textRenderArrayToText($renderArray): DOMNode {
         $textNode = $this->htmlDom->createTextNode($renderArray['data']);
         if (isset($renderArray['subtype'])) {
             $htmlElement = $renderArray['subtype'];
@@ -207,25 +205,29 @@ class Html extends AbstractRenderer {
 
     }
 
-    protected function dlRenderArrayToDl(array $renderArray) {
+    protected function dlRenderArrayToDl(array $renderArray): DOMNode {
         $dlNode = $this->htmlDom->createElement('dl');
         foreach($renderArray as $dtDdGroup) {
             foreach($dtDdGroup['dts'] as $dt) {
                 $dtNode = $this->htmlDom->createElement('dt');
-                $this->appendTextNode($dtNode, $dt);
+                $innerDtNode = $this->handleInnerRenderArray($dt);
+                $dtNode->appendChild($innerDtNode);
                 $dlNode->appendChild($dtNode);
             }
             foreach($dtDdGroup['dds'] as $dd) {
                 $ddNode = $this->htmlDom->createElement('dd');
-                $this->appendTextNode($ddNode, $dd);
+                //$this->appendTextNode($ddNode, $dd);
+                //print_r($dd);
+                $innerDdNode = $this->handleInnerRenderArray($dd);
+                $ddNode->appendChild($innerDdNode);
                 $dlNode->appendChild($ddNode);
             }
         }
+        return $dlNode;
     }
 
-    protected function handleInnerRenderArray($renderArray) {
+    protected function handleInnerRenderArray(array $renderArray): DOMNode {
         switch ($renderArray['type']) {
-
             case 'text':
                 $innerNode = $this->textRenderArrayToText($renderArray);
                 break;
@@ -234,19 +236,19 @@ class Html extends AbstractRenderer {
                     switch ($renderArray['subtype']) {
                         case 'ul':
                             $innerNode = $this->listRenderArrayToUl($renderArray['data']);
-                        break;
+                            break;
             
                         case 'ol':
                             $innerNode = $this->listRenderArrayToOl($renderArray['data']);
-                        break;
+                            break;
 
                         default:
                             $innerNode = $this->listRenderArrayToUl($renderArray['data']);
                     }
                 } else {
                     $innerNode = $this->listRenderArrayToUl($renderArray['data']);
+                    return $innerNode;
                 }
-
                 break;
             case 'dl':
                 $innerNode = $this->dlRenderArrayToDl($renderArray['data']);
@@ -259,7 +261,6 @@ class Html extends AbstractRenderer {
             case 'link':
 
                 break;
-
 
             case 'card':
                 if (isset($renderArray['subtype'])) {
@@ -295,15 +296,7 @@ class Html extends AbstractRenderer {
                 } else {
 
                 }
-            
-                    
-            
-            
             }
-
             return $innerNode;
     }
-        
-
-
 }

@@ -80,10 +80,6 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
     }
 
     protected function reorderVars(?array $reorderMapping = null) {
-//echo "<h3>reorderVars: AbsSplExt</h3>";
-//$this->setExtractorOptionValue('no', 'whatevs');
-//print_r($this->extractorOptions);
-//echo "<h1>dafuq</h1>";
         if (is_null($reorderMapping)) {
             //echo "<h4>isnull: absSpqExt</h4>";
             $reorderMapping = $this->valueForExtractorOption('extractorReorderMappingFilePath');

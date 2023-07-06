@@ -30,7 +30,6 @@ function extractArrayToListRenderArray($array) {
     return $listRenderArray;
 }
 
-
 function extractOptionToDlRenderArray($option) {
     $dlRenderArray['type'] = 'dl';
     $dlRenderArray['subtype'] = "keyValue";
@@ -111,7 +110,7 @@ function extractOptionToDetailsCardArray($option) {
 $detailsRenderer = new \Ceres\Renderer\Details;
 $detailsRenderer->setRenderArrayFromArray($detailsCardArray);
 
-$detailsRenderer->build();
+//$detailsRenderer->build();
 echo $detailsRenderer->render();
 
 

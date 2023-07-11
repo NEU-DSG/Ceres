@@ -22,12 +22,13 @@ abstract class AbstractFetcher {
     protected ?array $queryOptions;
 
     protected array $fetcherOptions;
+    
     /**
      * The ID of the remote resource (DRS pid, DPLA hash id, etc)
      * @var string
      */
 
-    protected string $resourceId;
+    protected ?string $resourceId;
 
     /**
      * GET params to tack on to the $endpoint + $queryOptions path
@@ -329,7 +330,7 @@ abstract class AbstractFetcher {
         return 'string';
     }
 
-    public function setResourceId(string $resourceId): void {
+    public function setResourceId(?string $resourceId = null): void {
         $this->resourceId = $resourceId;
     }
 

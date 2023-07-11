@@ -26,9 +26,9 @@ class Pagination extends Html {
       if ($pageNumber == $currentPageNumber) {
         $classes .= 'current';
       }
-      $pageButton = "<a class='$classes' data-url='$url'>$pageNumber</a>";
+      //$pageButton = "<a class='$classes' data-url='$url'>$pageNumber</a>";
       
-      $html .= $pageButton;
+      //$html .= $pageButton;
     }
     
     $html .= $lastButton .= "</div>";
@@ -36,4 +36,7 @@ class Pagination extends Html {
   }
 
 
+  public function build(): void {
+    
+  }
 }

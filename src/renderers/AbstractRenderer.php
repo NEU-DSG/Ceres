@@ -79,7 +79,7 @@ abstract class AbstractRenderer {
     }
 
 
-    public function setDataToRenderFromArray(array $renderArray) {
+    public function setRenderArrayFromArray(array $renderArray) {
         $this->renderArray = $renderArray;
     }
 
@@ -244,7 +244,7 @@ abstract class AbstractRenderer {
     public function renderMissingData($expectedPropName) {
     }
 
-    function injectFetcher($fetcher, $description = null) {
+    public function injectFetcher($fetcher, $description = null) {
       
         //for if/when I have multiple fetchers
         $name = StrUtil::createNameIdForInstantiation($fetcher, $description);
@@ -265,5 +265,10 @@ abstract class AbstractRenderer {
 
         $this->extractors[] = $extractor;
         return $name;
+    }
+
+    protected function spawnSubRenderer(string $subRendererName) {
+        $subRenderer = new $subRendererName;
+        return $subRenderer;
     }
 }

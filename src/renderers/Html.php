@@ -3,12 +3,13 @@ namespace Ceres\Renderer;
 
 use Ceres\Util\DataUtilities;
 use DOMDocument;
+use DOMNode;
 use DOMElement;
 use DOMXPath;
 
 class Html extends AbstractRenderer {
 
-    protected DOMElement $containerNode;
+    protected DOMNode $containerNode;
     protected DOMXPath $xPath;
     protected DOMDocument $htmlDom;
     protected string $templateFileName = 'html.html';
@@ -36,7 +37,6 @@ class Html extends AbstractRenderer {
     }
 
     public function render(): string {
-        
         $this->build();
         // only strip the ids related to ceres, marked by the string
         // `ceres`, just before rendering so any ids can be there for processing
@@ -50,31 +50,7 @@ class Html extends AbstractRenderer {
         $this->appendTextNode($this->containerNode, $text);
     }
 
-    public function imgRenderArrayToImg(array $renderData): DOMElement {
-        $imgNode = $this->htmlDom->createElement('img');
-        if (isset($renderData['globalAtts'])) {
-            $this->setGlobalAttributes($renderData['globalAtts'], $imgNode);
-            unset($renderData['globalAtts']);
-        }
-        
-        return $imgNode;
-    }
-
-    // @todo move to utils?
-    public function linkArrayToA(array $linkData) : DOMElement {
-        $aNode = $this->htmlDom->createElement('a');
-        if (isset($renderData['globalAtts'])) {
-            $this->setGlobalAttributes($linkData['globalAtts'], $aNode);
-            unset($renderData['globalAtts']);   
-        }
-        
-        
-        $aNode->setAttribute('href', $linkData['url']);
-        $this->appendTextNode($aNode, $linkData['label']);
-        return $aNode;
-    }
-  
-    public function toHtmlString(?DOMElement $node = null): string {
+    public function toHtmlString(?DOMNode $node = null): string {
         if (is_null($node)) {
             $node = $this->containerNode;
         }
@@ -85,7 +61,7 @@ class Html extends AbstractRenderer {
         $this->htmlDom = new DOMDocument();
 
         //suppress warnings about tag usage
-        set_error_handler(["\Ceres\Util\DataUtilities", 'suppressWarnings'], E_WARNING);
+        set_error_handler(["Ceres\Util\DataUtilities", 'suppressWarnings'], E_WARNING);
         $this->htmlDom->loadHtmlFile(CERES_ROOT_DIR . "/data/rendererTemplates/$this->templateFileName");
         restore_error_handler();
     }
@@ -94,158 +70,25 @@ class Html extends AbstractRenderer {
         $this->containerNode = $this->htmlDom->getElementById('ceres-container');
     }
 
-    protected function getContainerNode() : DOMElement {
+    protected function getContainerNode() : DOMNode {
         return $this->containerNode;
     }
 
-
-    protected function appendToClass(DOMElement $element, $value ):void {
-        $class = $element->getAttribute('class');
+    protected function appendToClass(DOMElement $node, $value ):void {
+        $class = $node->getAttribute('class');
         $class = $class .= " $value";
-        $element->setAttribute('class', $class);
+        $node->setAttribute('class', $class);
     }
 
-    protected function appendTextNode(DOMElement $element, ?string $text) {
+    protected function appendTextNode(DOMNode $node, string $text, ?string $htmlElement = null) {
         $textNode = $this->htmlDom->createTextNode($text);
-        $element->appendChild($textNode);
-    }
-
-
-
-/* mini-renderers to build really simple HTML elements */
-
-    // @todo move to utils?
-    protected function linkRenderArrayToA(array $linkData) : DOMElement {
-        $aElement = $this->htmlDom->createElement('a');
-        $aElement->setAttribute('href', $linkData['url']);
-        $this->appendTextNode($aElement, $linkData['label']);
-        return $aElement;
-    }
-
-    //@todo or pass off to a KeyValue renderer?
-    protected function kvRenderArrayToKeyValue(array $keyValueData): DOMElement {
-        $kvContainerNode = $this->htmlDom->createElement('div');
-        foreach($keyValueData as $key=>$value) {
-            if (is_array($value)) {
-                $text = "$key: an array!";
-            } else {
-                $text = "$key: $value";
-            }
-            $kvPContainerNode = $this->htmlDom->createElement('p');
-            $this->appendTextNode($kvPContainerNode, $text);
-            $kvContainerNode->appendChild($kvPContainerNode);
+        if (is_null($htmlElement)) {
+            $node->appendChild($textNode);
+        } else {
+            $textContainerNode = $this->htmlDom->createElement($htmlElement);
+            $textContainerNode->appendChild($textNode);
+            $node->appendChild($textContainerNode);
         }
-        return $kvContainerNode;
-    }
-
-
-
-    protected function enumRenderArrayToSelect(array $enumOptions) : DOMElement {
-        $selectNode = $this->htmlDom->createElement('select');
-        foreach ($enumOptions as $option) {
-            $optionNode = $this->htmlDom->createElement('option');
-            $this->appendTextNode($optionNode, $option);
-            $selectNode->appendChild($optionNode);
-        }
-        return $selectNode;
-    }
-
-    // protected function extractorComplexKeyValueArrayToUl(array $dataArray): DOMElement {
-    //     $ulNode = $this->htmlDom->createElement('ul');
-    //     foreach($dataArray as $key => $value) {
-    //         //li for $key
-    //         $liNode = $this->htmlDom->createElement('li');
-    //         $this->appendTextNode($liNode, $key);
-            
-    //         //new ul for $value
-    //         //@todo remove assumption that all the complex (values) are ul
-    //         $subUlNode = $this->renderArrayToUl($value['data']);
-    //         $liNode->appendChild($subUlNode);
-    //         $ulNode->appendChild($liNode);
-    //     }
-
-    //     return $ulNode;
-    // }
-
-
-    protected function listRenderArrayToUl(array $renderArray) {
-        $ulNode = $this->htmlDom->createElement('ul');
-        if (isset($renderData['globalAtts'])) {
-            $this->setGlobalAttributes($renderData['globalAtts'], $ulNode);
-            unset($renderData['globalAtts']);
-        }
-        
-        foreach($renderArray as $liText) {
-            $liNode = $this->htmlDom->createElement('li');
-            $this->appendTextNode($liNode, $liText);
-            $ulNode->appendChild($liNode);
-        }
-        return $ulNode;
-    }
-
-    public function listRenderArrayToOl(array $renderData) : DOMElement {
-        $olNode = $this->htmlDom->createElement('ol');
-        if (isset($renderData['globalAtts'])) {
-            $this->setGlobalAttributes($renderData['globalAtts'], $olNode);
-            unset($renderData['globalAtts']);  
-        }
-        
-        foreach($renderData as $liText) {
-            $liNode = $this->htmlDom->createElement('li');
-            $this->appendTextNode($liNode, $liText);
-            $olNode->appendChild($liNode);
-        }
-        return $olNode;
-    }
-
-    public function varcharToInput(?string $text) : DOMElement {
-        $inputNode = $this->htmlDom->createElement('input');
-        $inputNode->setAttribute('type', 'text');
-        $inputNode->setAttribute('value', $text);
-        return $inputNode;
-    }
-
-    protected function textToTextArea(?string $text) : DOMElement {
-        $textAreaNode = $this->htmlDom->createElement('textarea');
-        $this->appendTextNode($textAreaNode, $text);
-        return $textAreaNode;
-    }
-
-    protected function textToHeading(string $text, string $headingLevel) : DOMElement {
-        $headingNode = $this->htmlDom->createElement($headingLevel);
-        $this->appendTextNode($headingNode, $text);
-        return $headingNode;
-    }
-
-    protected function boolToCheckbox(?bool $value) {
-
-    }
-
-
-    protected function handleInnerRenderArray($renderData) {
-        switch ($renderData['type']) {
-            case 'list':
-                switch ($renderData['subtype']) {
-                    case 'ul':
-                        $innerNode = $this->listRenderArrayToUl($renderData['data']);
-                    break;
-        
-                    case 'ol':
-                        $innerNode = $this->listRenderArrayToOl($renderData['data']);
-                    break;
-                }
-            break;
-
-            case 'img':
-                $innerNode = $this->imgRenderArrayToImg($renderData['data']);
-            break;
-
-
-            case 'keyValue':
-
-            break;
-        }
-        return $innerNode;
     }
 
     protected function stripCeresIds(): void {
@@ -256,12 +99,202 @@ class Html extends AbstractRenderer {
         }
     }
 
-    protected function setGlobalAttributes(array $globalAtts = [], DOMElement $node) {
+    protected function setGlobalAttributes(array $globalAtts = [], DOMNode $node) {
         foreach($globalAtts as $att => $value) {
             $attributeNode = $this->htmlDom->createAttribute($att);
             $attributeNode->value = $value;
             $node->appendChild($attributeNode);
         }
+    }
 
+/* mini-renderers to build really simple HTML elements */
+
+    protected function imgRenderArrayToImg(array $renderArray): DOMNode {
+        $imgNode = $this->htmlDom->createElement('img');
+        if (isset($renderArray['globalAtts'])) {
+            $this->setGlobalAttributes($renderArray['globalAtts'], $imgNode);
+            unset($renderArray['globalAtts']);
+        }
+        return $imgNode;
+    }
+
+    protected function linkArrayToA(array $linkData) : DOMNode {
+        $aNode = $this->htmlDom->createElement('a');
+        if (isset($renderArray['globalAtts'])) {
+            $this->setGlobalAttributes($linkData['globalAtts'], $aNode);
+            unset($renderArray['globalAtts']);   
+        }
+        
+        $aNode->setAttribute('href', $linkData['url']);
+        $this->appendTextNode($aNode, $linkData['label']);
+        return $aNode;
+    }
+
+    protected function linkRenderArrayToA(array $linkData) : DOMNode {
+        $aElement = $this->htmlDom->createElement('a');
+        $aElement->setAttribute('href', $linkData['url']);
+        $this->appendTextNode($aElement, $linkData['label']);
+        return $aElement;
+    }
+
+    protected function enumRenderArrayToSelect(array $enumOptions) : DOMNode {
+        $selectNode = $this->htmlDom->createElement('select');
+        foreach ($enumOptions as $option) {
+            $optionNode = $this->htmlDom->createElement('option');
+            $this->appendTextNode($optionNode, $option);
+            $selectNode->appendChild($optionNode);
+        }
+        return $selectNode;
+    }
+
+    protected function listRenderArrayToUl(array $renderArray): DOMNode {
+        $ulNode = $this->htmlDom->createElement('ul');
+        if (isset($renderArray['globalAtts'])) {
+            $this->setGlobalAttributes($renderArray['globalAtts'], $ulNode);
+            unset($renderArray['globalAtts']);
+        }
+        
+        foreach($renderArray as $liText) {
+            $liNode = $this->htmlDom->createElement('li');
+            $this->appendTextNode($liNode, $liText);
+            $ulNode->appendChild($liNode);
+        }
+        return $ulNode;
+    }
+
+    protected function listRenderArrayToOl(array $renderArray) : DOMNode {
+        $olNode = $this->htmlDom->createElement('ol');
+        if (isset($renderArray['globalAtts'])) {
+            $this->setGlobalAttributes($renderArray['globalAtts'], $olNode);
+            unset($renderArray['globalAtts']);  
+        }
+        
+        foreach($renderArray as $liText) {
+            $liNode = $this->htmlDom->createElement('li');
+            $this->appendTextNode($liNode, $liText);
+            $olNode->appendChild($liNode);
+        }
+        return $olNode;
+    }
+
+    protected function varcharToInput(?string $text) : DOMNode {
+        $inputNode = $this->htmlDom->createElement('input');
+        $inputNode->setAttribute('type', 'text');
+        $inputNode->setAttribute('value', $text);
+        return $inputNode;
+    }
+
+    protected function textRenderArrayToTextArea(string $text): DOMNode {
+        $textAreaNode = $this->htmlDom->createElement('textarea');
+        $this->appendTextNode($textAreaNode, $text);
+        return $textAreaNode;
+    }
+
+    protected function textRenderArrayToText(array $renderArray): DOMNode {
+        $textNode = $this->htmlDom->createTextNode($renderArray['data']);
+        if (isset($renderArray['subtype'])) {
+            $htmlElement = $renderArray['subtype'];
+            $innerNode = $this->htmlDom->createElement($htmlElement);
+            $innerNode->appendChild($textNode);
+        } else {
+            return $textNode;
+        }
+    }
+
+    protected function boolToCheckbox(?bool $value) {
+
+    }
+
+    protected function dlRenderArrayToDl(array $renderArray): DOMNode {
+        $dlNode = $this->htmlDom->createElement('dl');
+        foreach($renderArray as $dtDdGroup) {
+            foreach($dtDdGroup['dts'] as $dt) {
+                $dtNode = $this->htmlDom->createElement('dt');
+                $innerDtNode = $this->handleInnerRenderArray($dt);
+                $dtNode->appendChild($innerDtNode);
+                $dlNode->appendChild($dtNode);
+            }
+            foreach($dtDdGroup['dds'] as $dd) {
+                $ddNode = $this->htmlDom->createElement('dd');
+                $innerDdNode = $this->handleInnerRenderArray($dd);
+                $ddNode->appendChild($innerDdNode);
+                $dlNode->appendChild($ddNode);
+            }
+        }
+        return $dlNode;
+    }
+
+    protected function handleInnerRenderArray(array $renderArray): DOMNode {
+        switch ($renderArray['type']) {
+            case 'text':
+                $innerNode = $this->textRenderArrayToText($renderArray);
+                break;
+            case 'list':
+                if (isset($renderArray['subtype'])) {
+                    switch ($renderArray['subtype']) {
+                        case 'ul':
+                            $innerNode = $this->listRenderArrayToUl($renderArray['data']);
+                            break;
+            
+                        case 'ol':
+                            $innerNode = $this->listRenderArrayToOl($renderArray['data']);
+                            break;
+
+                        default:
+                            $innerNode = $this->listRenderArrayToUl($renderArray['data']);
+                    }
+                } else {
+                    $innerNode = $this->listRenderArrayToUl($renderArray['data']);
+                    return $innerNode;
+                }
+                break;
+            case 'dl':
+                $innerNode = $this->dlRenderArrayToDl($renderArray['data']);
+                break;
+
+            case 'img':
+                $innerNode = $this->imgRenderArrayToImg($renderArray['data']);
+                break;
+
+            case 'link':
+
+                break;
+
+            case 'card':
+                if (isset($renderArray['subtype'])) {
+                    switch($renderArray['subtype']) {
+                        case 'details':
+                            $subRenderer = $this->spawnSubRenderer('Ceres\Html\Details');
+                            $subRenderer->setRenderArrayFromArray();
+                            $subRenderer->build();
+                            $innerNode = $subRenderer->renderNode();
+                        break;
+
+                        default:
+                            $subRenderer = $this->spawnSubRenderer(('Ceres\Html\Card'));
+                            $subRenderer->setRenderArrayFromArray();
+                            $subRenderer->build();
+                            $innerNode = $subRenderer->renderNode();
+                    } 
+                } else {
+                    $subRenderer = $this->spawnSubRenderer(('Ceres\Html\Card'));
+                    $subRenderer->setRenderArrayFromArray();
+                    $subRenderer->build();
+                    $innerNode = $subRenderer->renderNode();
+                }
+            case 'dl':
+                if (isset($renderArray['subtype'])) {
+                    switch($renderArray['subtype']) {
+                        case 'keyValue':
+
+                            break;
+                        default:
+
+                    }
+                } else {
+
+                }
+            }
+            return $innerNode;
     }
 }

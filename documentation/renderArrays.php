@@ -33,10 +33,21 @@ namespace Ceres\Documentation;
  *               ],
  */
 
+/* `type` refers to the array structure, which is often the same
+ * as the renderer to use.
+ * For the same data structure but different renderers, `subtype` 
+ * is added.
+ */
+ 
 
+
+ 
+$textRenderArray = ['type' => 'text',
+                    'subtype' => '', //the HTML element to wrap the text in
+                    'data' => 'text to render'
+                    ];
 
 $imgRenderArray = ['type' => 'img',
-
                    'data' => [
                         'globalAtts' => ['dataAtts' => ['data-X' => ''],
                         'id' => 'any id containing the string `ceres` will be stripped out',
@@ -66,18 +77,20 @@ $listRenderArray = ['type' => 'list',
                         'li a billion'
                     ]
                 ];
-/**
- * A separator can optionally be specified for grid-like
- * key value pairs. For non-grid-like pairs, use a definitionList or
- * other.
- */
-$keyValueRenderArray = ['type' => 'keyValue',
-                        'data' => [
-                            'key1' => 'value1',
-                            'key2' => 'value2',
-                            'key3' => 'value3',
-                        ]
-                ];
+
+$dlRenderArray = ['type' => 'dl',
+                  // the keyValue subtype is for simple pairs,
+                  // styled however the KeyValue renderer wants
+                  'subtype' => '?keyValue',
+                  'data' => [
+                    // an array of dt/dd groups
+                    // a simplified form with only a single dt
+                    // and dd as strings can omit the outer array structure
+                    ['dts' => [] , 'dds' => []],
+                    ['dts' => [] , 'dds' => []],
+                    ['dts' => [] , 'dds' => []],
+                  ]
+            ];
 
 /**
  * 
@@ -109,6 +122,9 @@ $tableRenderArray = ['type' => 'table',
  * 
 */ 
 $cardRenderArray = ['type' => 'card',
+                    // optional to point renderer to 
+                    // using <details> element, but it can ignore this
+                    'subtype' => 'details', 
                     'data' => ['main' => ['text for main', 
                                             ['type' => 'img',
                                              'data' => []
@@ -118,7 +134,8 @@ $cardRenderArray = ['type' => 'card',
                                                 ['type' => 'img',
                                                  'data' => []
                                                 ],
-                                                ['type' => 'kv',
+                                                ['type' => 'dl',
+                                                 'subtype' => 'keyValue',
                                                  'data' => []
                                                 ]
                                               ]
@@ -126,16 +143,6 @@ $cardRenderArray = ['type' => 'card',
                 ];
 
 $detailsRenderArray = $cardRenderArray;
-$definitionListRenderArray = ['type' => 'dl',
-                              'data' => [
-                                'term1' => ['def 1',
-                                            'def 2',
-                                            ['type' => 'img', 
-                                             'data' => []
-                                            ]
-                                            ]
-                              ]
-                            ];
 
 
 /**

@@ -19,21 +19,6 @@ use Ceres\Util\StringUtilities;
  * @TODO: do I need a way to specify the page id from the admin
  */
 
-function getCurrentValues() {
-    $ceresCurrentValues = [
-        // ['optionName' =>, 'value' =>],
-        'id1' => ['optionName' => 'caption', 'value' => 'Chinatown Collections'],
-        'id2' => ['optionName' => 'trClass', 'value' => 'classy-class'],
-        'id3' => ['optionName' => 'trClass', 'value' => 'classless-class'],
-
-
-
-
-    ];
-
-    return $ceresCurrentValues;
-}
-
 function getAllOptions() {
     $ceresAllOptions = [
         'extractorReorderMappingFilePath' => [
@@ -617,7 +602,6 @@ function getAllOptions() {
 function getOptionsValues() {
     $ceresOptionsValues = [
         'extractorValueLabelMappingFilePath' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => null,
             ]
@@ -625,27 +609,23 @@ function getOptionsValues() {
         ],
 
         'altTextProp' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => null,
             ]
             ],
 
         'extractorReorderMappingFilePath' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => null,
             ]
         ],
         'extractorRemoveVarsFilePath' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => null,
             ]
         ],
 
         'extractorValueMappingFilePath' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => null,
             ]
@@ -653,14 +633,12 @@ function getOptionsValues() {
 
 
         'fetchLocalData' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => false,
             ]
         ],
 
         'localResponseDataPath' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -670,7 +648,6 @@ function getOptionsValues() {
         ],
 
         'bounceBack' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -679,7 +656,6 @@ function getOptionsValues() {
             ]
         ],
         'rqFile' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -690,7 +666,6 @@ function getOptionsValues() {
             ]
         ],
         'caption' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -700,7 +675,6 @@ function getOptionsValues() {
         ],
 
         'text' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -710,7 +684,6 @@ function getOptionsValues() {
         ],
 
         'altLabelProp' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -719,7 +692,6 @@ function getOptionsValues() {
             ]
         ],
         'resourceLinkProp' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -727,7 +699,6 @@ function getOptionsValues() {
             ]
         ],
         'searchType' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -735,7 +706,6 @@ function getOptionsValues() {
             ]
         ],
         'extractorMetadataFilterBy' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -743,7 +713,6 @@ function getOptionsValues() {
             ]
         ],
         'float' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -752,7 +721,6 @@ function getOptionsValues() {
             ]
         ],
         'extractorMetadataToShow' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => [],
                 '$projectName' => '',
@@ -761,7 +729,6 @@ function getOptionsValues() {
             ],
 
         'metadataToShow' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => [],
                 '$projectName' => '',
@@ -772,7 +739,6 @@ function getOptionsValues() {
 
 
         'thumbnailSize' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -780,7 +746,6 @@ function getOptionsValues() {
             ]
         ],
         'extractorResourcesFilterBy' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -788,7 +753,6 @@ function getOptionsValues() {
             ]
         ],
         'extractorMetadataSortBy' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -796,7 +760,6 @@ function getOptionsValues() {
             ]
         ],
         'extractorResourcesSortBy' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -804,7 +767,6 @@ function getOptionsValues() {
             ]
         ],
         'extractorMetadataSortOrder' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -812,7 +774,6 @@ function getOptionsValues() {
             ]
         ],
         'extractorResourcesSortOrder' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -820,7 +781,6 @@ function getOptionsValues() {
             ]
         ],
         'extractorMetadataSortByProperty' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -828,7 +788,6 @@ function getOptionsValues() {
             ]
         ],
         'extractorResourcesSortByProperty' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -836,7 +795,6 @@ function getOptionsValues() {
             ]
         ],
         'extractorGroupBy' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -844,7 +802,6 @@ function getOptionsValues() {
             ]
         ],
         'itemLinkProp' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -852,7 +809,6 @@ function getOptionsValues() {
             ]
         ],
         'mediaLinkProp' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -860,7 +816,6 @@ function getOptionsValues() {
             ]
         ],
         'mediaUriProp' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -868,7 +823,6 @@ function getOptionsValues() {
             ]
         ],
         'thClass' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => 'ceres-th',
                 '$projectName' => '',
@@ -878,7 +832,6 @@ function getOptionsValues() {
         ],
 
         'trClass' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => 'ceres-tr',
                 '$projectName' => '',
@@ -887,7 +840,6 @@ function getOptionsValues() {
             ]
         ],
         'theadClass' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => 'ceres-thead',
                 '$projectName' => '',
@@ -897,7 +849,6 @@ function getOptionsValues() {
             ]
         ],
         'captionClass' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => 'ceres-caption',
                 '$projectName' => '',
@@ -907,7 +858,6 @@ function getOptionsValues() {
             ]
         ],
         'tdClass' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => 'ceres-td',
                 '$projectName' => '',
@@ -917,7 +867,6 @@ function getOptionsValues() {
             ]
         ],
         'tableClass' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => 'ceres-table',
                 '$projectName' => '',
@@ -927,7 +876,6 @@ function getOptionsValues() {
             ]
         ],
         'endpoint' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -939,7 +887,6 @@ function getOptionsValues() {
             ]
         ],
         'fetcherMetadataToShow' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -947,7 +894,6 @@ function getOptionsValues() {
             ]
         ],
         'getAll' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -955,7 +901,6 @@ function getOptionsValues() {
             ]
         ],
         'responseFormat' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -963,7 +908,6 @@ function getOptionsValues() {
             ]
         ],
         'perPage' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -971,7 +915,6 @@ function getOptionsValues() {
             ]
         ],
         'startPage' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -979,7 +922,6 @@ function getOptionsValues() {
             ]
         ],
         'resourceIds' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -987,7 +929,6 @@ function getOptionsValues() {
             ]
         ],
         'query' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -995,7 +936,6 @@ function getOptionsValues() {
             ]
         ],
         'queryFile' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -1004,7 +944,6 @@ function getOptionsValues() {
             ]
         ],
         'firstRowIsHeader' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -1014,7 +953,6 @@ function getOptionsValues() {
             ]
         ],
         'fetcherGroupBy' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -1022,7 +960,6 @@ function getOptionsValues() {
             ]
         ],
         'fetcherFilterBy' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -1030,7 +967,6 @@ function getOptionsValues() {
             ]
         ],
         'fetcherSortBy' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -1038,7 +974,6 @@ function getOptionsValues() {
             ]
         ],
         'fetcherSortOrder' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -1046,7 +981,6 @@ function getOptionsValues() {
             ]
         ],
         'fetcherSortByProperty' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -1054,7 +988,6 @@ function getOptionsValues() {
             ]
         ],
         'separator' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -1062,7 +995,6 @@ function getOptionsValues() {
             ]
         ],
         'keyClass' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -1070,7 +1002,6 @@ function getOptionsValues() {
             ]
         ],
         'valueClass' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -1079,7 +1010,6 @@ function getOptionsValues() {
         ],
         //settings in the surrounding HTML
         'leafletCeres' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',
@@ -1088,7 +1018,6 @@ function getOptionsValues() {
         ],
         //passthroughs to Leaflet
         'leafletNative' => [
-            'currentValue' => null,
             'defaults' => [
                 'ceres' => '',
                 '$projectName' => '',

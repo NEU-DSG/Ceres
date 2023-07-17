@@ -109,6 +109,18 @@ class Html extends AbstractRenderer {
 
 /* mini-renderers to build really simple HTML elements */
 
+
+    protected function extractStringToTextRenderArray(string $text, ?string $htmlElement = null) {
+        $textRenderArray = ['type' => 'text',
+                            'data' => $text,
+                            ];
+        if (! is_null($htmlElement)) {
+            $textRenderArray['subtype'] = $htmlElement;
+        }
+        return $textRenderArray;
+    }
+
+
     protected function imgRenderArrayToImg(array $renderArray): DOMNode {
         $imgNode = $this->htmlDom->createElement('img');
         if (isset($renderArray['globalAtts'])) {
@@ -116,18 +128,6 @@ class Html extends AbstractRenderer {
             unset($renderArray['globalAtts']);
         }
         return $imgNode;
-    }
-
-    protected function linkArrayToA(array $linkData) : DOMNode {
-        $aNode = $this->htmlDom->createElement('a');
-        if (isset($renderArray['globalAtts'])) {
-            $this->setGlobalAttributes($linkData['globalAtts'], $aNode);
-            unset($renderArray['globalAtts']);   
-        }
-        
-        $aNode->setAttribute('href', $linkData['url']);
-        $this->appendTextNode($aNode, $linkData['label']);
-        return $aNode;
     }
 
     protected function linkRenderArrayToA(array $linkData) : DOMNode {
@@ -207,94 +207,118 @@ class Html extends AbstractRenderer {
 
     protected function dlRenderArrayToDl(array $renderArray): DOMNode {
         $dlNode = $this->htmlDom->createElement('dl');
-        foreach($renderArray as $dtDdGroup) {
-            foreach($dtDdGroup['dts'] as $dt) {
+        
+
+        //throw new \Exception(print_r($renderArray));
+        //die();
+        foreach($renderArray['data'] as $dtDdGroup) {
+echo PHP_EOL . 'dtDdGroup 215' . PHP_EOL;
+print_r($dtDdGroup);
+            foreach($dtDdGroup['dts'] as $dts) {
+echo PHP_EOL . 'dts 217' . PHP_EOL;
+print_r($dts);                
                 $dtNode = $this->htmlDom->createElement('dt');
-                $innerDtNode = $this->handleInnerRenderArray($dt);
-                $dtNode->appendChild($innerDtNode);
-                $dlNode->appendChild($dtNode);
+                if (is_string($dts)) {
+                    $this->appendTextNode($dtNode, $dts);
+                } else {
+                    $innerDtNode = $this->handleInnerRenderArray($dts);
+                    $dtNode->appendChild($innerDtNode);
+                    $dlNode->appendChild($dtNode);
+                }
+
             }
-            foreach($dtDdGroup['dds'] as $dd) {
+            foreach($dtDdGroup['dds'] as $dds) {
+echo PHP_EOL . 'dds 231' . PHP_EOL;
+print_r($dds);
                 $ddNode = $this->htmlDom->createElement('dd');
-                $innerDdNode = $this->handleInnerRenderArray($dd);
-                $ddNode->appendChild($innerDdNode);
-                $dlNode->appendChild($ddNode);
+                if (is_string($dds)) {
+                    $this->appendTextNode($dtNode, $dds);
+                } else {
+echo '237' . PHP_EOL;
+print_r($dds);
+                    $innerDdNode = $this->handleInnerRenderArray($dds);
+                    $dtNode->appendChild($innerDdNode);
+                    $dlNode->appendChild($ddNode);
+                }
             }
         }
         return $dlNode;
     }
 
     protected function handleInnerRenderArray(array $renderArray): DOMNode {
-        switch ($renderArray['type']) {
-            case 'text':
-                $innerNode = $this->textRenderArrayToText($renderArray);
-                break;
-            case 'list':
-                if (isset($renderArray['subtype'])) {
-                    switch ($renderArray['subtype']) {
-                        case 'ul':
-                            $innerNode = $this->listRenderArrayToUl($renderArray['data']);
-                            break;
+echo "handleInnerRenderArray" . PHP_EOL . PHP_EOL;
+//print_r($renderArray);
+        if (is_string($renderArray)) {
             
-                        case 'ol':
-                            $innerNode = $this->listRenderArrayToOl($renderArray['data']);
-                            break;
-
-                        default:
-                            $innerNode = $this->listRenderArrayToUl($renderArray['data']);
-                    }
-                } else {
-                    $innerNode = $this->listRenderArrayToUl($renderArray['data']);
-                    return $innerNode;
-                }
-                break;
-            case 'dl':
-                $innerNode = $this->dlRenderArrayToDl($renderArray['data']);
-                break;
-
-            case 'img':
-                $innerNode = $this->imgRenderArrayToImg($renderArray['data']);
-                break;
-
-            case 'link':
-
-                break;
-
-            case 'card':
-                if (isset($renderArray['subtype'])) {
-                    switch($renderArray['subtype']) {
-                        case 'details':
-                            $subRenderer = $this->spawnSubRenderer('Ceres\Html\Details');
-                            $subRenderer->setRenderArrayFromArray();
-                            $subRenderer->build();
-                            $innerNode = $subRenderer->renderNode();
-                        break;
-
-                        default:
-                            $subRenderer = $this->spawnSubRenderer(('Ceres\Html\Card'));
-                            $subRenderer->setRenderArrayFromArray();
-                            $subRenderer->build();
-                            $innerNode = $subRenderer->renderNode();
-                    } 
-                } else {
-                    $subRenderer = $this->spawnSubRenderer(('Ceres\Html\Card'));
-                    $subRenderer->setRenderArrayFromArray();
-                    $subRenderer->build();
-                    $innerNode = $subRenderer->renderNode();
-                }
-            case 'dl':
-                if (isset($renderArray['subtype'])) {
-                    switch($renderArray['subtype']) {
-                        case 'keyValue':
-
-                            break;
-                        default:
-
-                    }
-                } else {
-
-                }
+            $innerNode = $this->htmlDom->createTextNode($renderArray);
+        } else {
+            if(! isset($renderArray['type'])) {
+                echo "249" . PHP_EOL . PHP_EOL . PHP_EOL;
+                print_r($renderArray);
+                //throw new \Exception('wtf');
             }
-            return $innerNode;
+            switch ($renderArray['type']) {
+                case 'text':
+                    $innerNode = $this->textRenderArrayToText($renderArray);
+                    break;
+                case 'list':
+                    if (isset($renderArray['subtype'])) {
+                        switch ($renderArray['subtype']) {
+                            case 'ul':
+                                $innerNode = $this->listRenderArrayToUl($renderArray['data']);
+                                break;
+
+                            case 'ol':
+                                $innerNode = $this->listRenderArrayToOl($renderArray['data']);
+                                break;
+
+                            default:
+                                $innerNode = $this->listRenderArrayToUl($renderArray['data']);
+                        }
+                    } else {
+                        $innerNode = $this->listRenderArrayToUl($renderArray['data']);
+                        return $innerNode;
+                    }
+                    break;
+                case 'dl':
+                    echo "case dl 280" . PHP_EOL . PHP_EOL;
+                    print_r($renderArray);
+                    
+                    $innerNode = $this->dlRenderArrayToDl($renderArray);
+                    break;
+
+                case 'img':
+                    $innerNode = $this->imgRenderArrayToImg($renderArray['data']);
+                    break;
+
+                case 'link':
+
+                    break;
+
+                case 'card':
+                    if (isset($renderArray['subtype'])) {
+                        switch($renderArray['subtype']) {
+                            case 'details':
+                                $subRenderer = $this->spawnSubRenderer('Ceres\Html\Details');
+                                $subRenderer->setRenderArrayFromArray();
+                                $subRenderer->build();
+                                $innerNode = $subRenderer->renderNode();
+                                break;
+
+                            default:
+                                $subRenderer = $this->spawnSubRenderer(('Ceres\Html\Card'));
+                                $subRenderer->setRenderArrayFromArray();
+                                $subRenderer->build();
+                                $innerNode = $subRenderer->renderNode();
+                        }
+                    } else {
+                        $subRenderer = $this->spawnSubRenderer(('Ceres\Html\Card'));
+                        $subRenderer->setRenderArrayFromArray();
+                        $subRenderer->build();
+                        $innerNode = $subRenderer->renderNode();
+                    }
+            }
+        }
+        return $innerNode;
     }
 }

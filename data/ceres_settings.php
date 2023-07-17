@@ -603,7 +603,7 @@ function getOptionsValues() {
     $ceresOptionsValues = [
         'extractorValueLabelMappingFilePath' => [
             'defaults' => [
-                'ceres' => null,
+                'ceres' => "something",
             ]
 
         ],

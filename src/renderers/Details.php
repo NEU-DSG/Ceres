@@ -21,6 +21,8 @@ class Details extends Html {
         $mainRenderArray = $this->renderArray['data']['main'];
         $this->buildSummaryNode($mainRenderArray);
         $secondaryRenderArray = $this->renderArray['data']['secondary'];
+        echo "Details build 24" . PHP_EOL . PHP_EOL . PHP_EOL;
+        print_r($secondaryRenderArray);
         $this->buildDetailsNode($secondaryRenderArray);
     }
 
@@ -30,6 +32,8 @@ class Details extends Html {
     }
 
     protected function buildDetailsNode($secondaryRenderArray): void {
+        echo 'buildDetailsNode 36' . PHP_EOL . PHP_EOL;
+        print_r($secondaryRenderArray);
         $innerNode = $this->handleInnerRenderArray($secondaryRenderArray);
         $this->detailsNode->appendChild($innerNode);
     }

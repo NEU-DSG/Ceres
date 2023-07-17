@@ -95,10 +95,6 @@ class Tabular extends Html {
                         $columnData = $this->listRenderArrayToUl($data);
                     break;
 
-                    case 'ol':
-                        $columnData = $this->listRenderArrayToOl($data);
-                    break;
-
                     case 'link':
                         $columnData = $this->linkRenderArrayToA($data);
                     break;
@@ -107,8 +103,8 @@ class Tabular extends Html {
                         $columnData = $this->kvRenderArrayToKeyValue($data); // or should this pass off to a KeyValue Renderer?
                     break;
 
-                    // case 'complexKeyValue':
-                    //     $columnData = $this->extractorComplexKeyValueArrayToUl($data);
+                    case 'complexKeyValue':
+                        //$columnData = $this->extractorComplexKeyValueArrayToUl($data);
 
                     // default:
 

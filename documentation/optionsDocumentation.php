@@ -1,8 +1,14 @@
 <?php
 namespace Ceres\Documentation;
  
-use Ceres\Renderer\Html\Details as Details;
+ini_set('display_errors', '1');
+ini_set('display_startup_errors', '1');
+error_reporting(E_ALL);
+
+use Ceres\Renderer\Details;
+use Ceres\Renderer\Card;
 use Ceres\Util\DataUtilities as DataUtil;
+use Exception;
 
 require_once('/var/www/html/Ceres/config/ceresSetup.php');
 
@@ -17,11 +23,11 @@ $testOption2 = $options['extractorRemoveVarsFilePath'];
 
 $dlRenderArray = [];
 
-$dlRenderArray[] = extractOptionToDlRenderArray($testOption1);
+//$dlRenderArray[] = extractOptionToDlRenderArray($testOption1);
 //$dlRenderArray[] = extractOptionToDlRenderArray($testOption2);
 
 
-$detailsCardArray = extractOptionToDetailsCardArray($testOption1);
+$detailsCardRenderArray = extractOptionToDetailsCardRenderArray($testOption1);
 
 function extractArrayToListRenderArray($array) {
     $listRenderArray = ['type' => 'list',
@@ -30,15 +36,18 @@ function extractArrayToListRenderArray($array) {
     return $listRenderArray;
 }
 
-function extractOptionToDlRenderArray($option) {
+function extractOptionToDlRenderArray(array $option, ?string $subtype = null): array {
     $dlRenderArray['type'] = 'dl';
-    $dlRenderArray['subtype'] = "keyValue";
+    if (! is_null($subtype)) {
+        $dlRenderArray['subtype'] = $subtype;
+    }
+    
 
     $optionDetailsMap = [
-        'Description' => $option['desc'],
-        'Type' => $option['type'],
+        //'Description' => $option['desc'],
+        //'Type' => $option['type'],
         'Defaults' => $option['defaults'],
-        'Access' => $option['access'],
+        //'Access' => $option['access'],
     ];
 
     foreach($optionDetailsMap as $optionSettingLabel => $value) {
@@ -51,7 +60,7 @@ function extractOptionToDlRenderArray($option) {
         $valueType = gettype($value);
         switch ($valueType) {
             case 'string':
-                $value = extractTextToTextRenderArray($value);
+                $value = extractStringToTextRenderArray($value);
                 break;
             case 'array':
                 $value = extractArrayToListRenderArray($value);
@@ -62,7 +71,7 @@ function extractOptionToDlRenderArray($option) {
         switch($optionSettingLabel) {
             case 'Access':
                 if (is_string($optionSettingLabel)) {
-                    $optionSettingLabel = extractTextToTextRenderArray($optionSettingLabel);
+                    $optionSettingLabel = extractStringToTextRenderArray($optionSettingLabel);
                 }
 
                 $dlRenderArray['data'][] = [
@@ -71,11 +80,32 @@ function extractOptionToDlRenderArray($option) {
                              ],
                     'dds' => [ $value ],
                 ];
-            break;
+                break;
+
+            case 'Defaults':
+                $value = DataUtil::defaultsForOption('extractorValueLabelMappingFilePath');
+                $innerDlRenderArray = extractDefaultOptionValuesToDlRenderArray($value);
+                $dlRenderArray['data'] = [];
+                $dtDdGroup = 
+                    ['dts' => ['Defaults'],
+                     'dds' => $innerDlRenderArray
+                    ];
+                
+                
+                $dlRenderArray['data'][] = $dtDdGroup;
+                
+                // $dlRenderArray['data'][] = [
+                //     ['dts' => ['Defaults'],
+                //      'dds' => []
+                //     ]
+                // ];
+                
+                //$dlRenderArray['data'][0]['dds'][] = extractDefaultOptionValuesToDlRenderArray($value);
+                break;
 
             default:
                 if (is_string($optionSettingLabel)) {
-                    $optionSettingLabel = extractTextToTextRenderArray($optionSettingLabel);
+                    $optionSettingLabel = extractStringToTextRenderArray($optionSettingLabel);
                 }
                 $dlRenderArray['data'][] = [
                     'dts' => [$optionSettingLabel],
@@ -86,7 +116,38 @@ function extractOptionToDlRenderArray($option) {
     return $dlRenderArray;
 }
 
-function extractTextToTextRenderArray(string $text, ?string $htmlElement = null) {
+function extractDefaultOptionValuesToDlRenderArray(array $defaultValues) {
+    $innerDlRenderArray = [
+        'type' => 'dl',
+        //'subtype' => 'keyValue'
+    ];
+
+    // making assumption of 1 - 1 dt/dd relationship
+    // but dd could be an array that represents
+    // the details as a list
+    foreach ($defaultValues as $dt => $dds) {
+        $dtDdGroup = [
+            'dts' => [$dt],
+        ];
+        if (is_string($dds)) {
+            $dtDdGroup['dds'] = [$dds];
+        } else {
+            $ddsArray = [];
+            foreach ($dds as $newDd) {
+                $ddsArray[] = $newDd;
+            }
+            $dtDdGroup['dds'] = $ddsArray;
+        }
+        $innerDlRenderArray['data'] = [$dtDdGroup];
+        //print_r($innerDlRenderArray);
+        // //working as expected
+        //die();
+        return $innerDlRenderArray;
+    }
+
+}
+
+function extractStringToTextRenderArray(string $text, ?string $htmlElement = null) {
     $textRenderArray = ['type' => 'text',
                         'data' => $text,
                         ];
@@ -96,27 +157,32 @@ function extractTextToTextRenderArray(string $text, ?string $htmlElement = null)
     return $textRenderArray;
 }
 
-function extractOptionToDetailsCardArray($option) {
+
+
+function extractOptionToDetailsCardRenderArray($option) {
     $detailsCardRenderArray = ['type' => 'card',
                                'subtype' => 'details'
     ];
     $detailsCardRenderArray['data'] = [
-        'main' => extractTextToTextRenderArray($option['label']),
+        'main' => extractStringToTextRenderArray($option['label']),
         'secondary' => extractOptionToDlRenderArray($option)
     ];
+    //print_r($detailsCardRenderArray);
+    // good to here
+    // die();
     return $detailsCardRenderArray;
 }
+$detailsRenderer = new Details;
+// print_r($detailsCardRenderArray);
+$detailsRenderer->setRenderArrayFromArray($detailsCardRenderArray);
 
-$detailsRenderer = new \Ceres\Renderer\Details;
-$detailsRenderer->setRenderArrayFromArray($detailsCardArray);
-
-$cardRenderer = new \Ceres\Renderer\Card;
-$cardRenderer->setRenderArrayFromArray($detailsCardArray);
+$cardRenderer = new Card;
+$cardRenderer->setRenderArrayFromArray($detailsCardRenderArray);
 
 //$detailsRenderer->build(); RENDER CALLS BUILD()
 echo $detailsRenderer->render();
 
-echo $cardRenderer->render();
+//echo $cardRenderer->render();
 
 
 

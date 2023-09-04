@@ -18,7 +18,7 @@ class Rest extends AbstractFetcher {
      * @var string
      */
 
-    protected ?string $resourceId;
+    protected string $resourceId;
     
     /**
      * GET params to tack on to the $endpoint + $queryOptions path
@@ -96,7 +96,7 @@ class Rest extends AbstractFetcher {
         return $this->queryOptions[$option];
     }
 
-    public function setResourceId(?string $resourceId = null): void {
+    public function setResourceId($resourceId): void {
         $this->resourceId = $resourceId;
     }
 

@@ -28,7 +28,7 @@ abstract class AbstractFetcher {
      * @var string
      */
 
-    protected ?string $resourceId;
+    protected string $resourceId;
 
     /**
      * GET params to tack on to the $endpoint + $queryOptions path
@@ -330,7 +330,7 @@ abstract class AbstractFetcher {
         return 'string';
     }
 
-    public function setResourceId(?string $resourceId = null): void {
+    public function setResourceId(string $resourceId): void {
         $this->resourceId = $resourceId;
     }
 

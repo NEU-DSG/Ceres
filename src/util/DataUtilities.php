@@ -6,6 +6,8 @@ use Ceres\Data;
 use Error;
 use ErrorException;
 
+use function Ceres\Data\getOptionsValues;
+
 class DataUtilities {
 
     protected static $allOptions = [];
@@ -103,8 +105,13 @@ class DataUtilities {
 
     static function defaultsForOption($optionName, $scope='ceres') {
         self::setData();
-
-        return self::$optionsValues[$optionName]['defaults'][$scope];
+        $optionsValues = getOptionsValues();
+        $defaults = $optionsValues[$optionName]['defaults'];
+        return $defaults;
+        if (isset($scope)) {
+            return self::$optionsValues[$optionName]['defaults'][$scope];
+        }
+        return self::$optionsValues[$optionName]['defaults'];
     }
 
     static function allDefaultsForOption($optionName) {
@@ -361,18 +368,12 @@ class DataUtilities {
         self::updateWpOption('ceres_all_options', $data);
     }
 
-    static function rebuildCurrentValues() {
-        $data = Data\getCurrentValues();
-        self::updateWpOption('ceres_current_values', $data);
-    }
-
     static function rebuildAllWpOptions() {
         self::rebuildAllOptions();
         self::rebuildOptionsEnums();
         self::rebuildOptionsValues();
         self::rebuildPropertyLabels();
         self::rebuildViewPackages();
-        self::rebuildCurrentValues();
 
     }
 

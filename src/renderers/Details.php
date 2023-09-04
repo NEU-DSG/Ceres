@@ -4,6 +4,7 @@ namespace Ceres\Renderer;
 use Ceres\Renderer\Html;
 use DOMNode;
 
+
 //only here because I don't have a real autoloader
 require_once(CERES_ROOT_DIR . '/src/renderers/Html.php');
 class Details extends Html {
@@ -21,6 +22,8 @@ class Details extends Html {
         $mainRenderArray = $this->renderArray['data']['main'];
         $this->buildSummaryNode($mainRenderArray);
         $secondaryRenderArray = $this->renderArray['data']['secondary'];
+        echo "Details build 24" . PHP_EOL . PHP_EOL . PHP_EOL;
+        print_r($secondaryRenderArray);
         $this->buildDetailsNode($secondaryRenderArray);
     }
 
@@ -30,6 +33,8 @@ class Details extends Html {
     }
 
     protected function buildDetailsNode($secondaryRenderArray): void {
+        echo 'buildDetailsNode 36' . PHP_EOL . PHP_EOL;
+        print_r($secondaryRenderArray);
         $innerNode = $this->handleInnerRenderArray($secondaryRenderArray);
         $this->detailsNode->appendChild($innerNode);
     }

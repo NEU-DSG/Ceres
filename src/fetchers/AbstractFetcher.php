@@ -150,13 +150,13 @@ abstract class AbstractFetcher {
         switch ($this->method) {
             case 'GET':
                 if (is_null($url)) {
-                    $url = $this->buildQueryString(); // build entire URL, including params as part of it
+                    $url = $this->getQuery(); // build entire URL, including params as part of it
                 }
                 curl_setopt($ch, CURLOPT_HTTPGET, true);
             break;
             case 'POST':
                 curl_setopt($ch, CURLOPT_POST, true);
-                $postFields = $this->buildQueryString();
+                $postFields = $this->getQuery();
             break;
             default:
 
@@ -326,11 +326,18 @@ abstract class AbstractFetcher {
         return $this->fetcherOptions;
     }
 
-    protected function getFetcherOptionValue(string $option): string {
-        return 'string';
+    public function getFetcherOptionValue(string $fetcherOption) {
+        if(isset($this->fetcherOptions[$fetcherOption])) {
+            return $this->fetcherOptions[$fetcherOption];
+        }
+        return false;
     }
 
-    public function setResourceId(string $resourceId): void {
+    public function getQueryOption($option) {
+        return $this->queryOptions[$option];
+    }
+
+    public function setResourceId($resourceId) {
         $this->resourceId = $resourceId;
     }
 
@@ -353,7 +360,11 @@ abstract class AbstractFetcher {
         $this->query = $query;
     }
 
-    public function setQueryFromFile(string $file): void {
+    public function getQuery(): string {
+        return $this->query;
+    }
+
+    public function setQueryFromFile(string $file):  void {
         $this->query = file_get_contents($file);
     }
 

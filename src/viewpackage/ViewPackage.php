@@ -176,11 +176,11 @@ class ViewPackage {
         $fetcher->setQueryFromFile($file);
     }
 
-    public function setFetcherOptionValue(?string $fetcherName = null, string $optionName, string $optionValue) {
+    public function setFetcherOptionValue(?string $fetcherName = null, string $optionName, $optionValue) {
         $this->renderer->setFetcherOptionValue($fetcherName, $optionName, $optionValue);
     }
 
-    public function setExtractorOptionValue(?string $extractorName = null, string $optionName, string $optionValue ) {
+    public function setExtractorOptionValue(?string $extractorName = null, string $optionName, $optionValue ) {
         $this->renderer->setExtractorOptionValue($extractorName, $optionName, $optionValue);
     }
 

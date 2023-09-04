@@ -35,7 +35,11 @@ class Html extends AbstractRenderer {
         $this->stripCeresIds();
         return $this->htmlDom->saveHtml();
     }
-
+    /**
+     * render
+     *
+     * @return string
+     */
     public function render(): string {
         $this->build();
         // only strip the ids related to ceres, marked by the string

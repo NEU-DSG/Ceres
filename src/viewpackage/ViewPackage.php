@@ -72,7 +72,6 @@ class ViewPackage {
         if ($fetcher) {
             $this->renderer->injectFetcher($fetcher, 'test fetcher');
         }
-
     }
 
     public function buildExtractor(string $shortName = null) {
@@ -185,7 +184,15 @@ class ViewPackage {
         $this->renderer->setExtractorOptionValue($extractorName, $optionName, $optionValue);
     }
 
-    public function gatherData(?string $extractorName = null, ?string $pathToMockFetcherResponse = null,?string $pathToMockExtractorData = null) {   
+    /**
+     * gatherData
+     *
+     * @param string|null $extractorName
+     * @param string|null $pathToMockFetcherResponse
+     * @param string|null $pathToMockExtractorData
+     * @return void
+     */
+    public function gatherData(?string $extractorName = null, ?string $pathToMockFetcherResponse = null, ?string $pathToMockExtractorData = null) {   
         // params for renderer->setRenderArray are:
         // $renderer(<extractorName>, <pathToMockFetcherResponse>, <pathToMockExtractorData>)    )
         // the variations are usually used for debugging or super-complicated combos
@@ -200,6 +207,8 @@ class ViewPackage {
         } else if (!is_null($pathToMockFetcherResponse)) {
             $this->renderer->setRenderArray(null, $pathToMockFetcherResponse);
         } else if (!is_null($pathToMockExtractorData)) {
+            echo("$pathToMockExtractorData VP210" . PHP_EOL );
+            //die();
             $this->renderer->setRenderArray(null, null, $pathToMockExtractorData);
         }
 

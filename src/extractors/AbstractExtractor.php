@@ -68,6 +68,11 @@ abstract class AbstractExtractor {
 
 
     public function getRenderArray(): array {
+        if (!$this->renderArray) {
+            echo 'empty';
+            //print_r($this->renderArray);
+            //die();
+        }
         return $this->renderArray;
     }
 

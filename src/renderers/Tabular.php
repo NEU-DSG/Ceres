@@ -51,14 +51,18 @@ class Tabular extends Html {
             $this->renderArray = $extractor->getRenderArray();
 
         } else if (! is_null($pathToMockExtractorData)) {
-            //@TODO
+            echo "$pathToMockExtractorData Tabular 54" . PHP_EOL;
+            $this->renderArray = json_decode(file_get_contents($pathToMockExtractorData), true);
+            //die();
         }
     }
 
     public function build(): void {
+        if (!$this->renderArray) {
+            throw new \Exception('empty renderArray');
+        }
         $rowsData = $this->renderArray; 
         $firstRowIsHeader = $this->getRendererOptionValue('firstRowIsHeader');
-
         if ($firstRowIsHeader) {
             $headerRowData = array_shift($rowsData);
             $rowNode = $this->buildRow($headerRowData, 'th');
@@ -100,7 +104,7 @@ class Tabular extends Html {
                     break;
 
                     case 'keyValue':
-                        $columnData = $this->kvRenderArrayToKeyValue($data); // or should this pass off to a KeyValue Renderer?
+                        //$columnData = $this->kvRenderArrayToKeyValue($data); // or should this pass off to a KeyValue Renderer?
                     break;
 
                     case 'complexKeyValue':

@@ -1,6 +1,6 @@
 <?php 
 
-    namespace Ceres\Fetcher;
+namespace Ceres\Fetcher;
 
 use Ceres\Util\DataUtilities;
 

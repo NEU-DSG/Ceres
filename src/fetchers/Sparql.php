@@ -2,6 +2,8 @@
 
 namespace Ceres\Fetcher;
 
+require_once(CERES_ROOT_DIR . '/src/fetchers/AbstractFetcher.php');
+
 use Ceres\Exception\DataException;
 use Ceres\Exception\Fetcher as FetcherException;
 

@@ -206,9 +206,8 @@ class ViewPackage {
             $this->renderer->setRenderArray();
         } else if (!is_null($pathToMockFetcherResponse)) {
             $this->renderer->setRenderArray(null, $pathToMockFetcherResponse);
+          
         } else if (!is_null($pathToMockExtractorData)) {
-            echo("$pathToMockExtractorData VP210" . PHP_EOL );
-            //die();
             $this->renderer->setRenderArray(null, null, $pathToMockExtractorData);
         }
 

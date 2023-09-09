@@ -29,9 +29,10 @@ class Tabular extends Html {
 
     public function setRenderArray(?string $extractorName = null, ?string $pathToMockFetcherResponse = null, ?string $pathToMockExtractorData = null): void {
         //@todo the logic throughout this needs some TLC
-        
+        // should test whether the args are being passed in correct order
         if (is_null($extractorName) && is_null($pathToMockFetcherResponse) && is_null($pathToMockExtractorData)) {
             //have this roll through the fetcher->fetchData --> $extractor->setSourceData() chain
+            
             $fetcher = $this->fetchers[0];
             $extractor = $this->extractors[0];
 
@@ -51,15 +52,13 @@ class Tabular extends Html {
             $this->renderArray = $extractor->getRenderArray();
 
         } else if (! is_null($pathToMockExtractorData)) {
-            echo "$pathToMockExtractorData Tabular 54" . PHP_EOL;
             $this->renderArray = json_decode(file_get_contents($pathToMockExtractorData), true);
-            //die();
         }
     }
 
     public function build(): void {
         if (!$this->renderArray) {
-            throw new \Exception('empty renderArray');
+            $this->setRenderArray();
         }
         $rowsData = $this->renderArray; 
         $firstRowIsHeader = $this->getRendererOptionValue('firstRowIsHeader');
@@ -89,8 +88,6 @@ class Tabular extends Html {
 
             //@todo handle column data that's a nested array, and different guidance from Extractor (e.g. 'list', 'img')
             // this should be abstracted out somewhere/how?
-
-
             if (is_array($columnData)) {
                 $type = $columnData['type'];
                 $data = $columnData['data'];

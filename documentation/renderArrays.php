@@ -158,9 +158,10 @@ $detailsRenderArray = $cardRenderArray;
 $audioRenderArray = ['type' => 'audio',
                      'figcaption' => ['text' => 'fig caption text',
                                      ],
+                     'transcription' => [], //@todo figure out the array to deal with this
                      'data' => [
                         'src' => 'http://...',
-                        'download' => ['type' => 'a',
+                        'download' => ['type' => 'a', // as above
                                        'data' => []
                                       ]
                      ]

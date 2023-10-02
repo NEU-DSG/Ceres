@@ -27,18 +27,18 @@
                 padding: 5px;
             }
         </style>
-  
--->
+-->  
+
 
         <link rel="stylesheet" href="../assets/css/simple.css" />
-
+        <link id="datatables-css" rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css" />
 
 
 
     </head>
     <body>
-        <div id="ceres-container" class="ceres-container" style="overflow: scroll">
-            <table class="ceres-tabular">
+        <div id="ceres-container" class="ceres-container ceres-tabular" style="overflow: scroll">
+            <table id="ceres-tabular" class="ceres-tabular">
                 <caption></caption>
                 <thead></thead>
                 <tbody> </tbody>
@@ -47,7 +47,7 @@
             
             <script>
                 $(document).ready(function () {
-                     $('.ceres-tabular').DataTable();
+                     $('#ceres-tabular').DataTable();
                  });
             </script>
             

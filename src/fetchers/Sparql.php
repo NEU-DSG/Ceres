@@ -74,8 +74,8 @@ class Sparql extends AbstractFetcher {
 
     // abstract override
     protected function buildQuery($queryOptions = false, $queryParams = false) {
-        $this->prependPrefixes();
-        $this->replaceRqValues();
+        //$this->prependPrefixes();
+        //$this->replaceRqValues();
     }
 
     public function setPaginationData() {

@@ -29,7 +29,6 @@ class Tabular extends Html {
 
     public function setRenderArray(?string $extractorName = null, ?string $pathToMockFetcherResponse = null, ?string $pathToMockExtractorData = null): void {
         //@todo the logic throughout this needs some TLC
-        
         if (is_null($extractorName) && is_null($pathToMockFetcherResponse) && is_null($pathToMockExtractorData)) {
             //have this roll through the fetcher->fetchData --> $extractor->setSourceData() chain
             $fetcher = $this->fetchers[0];
@@ -51,9 +50,7 @@ class Tabular extends Html {
             $this->renderArray = $extractor->getRenderArray();
 
         } else if (! is_null($pathToMockExtractorData)) {
-            echo "$pathToMockExtractorData Tabular 54" . PHP_EOL;
             $this->renderArray = json_decode(file_get_contents($pathToMockExtractorData), true);
-            //die();
         }
     }
 
@@ -61,8 +58,11 @@ class Tabular extends Html {
         if (!$this->renderArray) {
             throw new \Exception('empty renderArray');
         }
+
         $rowsData = $this->renderArray; 
-        $firstRowIsHeader = $this->getRendererOptionValue('firstRowIsHeader');
+        //$firstRowIsHeader = $this->getRendererOptionValue('firstRowIsHeader');
+        // @TODO remove this cheap hack around proper debugging
+        $firstRowIsHeader = true;
         if ($firstRowIsHeader) {
             $headerRowData = array_shift($rowsData);
             $rowNode = $this->buildRow($headerRowData, 'th');

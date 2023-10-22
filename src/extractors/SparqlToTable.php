@@ -24,6 +24,8 @@ class SparqlToTable extends AbstractSparqlExtractor {
      * 
      * valueFoBindingVar($binding, 'work') will return the URI
      *
+     * @TODO: move to AbstractSparqlExtractor
+     * 
      * @param array $binding
      * @param string $var
      * @return string

@@ -11,6 +11,18 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
     protected array $bindings;
     
     /**
+     * $linkVarsMap
+     * 
+     * Maps between two vars where the second provides
+     * a URL for a link for the value in the first.
+     * 
+     * Used to construct the linkRenderArray
+     *
+     * @var array
+     */
+    protected array $linkVarsMap = [];
+    
+    /**
      * valueForBindingVar
      * 
      * From a binding from SPARQL, dig up the value for a var in a binding
@@ -40,18 +52,20 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
         return $binding[$var]['value'];
     }
 
+    public function setLinkBindingsMap(array $linkVarsMap): void {
+        $this->linkVarsMap = $linkVarsMap;
+    }
+
     protected function postSetSourceData(): void {
         $this->setVars();
         $this->setBindings();
     }
 
     protected function preSetVars(array $vars): array {
- //echo"<h3>preSetVars: AbsSparqlEx</h3>";
         return $vars; //do nothing, let other classes implement this as needed
     }
 
     protected function postSetVars(): void {
- //echo"<h3>postSetVars: AbsSparqlEx";
         //do nothing, let other classes implement this as needed
     }
 
@@ -63,12 +77,10 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
     }
 
     protected function preSetBindings(array $bindings): array {
-// echo"<h3>preSetBindings: AbsSparqlEx</h3>";
         return $bindings; //do nothing, let other classes implement this as needed
     }
 
     protected function postSetBindings(): void {
-// echo"<h3>preSetBindings: AbsSparqlEx</h3>";
         //do nothing, let other classes implement this as needed
     }
     
@@ -81,17 +93,14 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
 
     protected function reorderVars(?array $reorderMapping = null) {
         if (is_null($reorderMapping)) {
-            //echo "<h4>isnull: absSpqExt</h4>";
             $reorderMapping = $this->valueForExtractorOption('extractorReorderMappingFilePath');
         }
         if (is_null($reorderMapping)) {
-            //echo "<h4>isnull: absSpqExt</h4>";
             return; //@todo 
             
         } else {
             $reorderMapping = json_decode(file_get_contents($reorderMapping), true);
         }
-//echo "<h4>after ifs: AbsSplExt</h4>";
         $reordered = [];
 
         //go with the mapping provided as the new sequence,
@@ -124,7 +133,6 @@ abstract class AbstractSparqlExtractor extends AbstractExtractor {
                 return;
             }
             $varsToRemoveArray = json_decode(file_get_contents($varsToRemoveFile), true);
-            //return $varsToRemoveArray;
         }
 
         if (is_null($varsToRemoveArray)) {

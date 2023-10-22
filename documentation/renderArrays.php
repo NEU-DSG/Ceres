@@ -122,9 +122,6 @@ $tableRenderArray = ['type' => 'table',
  * 
 */ 
 $cardRenderArray = ['type' => 'card',
-                    // optional to point renderer to 
-                    // using <details> element, but it can ignore this
-                    'subtype' => 'details', 
                     'data' => ['main' => ['text for main', 
                                             ['type' => 'img',
                                              'data' => []

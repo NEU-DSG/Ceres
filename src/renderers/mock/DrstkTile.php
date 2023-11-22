@@ -3,7 +3,7 @@ namespace Ceres\Renderer\Mock;
 
 use Ceres\Renderer\Html;
 
-class DrsktkTile extends Html {
+class DrstkTile extends Html {
     protected string $templateFileName = 'drstkTile.html';
 
 

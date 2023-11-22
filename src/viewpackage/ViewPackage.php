@@ -112,7 +112,6 @@ class ViewPackage {
         $className = $classInfo['fullClassName'];
         $fetcher = new $className;
         $fetcher->setScope($this->nameId);
-        //print_r($classInfo);
         $fetcher->setFetcherOptions($classInfo['options']);
         return $fetcher;
     }
@@ -133,7 +132,6 @@ class ViewPackage {
     }
 
     public function setProjectName() {
-        //$siteUrl = get_option('siteurl');
         $siteUrl = DataUtil::getWpOption(('siteurl'));
         $siteName = preg_replace("(^https?://)", "", $siteUrl);
         $this->projectName = $siteName;
@@ -219,13 +217,13 @@ class ViewPackage {
     }
     /* end Renderer wrappers */
 
-/**
- * 
- * For data created by content creator to override the defaults,
- * and the $currentValue
- * 
- * Need currentValues loaded first in order to override them
- */
+    /**
+     * 
+     * For data created by content creator to override the defaults,
+     * and the $currentValue
+     * 
+     * Need currentValues loaded first in order to override them
+     */
 
     function overrideOptionValue($value, $optionArray) {
 
@@ -264,7 +262,6 @@ class ViewPackage {
         $vpArray = [];
         $allViewPackages = DataUtil::getWpOption('ceres_view_packages');
         $allViewPackages[] = $vpArray;
-        //update_option('ceres_view_packages', $allViewPackages);
         DataUtil::updateWpOption('ceres_view_packages', $allViewPackages);
     }
 

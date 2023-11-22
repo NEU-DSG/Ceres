@@ -99,7 +99,7 @@ class Html extends AbstractRenderer {
         }
     }
 
-    protected function setGlobalAttributes(array $globalAtts = [], DOMNode $node) {
+    protected function setGlobalAttributes( DOMNode $node, array $globalAtts = [],) {
         foreach($globalAtts as $att => $value) {
             $attributeNode = $this->htmlDom->createAttribute($att);
             $attributeNode->value = $value;

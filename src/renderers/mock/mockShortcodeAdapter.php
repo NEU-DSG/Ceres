@@ -29,8 +29,6 @@ use DOMDocument;
 $dom = new DOMDocument();
 
 
-
-
 if (isset($_GET['shortcodeType'])) {
     $shortcodeType = $_GET['shortcodeType'];
     switch ($shortcodeType) {
@@ -59,18 +57,20 @@ if (isset($_GET['shortcodeType'])) {
         break;
 
         default:
-            throw new \Exception("Unknown shortcode type");
+            echo "Invalid shortcode type. Valid types are: single, tile, map, media, timeline, slider.";
+            die();
     } 
 
 } else {
-    throw new \Exception("Required GET param shortcodeType not provided.");
+    echo "Required GET param shortcodeType not provided.";
+    die();
 }
 
 $containerNode = $dom->getElementById('ceres-container');
 echo $dom->saveHTML($containerNode);
 
-// Wish below worked out of the box, but no such luck
-die();
+// Wish below worked out of the box, but no such luck. So
+die(); //Bart, Die
 
 if (isset($_GET['shortcodeType'])) {
     $shortcodeType = $_GET['shortcodeType'];
@@ -100,11 +100,13 @@ if (isset($_GET['shortcodeType'])) {
         break;
 
         default:
-            throw new \Exception("Unknown shortcode type");
+            echo "Invalid shortcode type. Valid types are: single, tile, map, media, rimeline, slider.";
+            die();
     } 
 
 } else {
-    throw new \Exception("Required GET param shortcodeType not provided.");
+    echo "Required GET param shortcodeType not provided.";
+    die();
 }
 
 $rendererClass->render();

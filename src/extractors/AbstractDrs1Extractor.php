@@ -2,15 +2,53 @@
 
 namespace Ceres\Extractor;
 
-abstract class AbstractDrs1Extractor extends AbstractExtractor {
+abstract class AbstractDrs1ItemExtractor extends AbstractExtractor {
 
-    protected $solrDataArray = [];
+    /**
+     * $modsDataArray
+     * 
+     * Array of MODS data from the JSON response
+     * 
+     * @var array
+     */
+    
+    protected $modsDataArray = [];
+    
+    /**
+     * contentObjectsArray
+     *
+     * @var array
+     */
+    protected $contentObjectsArray = [];
 
 
-    protected function extractSolrData(): array {
-        $solrDataArray = [];
+    /**
+     * extractModsData
+     * 
+     * Takes the MODS portion of the source data and turns it into an array for the renderer
+     * 
+     * @return void
+     */
 
-        return $solrDataArray;
+    protected function extractModsData(): void {
+        $this->modsDataArray = $this->sourceData['mods'];
     }
+
+    /**
+     * extractContentObjects
+     * 
+     * Separate the content objects and flip them so it's easier to look up by type
+     *
+     * @return void
+     */
+    protected function extractContentObjects(): void {
+        $sourceContentObjectsArray = $this->sourceData['content_objects'];
+        $ceresContentObjectsArray = $sourceContentObjectsArray;
+        $this->contentObjectsArray = array_flip($ceresContentObjectsArray);
+    }
+
+    
+
+
 
 }

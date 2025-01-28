@@ -2,6 +2,10 @@
 
 namespace Ceres\Extractor;
 
+require_once(CERES_ROOT_DIR . '/src/extractors/AbstractExtractor.php');
+
+use Ceres\Extractor\AbstractExtractor as AbstractExtractor;
+
 abstract class AbstractDrs1ItemExtractor extends AbstractExtractor {
 
     /**

@@ -2,30 +2,32 @@
 
 namespace Ceres\Extractor;
 
-use Ceres\Extractor\AbstractDrs1Extractor;
-
-$renderArrayStructure = [
-    'drsItem' => [
-        'type' => 'jwPlayer',
-        'data' => [
-            'mods' => [],
-            'drsPid' => '',
-        ] 
-
-    ],
-    'drsTextData' => [
-        'type' => 'text',
-        'subtype' => 'text/plain | pdf',
-        'data' => [
-            'fileUrl' => 'the url to get the contents from'
-
-        ]
-    ]
-
-
-];
+use Ceres\Extractor\AbstractExtractor;
 
 class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
+
+    protected string $text;
+    protected string $mediaUrl;
+    public array $renderArray = [
+        'drsItem' => [
+            'type' => 'jwPlayer',
+            'data' => [
+                'mods' => [],
+                'drsPid' => '',
+                'mediaUrl' => ''
+            ] 
+    
+        ],
+        'drsText' => [
+            'type' => 'text',
+            'subtype' => 'text/plain | pdf',
+            'data' => [
+                'fileUrl' => 'the url to get the contents from',
+                'text' => ''
+    
+            ]
+        ]
+    ];
 
     /**
      * extract
@@ -35,16 +37,31 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
      * @return void
      */
     public function extract(): void {
+        // from parent class
         $this->extractContentObjects();
         $this->extractModsData();
+
+        // defined here
+        $this->extractText();
+        $this->extractMediaUrl();
     }
 
     protected function extractMediaUrl(): void {
-
+        //it's called canonical_object in the response
+        $this->renderArray['drsItem']['data']['mediaUrl'] = array_key_first($this->sourceData['canonical_object']);
     }
 
     protected function extractText(): void {
-
+        $textUrl = $this->contentObjectsArray['Text Document'];
+        $this->renderArray['drsText']['data']['fileUrl'] = $textUrl;
+        $mimeType = $this->getTextSubtype($textUrl);
+        if ($mimeType == 'text/plain') {
+            $this->renderArray['drsText']['data']['text'] = file_get_contents($textUrl);
+        } else {
+            $this->renderArray['drsText']['data']['text'] = "Could not detect mime type. Assuming it is text.";
+            $this->renderArray['drsText']['data']['text'] .= file_get_contents($textUrl);
+        }
+        
     }
 
     /**
@@ -54,16 +71,15 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
      *
      * @param $filePath the URL for filepath to the file to detect
      * 
-     * @return string
+     * @return mixed
      */
-    protected function getTextSubtype($filePath): string {
-        // $textSubtype = mime_content_type($filePath);
-        // if ($textSubtype) {
-
-        // } else {
-
-        // }
-        $textSubtype = ''; // usually either txt or pdf; possibly others like iiif or (shudder) a word processor doc like docx or odf
-        return $textSubtype;
+    protected function getTextSubtype($filePath): mixed {
+        $textSubtype = mime_content_type($filePath);
+        if ($textSubtype == 'text/plain') {
+            return $textSubtype;
+        } else {
+            // throw a Notice
+            return false;
+        }
     }
 }

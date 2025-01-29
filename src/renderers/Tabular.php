@@ -102,7 +102,7 @@ class Tabular extends Html {
                     break;
 
                     case 'keyValue':
-                        $columnData = $this->kvRenderArrayToKeyValue($data); // or should this pass off to a KeyValue Renderer?
+                        //$columnData = $this->kvRenderArrayToKeyValue($data); // or should this pass off to a KeyValue Renderer?
                     break;
 
                     case 'complexKeyValue':

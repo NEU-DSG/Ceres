@@ -20,7 +20,6 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
         ],
         'drsText' => [
             'type' => 'text',
-            'subtype' => 'text/plain | pdf',
             'data' => [
                 'fileUrl' => 'the url to get the contents from',
                 'text' => ''

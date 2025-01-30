@@ -53,6 +53,8 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
     protected function extractText(): void {
         $textUrl = $this->contentObjectsArray['Text Document'];
         $this->renderArray['drsText']['data']['fileUrl'] = $textUrl;
+        /*
+        
         $mimeType = $this->getTextSubtype($textUrl);
         if ($mimeType == 'text/plain') {
             $this->renderArray['drsText']['data']['text'] = file_get_contents($textUrl);
@@ -60,7 +62,9 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
             $this->renderArray['drsText']['data']['text'] = "Could not detect mime type. Assuming it is text.";
             $this->renderArray['drsText']['data']['text'] .= file_get_contents($textUrl);
         }
-        
+        */
+
+        $this->renderArray['drsText']['data']['text'] = file_get_contents($textUrl);
     }
 
     /**

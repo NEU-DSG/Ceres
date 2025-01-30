@@ -47,6 +47,5 @@ class TextMedia extends Html {
         $this->textContainerNode->appendChild($preNode);
         return $preNode;
     }
-
 }
 

@@ -76,7 +76,12 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
      * 
      * @return mixed
      */
-    protected function getTextSubtype($filePath): mixed {
+
+     // TODO: mime_content_type doesn't seem to work -- see if I can
+     // grab the content type from a curl request for just the header info
+
+     
+    protected function getTextSubtype($filePath): string|false {
         $textSubtype = mime_content_type($filePath);
         if ($textSubtype == 'text/plain') {
             return $textSubtype;

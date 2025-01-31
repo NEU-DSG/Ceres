@@ -1,6 +1,6 @@
 devscraps
 data/rendererTemplates/brc-leaflet.html
 assets/js/leaflet/brc/leaflet-brc-project.js
-
+src/renderers/mock
 Ceres.code-workspace
 .vscode

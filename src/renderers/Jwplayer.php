@@ -4,31 +4,59 @@ namespace Ceres\Renderer;
 
 class Jwplayer extends Html {
   
-  public function render(): string {
-    
-    $jwplayerData = $this->fetcher->parseJwPlayerData($this->resourceId);
-    list($plainMediaUrl, $playlistMediaUrl, $type, $imageUrl) = $jwplayerData;
-    
-    switch ($type) {
-      case 'mp3':
-        $avProvider = 'sound';
+    protected array $jwPlayerSetup = 
+        [
+            'width' => '100%',
+            'height' => '400',
+            'rtmp' => ['bufferlength: 5'],
+            'image' => '', //the thumbnail Url
+            'provider' => 'video',
+            'androidhls' => 'true',
+            'primary' => 'primary',
+            'hlshtml' => true,
+            'aspectratio' => '16:9',
+            'sources' => [
+                [
+                    'file' => '', //the fileURL for the player
+                    'type' => '', //the file type (e.g. mp4)
+                 
+                ]
+            ],
+            'tracks' => [
+                [
+                    'file' => '', //the ttl file
+                    'label' => 'English',
+                    'kind' => 'captions',
+                    'default' => true
+                ]
+            ]
+        ];
+
+    public function render(): string {
         
-        //height below 40 puts jwplayer into audio mode -- no image is shown
-        //but the aspect ratio has to be empty, otherwise it overrides and back to video mode
-        $playerHeight = '30';
-        if ($this->getOption('audioPoster')) {
-          $aspectRatio = '16:9';
-        } else {
-          $aspectRatio = '';
+        $jwplayerData = $this->fetcher->parseJwPlayerData($this->resourceId);
+        list($plainMediaUrl, $playlistMediaUrl, $type, $imageUrl) = $jwplayerData;
+        
+        switch ($type) {
+        case 'mp3':
+            $avProvider = 'sound';
+            
+            //height below 40 puts jwplayer into audio mode -- no image is shown
+            //but the aspect ratio has to be empty, otherwise it overrides and back to video mode
+            $playerHeight = '30';
+            if ($this->getOption('audioPoster')) {
+            $aspectRatio = '16:9';
+            } else {
+            $aspectRatio = '';
+            }
+            break;
+            
+        case 'mp4':
+            $avProvider = 'video';
+            $aspectRatio = '16:9';
+            $playerHeight = '400';
+            break;
         }
-        break;
-        
-      case 'mp4':
-        $avProvider = 'video';
-        $aspectRatio = '16:9';
-        $playerHeight = '400';
-        break;
-    }
     
     $playerWidth = $this->getOption('playerWidth', '50%');
 

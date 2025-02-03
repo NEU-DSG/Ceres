@@ -42,10 +42,7 @@ class TextMedia extends Html {
         $textUrl = $this->renderArray['drsText']['data']['fileUrl'];
         $text = file_get_contents($textUrl);
         $textNode = $this->htmlDom->createTextNode($text);
-        $preNode = $this->htmlDom->createElement('pre');
-        $preNode->appendChild($textNode);
-        $this->textContainerNode->appendChild($preNode);
-        return $preNode;
+        return $textNode;
     }
 }
 

@@ -23,13 +23,29 @@ class TextMedia extends Html {
     }
 
     public function build(): void {
-        $this->mediaContainerNode->appendChild($this->buildMediaContainerNode());
+        $mediaContainerNode = $this->buildMediaContainerNode();
+        $importedMediaContainerNode = $this->htmlDom->importNode($mediaContainerNode, true);
+        $this->mediaContainerNode->appendChild($importedMediaContainerNode);
         $this->textContainerNode->appendChild($this->buildTextContainerNode());
     }
 
     public function buildMediaContainerNode(): DOMNode {
-        $jwPlayerNode = $this->htmlDom->createElement('div');
-        $jwPlayerNode->setAttribute('id', 'jw-player');
+        $type = $this->renderArray['drsItem']['type'];
+        switch ($type) {
+            case "jwPlayer":
+                // pass off to Jwplayer renderer
+                $jwPlayerRenderer = new Jwplayer;
+                $jwPlayerRenderer->setRenderArrayFromArray($this->renderArray['drsItem']);
+                $jwPlayerRenderer->build();
+                return $jwPlayerRenderer->getContainerNode();
+
+            break;
+
+
+
+        }
+        $jwPlayerNode = $this->htmlDom->getElementById('jwplayer');
+        $jwPlayerNode->setAttribute('id', 'jwplayer');
 
         // TODO: fill this in with real jwPlayer
         $tempTextNode = $this->htmlDom->createTextNode("to be filled in with JWPlayer");

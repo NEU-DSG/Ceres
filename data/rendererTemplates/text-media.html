@@ -3,11 +3,9 @@
     <head>
         <title>text-media-template</title>
         
-<!--        <link rel="stylesheet" href="../assets/css/text-media.css" />-->
-        
-        
         <link rel="stylesheet" href="http://localhost/Ceres/assets/css/text-media.css" />
-        <!--<link rel="stylesheet" href="/var/www/html/Ceres/assets/css/text-media.css" />-->
+        <script src='https://cdn.jwplayer.com/libraries/dTFl0VEe.js'></script>
+        <script src='../assets/js/jquery-3.7.1.min.js'></script>
         
     </head>
     <body>
@@ -21,5 +19,19 @@
             
 
         </div>
+        
+        
+        <script>
+            $(document).ready(function() {
+                jwplayer('jwplayer').setup({
+                "playlist": [{
+                "file": "http://example.com/myVideo.mp4",
+                "image": "http://example.com/myImage.png",
+                    }],
+                "height": 360,
+                "width": 640
+            });
+                });
+        </script>
     </body>
 </html>

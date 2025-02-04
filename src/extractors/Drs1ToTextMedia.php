@@ -14,7 +14,12 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
             'data' => [
                 'mods' => [],
                 'drsPid' => '',
-                'mediaUrl' => ''
+                'jwPlayerSetup' => [
+                    'image' => '', //the thumbnail for the media
+                    'sourceFile' => '', //file url to give the player
+                    'type' => '', // the file type, e.g. `mp4`
+                    'ttlFile' => '', // url for the .ttl transcription file
+                ]
             ] 
     
         ],

@@ -83,6 +83,9 @@ abstract class AbstractRenderer {
         $this->renderArray = $renderArray;
     }
 
+    public function setJsonToInjectFromJsonString($jsonString) {
+        $this->jsonToInject = $jsonString;
+    }
 
     public function setJsonToInjectFromFile(string $fileName, bool $decodeJson = false) {
         $jsonToRender = file_get_contents($fileName);
@@ -165,6 +168,10 @@ abstract class AbstractRenderer {
             $extractor = $this->extractors[$extractorName];
         }
         $this->renderArray = $extractor->getRenderArray();
+    }
+
+    public function getRenderArray(): array {
+        return $this->renderArray;
     }
 
 

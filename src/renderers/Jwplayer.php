@@ -3,7 +3,9 @@
 namespace Ceres\Renderer;
 
 class Jwplayer extends Html {
-  
+
+    protected string $templateFileName = 'jwplayer.html';
+
     protected array $jwPlayerSetup = 
         [
             'width' => '100%',
@@ -32,7 +34,36 @@ class Jwplayer extends Html {
             ]
         ];
 
-    public function render(): string {
+   
+    public function setJwplayerSetup(): void {
+        $this->jwPlayerSetup['image'] = $this->renderArray['data']['jwPlayerSetup']['image'];
+        $this->jwPlayerSetup['sources'][0]['file'] = $this->renderArray['data']['jwPlayerSetup']['sourceFile'];
+        $this->jwPlayerSetup['sources'][0]['type'] = $this->renderArray['data']['jwPlayerSetup']['type'];
+        $this->jwPlayerSetup['tracks'][0]['file'] = $this->renderArray['data']['jwPlayerSetup']['ttlFile'];
+    }
+
+    public function getJwplayerSetupAsJson(): string {
+        $jsonJwPlayerSetup = "jwPlayerSetup = ";
+        $jsonJwPlayerSetup .= json_encode($this->jwPlayerSetup);
+        return $jsonJwPlayerSetup;
+    }
+
+    public function addScriptTagJson(): void {
+        $scriptNode = $this->htmlDom->createElement('script');
+        $jsonTextNode = $this->htmlDom->createTextNode($this->getJwplayerSetupAsJson());
+        $scriptNode->appendChild($jsonTextNode);
+        $this->containerNode->appendChild($scriptNode);
+    }
+
+    public function build(): void {
+        $this->setJwplayerSetup();
+        $this->addScriptTagJson();
+    }
+
+
+
+
+    public function old_render(): string {
         
         $jwplayerData = $this->fetcher->parseJwPlayerData($this->resourceId);
         list($plainMediaUrl, $playlistMediaUrl, $type, $imageUrl) = $jwplayerData;

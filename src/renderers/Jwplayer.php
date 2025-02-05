@@ -8,8 +8,8 @@ class Jwplayer extends Html {
 
     protected array $jwPlayerSetup = 
         [
-            'width' => '100%',
-            'height' => '400',
+             'width' => '100',
+            // 'height' => '400',
             'rtmp' => ['bufferlength: 5'],
             'image' => '', //the thumbnail Url
             'provider' => 'video',

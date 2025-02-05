@@ -5,6 +5,7 @@
     word-wrap: break-word; 
     white-space: pre-wrap;
     padding: 5px;
+    width: 35%;
 }
 
 .ceres-container-media {
@@ -12,4 +13,5 @@
     height: 500px;
     border: 5px solid black;
     padding: 5px;
+    width: 55%;
 }

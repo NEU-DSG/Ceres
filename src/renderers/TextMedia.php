@@ -46,10 +46,6 @@ class TextMedia extends Html {
         }
         $jwPlayerNode = $this->htmlDom->getElementById('jwplayer');
         $jwPlayerNode->setAttribute('id', 'jwplayer');
-
-        // TODO: fill this in with real jwPlayer
-        $tempTextNode = $this->htmlDom->createTextNode("to be filled in with JWPlayer");
-        $jwPlayerNode->appendChild($tempTextNode);
         return $jwPlayerNode;
     }
 

@@ -276,6 +276,30 @@ class DataUtilities {
             file_put_contents($fileName, $optionDataJson);
         }
     }
+    /**
+     * getMimeTypeForUrl
+     *
+     * Attempts to get the mime type of a remote file
+     * 
+     * @param string $url
+     * @return string
+     */
+    static function getMimeTypeForUrl(string $url): string {
+        $ch = curl_init($url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_exec($ch);
+    
+        # get the content type
+        $mimeType = curl_getinfo($ch, CURLINFO_CONTENT_TYPE);
+        
+        //sort out the pieces around /s in mimeType and the ; that sometimes gets reported (e.g. charset)
+        $semiColonStrpos = strpos($mimeType, ";");
+
+        if ($semiColonStrpos) {
+            return substr($mimeType, 0, $semiColonStrpos);
+        }
+        return $mimeType;
+    }
 
 /**
  * for use to compare option names, vp names, etc to make
@@ -426,3 +450,6 @@ class DataUtilities {
     }
 
 }
+
+
+

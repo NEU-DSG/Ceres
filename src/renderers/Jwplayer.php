@@ -2,6 +2,8 @@
 
 namespace Ceres\Renderer;
 
+use Ceres\Data\DataUtilities;
+
 class Jwplayer extends Html {
 
     protected string $templateFileName = 'jwplayer.html';

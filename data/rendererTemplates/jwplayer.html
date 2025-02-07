@@ -4,6 +4,17 @@
         <title>jwplayer-template</title>
         <script src='https://cdn.jwplayer.com/libraries/dTFl0VEe.js'></script>
         <script src='../assets/js/jquery-3.7.1.min.js'></script>
+        <script>
+            document.onreadystatechange = () => {
+                alert(document.readyState);
+                console.log(document.readyState);
+                if(document.readyState === "complete") {
+                    jwplayer('jwplayer').setup(jwPlayerSetup);
+                }
+
+            };
+        </script>
+        
         
     </head>
     <body>
@@ -12,18 +23,7 @@
             <div id="jwplayer">
             </div>
         </div>
-        <!--
-        <script>
-            $(document).ready(function() {
-                jwplayer('jwplayer').setup({
-                "playlist": [{
-                "file": "http://example.com/myVideo.mp4",
-                "image": "http://example.com/myImage.png",
-                    }],
-                "height": 360,
-                "width": 640
-            });
-                });
-        </script>-->
+        
+        
     </body>
 </html>

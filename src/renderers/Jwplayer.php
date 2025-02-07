@@ -57,6 +57,23 @@ class Jwplayer extends Html {
         $this->containerNode->appendChild($scriptNode);
     }
 
+    public function addJwplayerInitJs(): void {
+        $jwInitJs = "
+        
+            document.onreadystatechange = () => {
+                alert(document.readyState);
+                console.log(document.readyState);
+                if(document.readyState === 'complete') {
+                    jwplayer('jwplayer').setup(jwPlayerSetup);
+                }
+            };
+        ";
+
+        $jwPlayerInitNode = $this->htmlDom->createElement('script');
+        $jwPlayerInitNode->$this->htmlDom->createTextNode($jwInitJs);
+        $this->containerNode->appendChild($jwPlayerInitNode);
+    }
+
     public function build(): void {
         $this->setJwplayerSetup();
         $this->addScriptTagJson();

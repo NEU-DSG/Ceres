@@ -4,6 +4,17 @@
         <title>jwplayer-template</title>
         <script src='https://cdn.jwplayer.com/libraries/dTFl0VEe.js'></script>
         <script src='../assets/js/jquery-3.7.1.min.js'></script>
+        <script>
+            document.onreadystatechange = () => {
+                alert(document.readyState);
+                console.log(document.readyState);
+                if(document.readyState === "complete") {
+                    jwplayer('jwplayer').setup(jwPlayerSetup);
+                }
+
+            };
+        </script>
+        
         
     </head>
     <body>
@@ -14,33 +25,5 @@
         </div>
         
         
-        
-        <!--
-        <script>
-            
-            $( window ).on( "load", function() {
-                console.log('ONLOAD TRIGGERED');
-                jwplayer('jwplayer').setup(jwPlayerSetup);
-            )
-        </script>-->
-        
-        
-        
-        <!--
-        <script>
-            window.onload = (event) => {
-              console.log("page is fully loaded");
-              jwplayer('jwplayer').setup(jwPlayerSetup);
-            };
-        </script>
-        -->
-        
-        
-        <!--<script>
-            $(document).ready(function() {
-                console.log('document ready');
-                jwplayer('jwplayer').setup(jwPlayerSetup);
-            });
-        </script>-->
     </body>
 </html>

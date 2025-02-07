@@ -12,18 +12,35 @@
             <div id="jwplayer">
             </div>
         </div>
+        
+        
+        
         <!--
         <script>
+            
+            $( window ).on( "load", function() {
+                console.log('ONLOAD TRIGGERED');
+                jwplayer('jwplayer').setup(jwPlayerSetup);
+            )
+        </script>-->
+        
+        
+        
+        <!--
+        <script>
+            window.onload = (event) => {
+              console.log("page is fully loaded");
+              jwplayer('jwplayer').setup(jwPlayerSetup);
+            };
+        </script>
+        -->
+        
+        
+        <!--<script>
             $(document).ready(function() {
-                jwplayer('jwplayer').setup({
-                "playlist": [{
-                "file": "http://example.com/myVideo.mp4",
-                "image": "http://example.com/myImage.png",
-                    }],
-                "height": 360,
-                "width": 640
+                console.log('document ready');
+                jwplayer('jwplayer').setup(jwPlayerSetup);
             });
-                });
         </script>-->
     </body>
 </html>

@@ -68,6 +68,8 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
 // todo: need a full record to work from for testing/deving
         $textUrl = "https://nb9662.neu.edu/mockCeresData/sampleTranscription.txt";
         $this->renderArray['drsText']['data']['fileUrl'] = $textUrl;
+
+        
         /*
         
         $mimeType = $this->getTextSubtype($textUrl);

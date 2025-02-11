@@ -6,8 +6,8 @@ use Ceres\Extractor\AbstractExtractor;
 
 class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
 
-    protected string $text;
-    protected string $mediaUrl;
+    protected string $text; //TODO do I need this?
+    protected string $mediaUrl;  //TODO do I need this?
     public array $renderArray = [
         'drsItem' => [
             'type' => 'jwPlayer',
@@ -17,7 +17,7 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
                 'jwPlayerSetup' => [
                     'image' => '', //the thumbnail for the media
                     'sourceFile' => '', //file url to give the player
-                    'type' => '', // the file type, e.g. `mp4`
+                    'type' => '', // the file mime type
                     'ttlFile' => '', // url for the .ttl transcription file
                 ]
             ] 
@@ -52,11 +52,21 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
 
     protected function extractMediaUrl(): void {
         //it's called canonical_object in the response
-        $this->renderArray['drsItem']['data']['mediaUrl'] = array_key_first($this->sourceData['canonical_object']);
+        //there might be more
+
+        // We want the wowza (stream) url, not the direct path to the source file
+        $mediaUrl = array_key_first($this->sourceData['canonical_object']);
+        $mediaUrlParts = explode('/', $mediaUrl);
+        $pid = $mediaUrlParts[array_keys($mediaUrlParts)[count($mediaUrlParts) - 1]];
+        $pid = str_replace('?datastream_id=content', '', $pid);
+        $wowzaUrl = 'https://repository.library.northeastern.edu/wowza/' . $pid . '/plain';
+        $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFile'] = $wowzaUrl;
     }
 
     protected function extractText(): void {
-        $textUrl = $this->contentObjectsArray['Text Document'];
+        $transcriptionPid = array_key_first($this->sourceData['associated']);
+// todo: need a full record to work from for testing/deving
+        $textUrl = "https://nb9662.neu.edu/mockCeresData/sampleTranscription.txt";
         $this->renderArray['drsText']['data']['fileUrl'] = $textUrl;
         /*
         

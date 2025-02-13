@@ -53,6 +53,9 @@ class TextMedia extends Html {
         $text = $this->renderArray['drsText']['data']['text'];
         $textUrl = $this->renderArray['drsText']['data']['fileUrl'];
         $text = file_get_contents($textUrl);
+        if (!$text) {
+            $text = "Could not find a transcript file";
+        }
         $textNode = $this->htmlDom->createTextNode($text);
         return $textNode;
     }

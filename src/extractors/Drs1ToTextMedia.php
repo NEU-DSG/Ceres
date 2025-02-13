@@ -61,6 +61,7 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
         $pid = str_replace('?datastream_id=content', '', $pid);
         $wowzaUrl = 'https://repository.library.northeastern.edu/wowza/' . $pid . '/plain';
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFile'] = $wowzaUrl;
+        $this->renderArray['drsItem']['data']['jwPlayerSetup']['type'] = 'mp4';
     }
 
     protected function extractText(): void {

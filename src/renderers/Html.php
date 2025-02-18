@@ -207,17 +207,23 @@ class Html extends AbstractRenderer {
 
     protected function dlRenderArrayToDl(array $renderArray): DOMNode {
         $dlNode = $this->htmlDom->createElement('dl');
-        foreach($renderArray as $dtDdGroup) {
+        foreach($renderArray['data'] as $dtDdGroup) {
             foreach($dtDdGroup['dts'] as $dt) {
                 $dtNode = $this->htmlDom->createElement('dt');
-                $innerDtNode = $this->handleInnerRenderArray($dt);
-                $dtNode->appendChild($innerDtNode);
+                $dtTextNode = $this->htmlDom->createTextNode($dt);
+                $dtNode->appendChild($dtTextNode);
+                // todo: handleInnerRenderArray isn't working as expected
+                //$innerDtNode = $this->handleInnerRenderArray($dt);
+                //$dtNode->appendChild($innerDtNode);
                 $dlNode->appendChild($dtNode);
             }
             foreach($dtDdGroup['dds'] as $dd) {
                 $ddNode = $this->htmlDom->createElement('dd');
-                $innerDdNode = $this->handleInnerRenderArray($dd);
-                $ddNode->appendChild($innerDdNode);
+                $ddTextNode = $this->htmlDom->createTextNode($dd);
+                $ddNode->appendChild($ddTextNode);
+                // todo: handleInnerRenderArray isn't working as expected
+                //$innerDdNode = $this->handleInnerRenderArray($dd);
+                //$ddNode->appendChild($innerDdNode);
                 $dlNode->appendChild($ddNode);
             }
         }
@@ -281,18 +287,6 @@ class Html extends AbstractRenderer {
                     $subRenderer->setRenderArrayFromArray();
                     $subRenderer->build();
                     $innerNode = $subRenderer->renderNode();
-                }
-            case 'dl':
-                if (isset($renderArray['subtype'])) {
-                    switch($renderArray['subtype']) {
-                        case 'keyValue':
-
-                            break;
-                        default:
-
-                    }
-                } else {
-
                 }
             }
             return $innerNode;

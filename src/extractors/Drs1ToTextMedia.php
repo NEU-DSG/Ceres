@@ -2,13 +2,11 @@
 
 namespace Ceres\Extractor;
 
-use Ceres\Extractor\AbstractExtractor;
-
 class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
 
     protected string $text; //TODO do I need this?
     protected string $mediaUrl;  //TODO do I need this?
-    public array $renderArray = [
+    protected array $renderArray = [
         'drsItem' => [
             'type' => 'jwPlayer',
             'data' => [

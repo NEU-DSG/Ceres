@@ -34,6 +34,7 @@ class DrsV1ItemToMods extends AbstractDrs1ItemExtractor {
         }
     }
 
+    // TODO: is this actually used?
     protected function extractDtDdGroup($dtDdGroup): array {
         foreach($dtDdGroup as $dt => $dds) {
             // simplifying the dt/dd structure assuming there's only one dt 'cuz that's what I get

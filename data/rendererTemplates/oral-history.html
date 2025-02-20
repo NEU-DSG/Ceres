@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<!-- identical to text-media container, but also includes a container for media -->
+<html>
+    <head>
+        <title>oral history container</title>
+        
+        <link rel="stylesheet" href="http://localhost/Ceres/assets/css/text-media.css" />
+        <script src='https://cdn.jwplayer.com/libraries/dTFl0VEe.js'></script>
+        <script src='../assets/js/jquery-3.7.1.min.js'></script>
+        <script>
+            document.onreadystatechange = () => {
+                if(document.readyState === "complete") {
+                    jwplayer('jwplayer').setup(jwPlayerSetup);
+                }
+
+            };
+        </script>       
+    </head>
+    <body>
+        
+        <div id="ceres-container" class="ceres-container ceres-oral-history">
+            <div id="ceres-container-media" class="ceres-container-media">
+            </div>
+            <div id="ceres-container-text" class="ceres-container-text">
+            </div>
+            <div id="ceres-container-dl" class="ceres-container-dl">
+            </div>
+            
+        </div>
+        
+        
+        
+    </body>
+</html>

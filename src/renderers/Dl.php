@@ -12,8 +12,5 @@ class Dl extends Html {
         // also, I need to fix handleInnerRenderArray
         $this->containerNode->appendChild($this->dlRenderArrayToDl($this->renderArray));
     }
-
-
-
 }
 

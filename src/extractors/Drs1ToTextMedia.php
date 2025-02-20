@@ -68,19 +68,7 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
         $textUrl = "https://nb9662.neu.edu/mockCeresData/sampleTranscription.txt";
         $this->renderArray['drsText']['data']['fileUrl'] = $textUrl;
 
-        
-        /*
-        
-        $mimeType = $this->getTextSubtype($textUrl);
-        if ($mimeType == 'text/plain') {
-            $this->renderArray['drsText']['data']['text'] = file_get_contents($textUrl);
-        } else {
-            $this->renderArray['drsText']['data']['text'] = "Could not detect mime type. Assuming it is text.";
-            $this->renderArray['drsText']['data']['text'] .= file_get_contents($textUrl);
-        }
-        */
-
-        $this->renderArray['drsText']['data']['text'] = file_get_contents($textUrl);
+//        $this->renderArray['drsText']['data']['text'] = file_get_contents($textUrl);
     }
 
     /**
@@ -96,7 +84,7 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
      // TODO: mime_content_type doesn't seem to work -- see if I can
      // grab the content type from a curl request for just the header info
 
-     
+/*     
     protected function getTextSubtype($filePath): string|false {
         $textSubtype = mime_content_type($filePath);
         if ($textSubtype == 'text/plain') {
@@ -106,4 +94,6 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
             return false;
         }
     }
+*/
+
 }

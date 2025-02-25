@@ -24,8 +24,8 @@ class TextMedia extends Html {
 
     public function build(): void {
         $mediaContainerNode = $this->buildMediaContainerNode();
-        $importedMediaContainerNode = $this->htmlDom->importNode($mediaContainerNode, true);
-        $this->mediaContainerNode->appendChild($importedMediaContainerNode);
+        //$importedMediaContainerNode = $this->htmlDom->importNode($mediaContainerNode, true);
+        $this->mediaContainerNode->appendChild($mediaContainerNode);
         $this->textContainerNode->appendChild($this->buildTextContainerNode());
     }
 
@@ -33,20 +33,38 @@ class TextMedia extends Html {
         $type = $this->renderArray['drsItem']['type'];
         switch ($type) {
             case "jwPlayer":
+                $jwPlayerRenderArray = [
+                    'type' => 'jwPlayer',
+                    'data' => [
+                        'jwPlayerSetup' => []
+                    ]
+                ];
+                // print_r($this->renderArray);
+                // die();
+                $jwPlayerRenderArray['data']['jwPlayerSetup'] = $this->renderArray['drsItem']['data']['jwPlayerSetup'];
+                // print_r($jwPlayerRenderArray);
+                // die();
                 // pass off to Jwplayer renderer
                 $jwPlayerRenderer = new Jwplayer;
-                $jwPlayerRenderer->setRenderArrayFromArray($this->renderArray['drsItem']);
+                $jwPlayerRenderer->setRenderArrayFromArray($jwPlayerRenderArray);
                 $jwPlayerRenderer->build();
-                return $jwPlayerRenderer->getContainerNode();
-
+                // the jwPlayer node is built in a different DOMDocument
+                $foreignContainerNode = $jwPlayerRenderer->getContainerNode();
+                $nativeContainerNode = $this->htmlDom->importNode($foreignContainerNode, true);
+               
+                //$jwPlayerNode = $this->htmlDom->getElementById('jwplayer');
+                $jwPlayerNode = $this->htmlDom->createElement('div');
+                $jwPlayerNode->setAttribute('id', 'jwplayer');
+               
+                $jwPlayerNode->appendChild($nativeContainerNode);
+                
+                return $jwPlayerNode;
             break;
 
 
 
         }
-        $jwPlayerNode = $this->htmlDom->getElementById('jwplayer');
-        $jwPlayerNode->setAttribute('id', 'jwplayer');
-        return $jwPlayerNode;
+
     }
 
     public function buildTextContainerNode(): DOMNode {

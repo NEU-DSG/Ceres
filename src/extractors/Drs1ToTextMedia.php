@@ -51,7 +51,6 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
     protected function extractMediaUrl(): void {
         //it's called canonical_object in the response
         //there might be more
-
         // We want the wowza (stream) url, not the direct path to the source file
         $mediaUrl = array_key_first($this->sourceData['canonical_object']);
         $mediaUrlParts = explode('/', $mediaUrl);
@@ -59,7 +58,9 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
         $pid = str_replace('?datastream_id=content', '', $pid);
         $wowzaUrl = 'https://repository.library.northeastern.edu/wowza/' . $pid . '/plain';
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFile'] = $wowzaUrl;
-        $this->renderArray['drsItem']['data']['jwPlayerSetup']['type'] = 'mp4';
+        $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFileType'] = 'mp4';
+        $this->renderArray['drsItem']['data']['jwPlayerSetup']['ttlFile'] = '';
+        $this->renderArray['drsItem']['data']['jwPlayerSetup']['imageFile'] = '';
     }
 
     protected function extractText(): void {

@@ -9,38 +9,37 @@ class Jwplayer extends Html {
     protected string $templateFileName = 'jwplayer.html';
 
     protected array $jwPlayerSetup = 
-        [
-            // 'width' => '100',
-            // 'height' => '400',
-            'rtmp' => ['bufferlength: 5'],
-            'image' => '', //the thumbnail Url
-            'provider' => 'video',
-            'androidhls' => 'true',
-            'primary' => 'primary',
-            'hlshtml' => true,
-            'aspectratio' => '16:9',
-            'sources' => [
-                [
-                    'file' => '', //the fileURL for the player
-                    'type' => '', //the file type (e.g. mp4)
-                 
-                ]
-            ],
-            'tracks' => [
-                [
-                    'file' => '', //the ttl file
-                    'label' => 'English',
-                    'kind' => 'captions',
-                    'default' => true
-                ]
+    [
+        'width' => "100%",
+        'height' => 400,
+        'rtmp' => ['bufferlength' => 5],
+        'image' => '',
+        'provider' => 'video',
+        'androidhls' => true,
+        'primary' => 'primary',
+        'hlshtml' => true,
+        'aspectratio' => '16:9',
+        'sources' => [
+            [
+            // Andira Alves' interview
+            'file' => 'https://repository.library.northeastern.edu/downloads/neu:4f17kp226?datastream_id=content',
+            'type' => 'video/mp4'
             ]
-        ];
+        ],
+        'tracks' => [
+            'file' => 'https://repository.library.northeastern.edu/downloads/neu:ms374h54k?datastream_id=content', // the .vtt file
+            'label' => 'English',
+            'kind' => 'captions',
+            'default' => true
+        ]
+
+    ];
 
    
     public function setJwplayerSetup(): void {
-        $this->jwPlayerSetup['image'] = $this->renderArray['data']['jwPlayerSetup']['image'];
+        $this->jwPlayerSetup['image'] = $this->renderArray['data']['jwPlayerSetup']['imageFile'];
         $this->jwPlayerSetup['sources'][0]['file'] = $this->renderArray['data']['jwPlayerSetup']['sourceFile'];
-        $this->jwPlayerSetup['sources'][0]['type'] = $this->renderArray['data']['jwPlayerSetup']['type'];
+        $this->jwPlayerSetup['sources'][0]['type'] = $this->renderArray['data']['jwPlayerSetup']['sourceFileType'];
         $this->jwPlayerSetup['tracks'][0]['file'] = $this->renderArray['data']['jwPlayerSetup']['ttlFile'];
     }
 

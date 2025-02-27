@@ -13,39 +13,46 @@ class Jwplayer extends Html {
         'width' => "100%",
         'height' => 400,
         'rtmp' => ['bufferlength' => 5],
-        'image' => '',
-        'provider' => 'video',
         'androidhls' => true,
         'primary' => 'primary',
         'hlshtml' => true,
         'aspectratio' => '16:9',
-        'sources' => [
-            [
-            // Andira Alves' interview
-            'file' => 'https://repository.library.northeastern.edu/downloads/neu:4f17kp226?datastream_id=content',
-            'type' => 'video/mp4'
+        'playlist' => [
+            'image' => '',
+            'sources' => [
+                [
+                // Andira Alves' interview
+                //'file' => 'https://repository.library.northeastern.edu/downloads/neu:4f17kp226?datastream_id=content',
+                
+                'file' => '',
+              //  'type' => 'video/video/mp4'
+                ],
+
+
+            ],
+            'tracks' => [
+                [
+                'file' => '',    
+                //'file' => 'https://repository.library.northeastern.edu/downloads/neu:ms374h54k?datastream_id=content', // the .vtt file
+                'label' => 'English',
+                'kind' => 'captions',
+                'default' => true
+                ]
             ]
         ],
-        'tracks' => [
-            'file' => 'https://repository.library.northeastern.edu/downloads/neu:ms374h54k?datastream_id=content', // the .vtt file
-            'label' => 'English',
-            'kind' => 'captions',
-            'default' => true
-        ]
-
     ];
 
    
     public function setJwplayerSetup(): void {
-        $this->jwPlayerSetup['image'] = $this->renderArray['data']['jwPlayerSetup']['imageFile'];
-        $this->jwPlayerSetup['sources'][0]['file'] = $this->renderArray['data']['jwPlayerSetup']['sourceFile'];
-        $this->jwPlayerSetup['sources'][0]['type'] = $this->renderArray['data']['jwPlayerSetup']['sourceFileType'];
-        $this->jwPlayerSetup['tracks'][0]['file'] = $this->renderArray['data']['jwPlayerSetup']['ttlFile'];
+        $this->jwPlayerSetup['playlist']['image'] = $this->renderArray['data']['jwPlayerSetup']['imageFile'];
+        $this->jwPlayerSetup['playlist']['sources'][0]['file'] = $this->renderArray['data']['jwPlayerSetup']['sourceFile'];
+        $this->jwPlayerSetup['playlist']['sources'][0]['type'] = $this->renderArray['data']['jwPlayerSetup']['sourceFileType'];
+        $this->jwPlayerSetup['playlist']['tracks'][0]['file'] = $this->renderArray['data']['jwPlayerSetup']['vttFile'];
     }
 
     public function getJwplayerSetupAsJson(): string {
         $jsonJwPlayerSetup = "jwPlayerSetup = ";
-        $jsonJwPlayerSetup .= json_encode($this->jwPlayerSetup);
+        $jsonJwPlayerSetup .= stripslashes(json_encode($this->jwPlayerSetup));
         return $jsonJwPlayerSetup;
     }
 
@@ -63,7 +70,7 @@ class Jwplayer extends Html {
                 alert(document.readyState);
                 console.log(document.readyState);
                 if(document.readyState === 'complete') {
-                    jwplayer('jwplayer').setup(jwPlayerSetup);
+                    jwplayer('jwplayer').setup(jwPlayerSetup).setCaptions({'fontSize': 9});
                 }
             };
         ";

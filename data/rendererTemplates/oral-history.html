@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- identical to text-media container, but also includes a container for media -->
+<!-- identical to text-media container, but also includes a container for metadata -->
 <html>
     <head>
         <title>oral history container</title>
@@ -9,8 +9,9 @@
         <script src='../assets/js/jquery-3.7.1.min.js'></script>
         <script>
             document.onreadystatechange = () => {
+            console.log(document.readyState);
                 if(document.readyState === "complete") {
-                    jwplayer('jwplayer').setup(jwPlayerSetup);
+                    jwplayer('jwplayer').setup(jwPlayerSetup).setCaptions({'fontSize': 9});
                 }
 
             };

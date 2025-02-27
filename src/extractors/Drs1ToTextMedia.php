@@ -16,7 +16,7 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
                     'image' => '', //the thumbnail for the media
                     'sourceFile' => '', //file url to give the player
                     'type' => '', // the file mime type
-                    'ttlFile' => '', // url for the .ttl transcription file
+                    'vttFile' => '', // url for the .vtt transcription file
                 ]
             ] 
     
@@ -59,7 +59,7 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
         $wowzaUrl = 'https://repository.library.northeastern.edu/wowza/' . $pid . '/plain';
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFile'] = $wowzaUrl;
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFileType'] = 'mp4';
-        $this->renderArray['drsItem']['data']['jwPlayerSetup']['ttlFile'] = '';
+        $this->renderArray['drsItem']['data']['jwPlayerSetup']['vttFile'] = '';
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['imageFile'] = '';
     }
 

@@ -8,8 +8,9 @@
         <script src='../assets/js/jquery-3.7.1.min.js'></script>
         <script>
             document.onreadystatechange = () => {
+            console.log(document.readyState);
                 if(document.readyState === "complete") {
-                    jwplayer('jwplayer').setup(jwPlayerSetup);
+                    jwplayer('jwplayer').setup(jwPlayerSetup).setCaptions({'fontSize': 9});
                 }
 
             };

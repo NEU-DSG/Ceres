@@ -16,7 +16,7 @@ abstract class AbstractDrs1ItemExtractor extends AbstractExtractor {
      * @var array
      */
     
-    protected $modsDataArray = [];
+    protected $modsRenderArray = [];
     
     /**
      * contentObjectsArray
@@ -24,6 +24,17 @@ abstract class AbstractDrs1ItemExtractor extends AbstractExtractor {
      * @var array
      */
     protected $contentObjectsArray = [];
+
+
+    public function getModsRenderArray(): array {
+        return $this->modsRenderArray;
+    }
+
+    public function extractAndReturnModsRenderArray(): array {
+        $this->extractModsData();
+        return $this->modsRenderArray;
+    }
+
 
 
     /**
@@ -35,7 +46,10 @@ abstract class AbstractDrs1ItemExtractor extends AbstractExtractor {
      */
 
     protected function extractModsData(): void {
-        $this->modsDataArray = $this->sourceData['mods'];
+        $modsExtractor = new DrsV1ItemToMods;
+        $modsExtractor->setSourceData(($this->sourceData));
+        $modsExtractor->extract();
+        $this->modsRenderArray = $modsExtractor->getRenderArray();
     }
 
     /**
@@ -50,6 +64,8 @@ abstract class AbstractDrs1ItemExtractor extends AbstractExtractor {
         $ceresContentObjectsArray = $sourceContentObjectsArray;
         $this->contentObjectsArray = array_flip($ceresContentObjectsArray);
     }
+
+    
 
     
 

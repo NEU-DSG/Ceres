@@ -2,6 +2,8 @@
 
 namespace Ceres\Extractor;
 
+use Ceres\Util\DataUtilities;
+
 class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
 
     protected string $text; //TODO do I need this?
@@ -15,7 +17,7 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
                 'jwPlayerSetup' => [
                     'image' => '', //the thumbnail for the media
                     'sourceFile' => '', //file url to give the player
-                    'type' => '', // the file mime type
+                    'sourceFileType' => 'video/mp4',
                     'vttFile' => '', // url for the .vtt transcription file
                 ]
             ] 
@@ -41,7 +43,7 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
     public function extract(): void {
         // from parent class
         $this->extractContentObjects();
-        $this->extractModsData();
+        $this->renderArray['drsItem']['data']['mods'] = $this->extractAndReturnModsRenderArray();
 
         // defined here
         $this->extractText();
@@ -58,18 +60,22 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
         $pid = str_replace('?datastream_id=content', '', $pid);
         $wowzaUrl = 'https://repository.library.northeastern.edu/wowza/' . $pid . '/plain';
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFile'] = $wowzaUrl;
-        $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFileType'] = 'mp4';
+        $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFileType'] = 'video/mp4';
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['vttFile'] = '';
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['imageFile'] = '';
     }
 
     protected function extractText(): void {
         $transcriptionPid = array_key_first($this->sourceData['associated']);
-// todo: need a full record to work from for testing/deving
-        $textUrl = "https://nb9662.neu.edu/mockCeresData/sampleTranscription.txt";
-        $this->renderArray['drsText']['data']['fileUrl'] = $textUrl;
 
-//        $this->renderArray['drsText']['data']['text'] = file_get_contents($textUrl);
+        $transcriptionDataUrl = 'https://repository.library.northeastern.edu/api/v1/files/' . $transcriptionPid;
+        $transcriptionData = file_get_contents($transcriptionDataUrl);
+        $transcriptionData = json_decode($transcriptionData, true);
+        $canonicalObject = $transcriptionData['canonical_object'];
+        $fileUrl = array_key_first($canonicalObject);
+        $mimeType = DataUtilities::getMimeTypeForUrl($fileUrl);
+        $this->renderArray['drsText']['type'] = $mimeType;
+        $this->renderArray['drsText']['data']['fileUrl'] = $fileUrl;
     }
 
     /**

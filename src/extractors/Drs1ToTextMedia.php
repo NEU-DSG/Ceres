@@ -78,29 +78,4 @@ class Drs1ToTextMedia extends AbstractDrs1ItemExtractor {
         $this->renderArray['drsText']['data']['fileUrl'] = $fileUrl;
     }
 
-    /**
-     * getTextSubtype
-     * 
-     * Makes queries to DRS to figure out whether a "Text Document" is txt, pdf, other
-     *
-     * @param $filePath the URL for filepath to the file to detect
-     * 
-     * @return mixed
-     */
-
-     // TODO: mime_content_type doesn't seem to work -- see if I can
-     // grab the content type from a curl request for just the header info
-
-/*     
-    protected function getTextSubtype($filePath): string|false {
-        $textSubtype = mime_content_type($filePath);
-        if ($textSubtype == 'text/plain') {
-            return $textSubtype;
-        } else {
-            // throw a Notice
-            return false;
-        }
-    }
-*/
-
 }

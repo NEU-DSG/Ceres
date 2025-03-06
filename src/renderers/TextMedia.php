@@ -39,19 +39,11 @@ class TextMedia extends Html {
                         'jwPlayerSetup' => []
                     ]
                 ];
-                // print_r($this->renderArray);
-                // die();
                 $jwPlayerRenderArray['data']['jwPlayerSetup'] = $this->renderArray['drsItem']['data']['jwPlayerSetup'];
-                // print_r($jwPlayerRenderArray);
-                // die();
                 // pass off to Jwplayer renderer
                 $jwPlayerRenderer = new Jwplayer;
                 $jwPlayerRenderer->setRenderArrayFromArray($jwPlayerRenderArray);
                 $jwPlayerRenderer->build();
-
-                // $setup = $jwPlayerRenderer->getJwplayerSetupAsJson();
-                // echo $setup;
-                // die();
                 // the jwPlayer node is built in a different DOMDocument
                 // TODO  is it? it _should be_ but doesn't seem to be
                 $foreignContainerNode = $jwPlayerRenderer->getContainerNode();
@@ -73,12 +65,23 @@ class TextMedia extends Html {
     }
 
     public function buildTextContainerNode(): DOMNode {
-        $text = $this->renderArray['drsText']['data']['text'];
-        $textUrl = $this->renderArray['drsText']['data']['fileUrl'];
-        $text = file_get_contents($textUrl);
-        if (!$text) {
-            $text = "Could not find a transcript file";
+        switch ($this->renderArray['drsText']['type']) {
+            case 'text/plain':
+                $text = $this->renderArray['drsText']['data']['text'];
+                $textUrl = $this->renderArray['drsText']['data']['fileUrl'];
+                $text = file_get_contents($textUrl);
+                if (!$text) {
+                    $text = "Could not find a transcript file";
+                }
+
+            break;
+
+            case 'application/pdf':
+                $text = 'PDF rendering coming soon';
+
+            break;
         }
+
         $textNode = $this->htmlDom->createTextNode($text);
         return $textNode;
     }

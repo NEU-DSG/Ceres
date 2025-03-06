@@ -21,11 +21,8 @@ class Jwplayer extends Html {
             'image' => '',
             'sources' => [
                 [
-                // Andira Alves' interview
-                //'file' => 'https://repository.library.northeastern.edu/downloads/neu:4f17kp226?datastream_id=content',
-                
                 'file' => '',
-              //  'type' => 'video/video/mp4'
+                'type' => ''
                 ],
 
 

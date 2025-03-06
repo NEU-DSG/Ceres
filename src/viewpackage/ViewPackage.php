@@ -113,7 +113,6 @@ class ViewPackage {
         $className = $classInfo['fullClassName'];
         $fetcher = new $className;
         $fetcher->setScope($this->nameId);
-        //print_r($classInfo);
         $fetcher->setFetcherOptions($classInfo['options']);
         return $fetcher;
     }

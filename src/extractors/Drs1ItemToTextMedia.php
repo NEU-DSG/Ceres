@@ -15,16 +15,16 @@ class Drs1ItemToTextMedia extends AbstractDrs1ItemExtractor {
                 'mods' => [],
                 'drsPid' => '',
                 'jwPlayerSetup' => [
-                    'image' => '', //the thumbnail for the media
+                    'imageFile' => '', //the thumbnail for the media
                     'sourceFile' => '', //file url to give the player
-                    'sourceFileType' => 'video/mp4',
+                    'sourceFileType' => '', //mime type for the video/audio
                     'vttFile' => '', // url for the .vtt transcription file
                 ]
             ] 
     
         ],
         'drsText' => [
-            'type' => 'text',
+            'type' => '', // could be .txt, .html, or fucking .pdf
             'data' => [
                 'fileUrl' => 'the url to get the contents from',
                 'text' => ''
@@ -41,28 +41,35 @@ class Drs1ItemToTextMedia extends AbstractDrs1ItemExtractor {
      * @return void
      */
     public function extract(): void {
-        // from parent class
+        // from parent class(es)
         $this->extractContentObjects();
         $this->renderArray['drsItem']['data']['mods'] = $this->extractAndReturnModsRenderArray();
 
         // defined here
         $this->extractText();
-        $this->extractMediaUrl();
+        $this->extractMedia();
     }
 
-    protected function extractMediaUrl(): void {
+    protected function extractMedia(): void {
         //it's called canonical_object in the response
         //there might be more
         // We want the wowza (stream) url, not the direct path to the source file
         $mediaUrl = array_key_first($this->sourceData['canonical_object']);
+
+        //flip the array to make it easier to dig up associated files
+        $contentObjects = array_flip($this->sourceData['content_objects']);
+        $vttFileUrl = $contentObjects['Text Document'];
+        $imageFile = $contentObjects['Master Image'];
+
         $mediaUrlParts = explode('/', $mediaUrl);
         $pid = $mediaUrlParts[array_keys($mediaUrlParts)[count($mediaUrlParts) - 1]];
         $pid = str_replace('?datastream_id=content', '', $pid);
         $wowzaUrl = 'https://repository.library.northeastern.edu/wowza/' . $pid . '/plain';
+        //$sourceFileType = DataUtilities::getMimeTypeForUrl($wowzaUrl);
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFile'] = $wowzaUrl;
-        $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFileType'] = 'video/mp4';
-        $this->renderArray['drsItem']['data']['jwPlayerSetup']['vttFile'] = '';
-        $this->renderArray['drsItem']['data']['jwPlayerSetup']['imageFile'] = '';
+        $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFileType'] = 'video/mov';
+        $this->renderArray['drsItem']['data']['jwPlayerSetup']['vttFile'] = $vttFileUrl;
+        $this->renderArray['drsItem']['data']['jwPlayerSetup']['imageFile'] = $imageFile;
     }
 
     protected function extractText(): void {

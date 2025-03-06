@@ -28,6 +28,9 @@ class OralHistory extends TextMedia {
         $this->mediaContainerNode->appendChild($importedMediaContainerNode);
         $this->textContainerNode->appendChild($this->buildTextContainerNode());
         $dlRenderArray = $this->renderArray['drsItem']['data']['mods'];
+        
+        
+        
         $this->metadataContainerNode->appendChild($this->dlRenderArrayToDl($dlRenderArray));
     }
 

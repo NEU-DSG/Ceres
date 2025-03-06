@@ -31,7 +31,6 @@ class ViewPackage extends Html {
     }
 
     // public function render() {
-    //     print_r($this->renderArray);
 
     //     parent::render();
     // }

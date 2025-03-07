@@ -1,0 +1,22 @@
+.ceres-container-text {
+    max-height: 500px;
+    border: 5px solid black;   
+    overflow: scroll;
+    word-wrap: break-word; 
+    white-space: pre-wrap;
+    padding: 5px;
+}
+
+.ceres-container-media {
+    float: right;
+    height: 500px;
+    border: 5px solid black;
+    padding: 5px;
+    width: 55%;
+}
+
+.ceres-container-dl {
+    height: 500px;
+    border: 5px solid black;
+    padding: 5px;    
+}

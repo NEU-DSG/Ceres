@@ -67,9 +67,13 @@ class Drs1ItemToTextMedia extends AbstractDrs1ItemExtractor {
         $wowzaUrl = 'https://repository.library.northeastern.edu/wowza/' . $pid . '/plain';
         //$sourceFileType = DataUtilities::getMimeTypeForUrl($wowzaUrl);
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFile'] = $wowzaUrl;
+        $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFile'] = $mediaUrl;
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFileType'] = 'video/mov';
+        //$this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFileType'] = $sourceFileType;
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['vttFile'] = $vttFileUrl;
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['imageFile'] = $imageFile;
+        // print_r($this->renderArray['drsItem']['data']['jwPlayerSetup']);
+        // die();
     }
 
     protected function extractText(): void {

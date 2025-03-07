@@ -40,10 +40,21 @@ class TextMedia extends Html {
                     ]
                 ];
                 $jwPlayerRenderArray['data']['jwPlayerSetup'] = $this->renderArray['drsItem']['data']['jwPlayerSetup'];
+                // echo $jwPlayerRenderArray;
+                // die();
+                
                 // pass off to Jwplayer renderer
                 $jwPlayerRenderer = new Jwplayer;
                 $jwPlayerRenderer->setRenderArrayFromArray($jwPlayerRenderArray);
                 $jwPlayerRenderer->build();
+
+                // $jwPlayerSetup = $jwPlayerRenderer->getJwplayerSetupAsJson();
+                // echo $jwPlayerSetup;
+                // die();
+
+
+
+
                 // the jwPlayer node is built in a different DOMDocument
                 // TODO  is it? it _should be_ but doesn't seem to be
                 $foreignContainerNode = $jwPlayerRenderer->getContainerNode();

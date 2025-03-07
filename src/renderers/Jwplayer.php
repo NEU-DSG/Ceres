@@ -22,15 +22,14 @@ class Jwplayer extends Html {
             'sources' => [
                 [
                 'file' => '',
-                'type' => ''
+                'type' => '',
+                'default' => true,
+                
                 ],
-
-
             ],
             'tracks' => [
                 [
                 'file' => '',    
-                //'file' => 'https://repository.library.northeastern.edu/downloads/neu:ms374h54k?datastream_id=content', // the .vtt file
                 'label' => 'English',
                 'kind' => 'captions',
                 'default' => true
@@ -39,7 +38,7 @@ class Jwplayer extends Html {
         ],
     ];
 
-   
+
     public function setJwplayerSetup(): void {
         $this->jwPlayerSetup['playlist']['image'] = $this->renderArray['data']['jwPlayerSetup']['imageFile'];
         $this->jwPlayerSetup['playlist']['sources'][0]['file'] = $this->renderArray['data']['jwPlayerSetup']['sourceFile'];
@@ -64,10 +63,10 @@ class Jwplayer extends Html {
         $jwInitJs = "
         
             document.onreadystatechange = () => {
-                alert(document.readyState);
                 console.log(document.readyState);
                 if(document.readyState === 'complete') {
-                    jwplayer('jwplayer').setup(jwPlayerSetup).setCaptions({'fontSize': 9});
+                    jwplayerResponse = jwplayer('jwplayer').setup(jwPlayerSetup).setCaptions({'fontSize': 9});
+                    console.log(jwplayerResponse);
                 }
             };
         ";

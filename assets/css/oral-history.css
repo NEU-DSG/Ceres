@@ -1,3 +1,7 @@
+.ceres_container {
+    height: fit-content;
+}
+
 .ceres-container-text {
     max-height: 500px;
     border: 5px solid black;   
@@ -10,13 +14,12 @@
 .ceres-container-media {
     float: right;
     height: 500px;
-    border: 5px solid black;
+    border: 5px solid yellow;
     padding: 5px;
     width: 55%;
 }
 
 .ceres-container-dl {
-    height: 500px;
-    border: 5px solid black;
+    border: 5px solid red;
     padding: 5px;    
 }

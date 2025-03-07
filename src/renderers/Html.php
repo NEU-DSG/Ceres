@@ -206,7 +206,6 @@ class Html extends AbstractRenderer {
     }
 
     protected function dlRenderArrayToDl(array $renderArray): DOMNode {
-        //print_r($renderArray);
         
         $dlNode = $this->htmlDom->createElement('dl');
         foreach($renderArray['data'] as $dtDdGroup) {

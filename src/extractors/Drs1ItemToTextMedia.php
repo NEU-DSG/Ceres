@@ -24,9 +24,9 @@ class Drs1ItemToTextMedia extends AbstractDrs1ItemExtractor {
     
         ],
         'drsText' => [
-            'type' => '', // could be .txt, .html, or fucking .pdf
+            'type' => '', // could be .txt, .html, .rtf, .docx, .ods, or fking .pdf
             'data' => [
-                'fileUrl' => 'the url to get the contents from',
+                'fileUrl' => '', // the url to get the contents from
                 'text' => ''
     
             ]
@@ -67,8 +67,8 @@ class Drs1ItemToTextMedia extends AbstractDrs1ItemExtractor {
         $wowzaUrl = 'https://repository.library.northeastern.edu/wowza/' . $pid . '/plain';
         //$sourceFileType = DataUtilities::getMimeTypeForUrl($wowzaUrl);
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFile'] = $wowzaUrl;
-        $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFile'] = $mediaUrl;
-        $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFileType'] = 'video/mov';
+        //$this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFile'] = $mediaUrl;
+        $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFileType'] = 'video/mp4';
         //$this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFileType'] = $sourceFileType;
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['vttFile'] = $vttFileUrl;
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['imageFile'] = $imageFile;

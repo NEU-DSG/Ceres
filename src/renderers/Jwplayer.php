@@ -22,7 +22,7 @@ class Jwplayer extends Html {
             'sources' => [
                 [
                 'file' => '',
-                'type' => '',
+                'type' => 'video/mp4',
                 'default' => true,
                 
                 ],
@@ -42,7 +42,7 @@ class Jwplayer extends Html {
     public function setJwplayerSetup(): void {
         $this->jwPlayerSetup['playlist']['image'] = $this->renderArray['data']['jwPlayerSetup']['imageFile'];
         $this->jwPlayerSetup['playlist']['sources'][0]['file'] = $this->renderArray['data']['jwPlayerSetup']['sourceFile'];
-        $this->jwPlayerSetup['playlist']['sources'][0]['type'] = $this->renderArray['data']['jwPlayerSetup']['sourceFileType'];
+        //$this->jwPlayerSetup['playlist']['sources'][0]['type'] = $this->renderArray['data']['jwPlayerSetup']['sourceFileType'];
         $this->jwPlayerSetup['playlist']['tracks'][0]['file'] = $this->renderArray['data']['jwPlayerSetup']['vttFile'];
     }
 

@@ -77,6 +77,8 @@ class Drs1ItemToTextMedia extends AbstractDrs1ItemExtractor {
     }
 
     protected function extractText(): void {
+        // @todo check this against having multiple pids in associated
+        // might need to switch here after a mimetype check
         $transcriptionPid = array_key_first($this->sourceData['associated']);
 
         $transcriptionDataUrl = 'https://repository.library.northeastern.edu/api/v1/files/' . $transcriptionPid;

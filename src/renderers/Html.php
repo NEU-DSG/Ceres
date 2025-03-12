@@ -213,7 +213,7 @@ class Html extends AbstractRenderer {
                 $dtNode = $this->htmlDom->createElement('dt');
                 $dtTextNode = $this->htmlDom->createTextNode($dt);
                 $dtNode->appendChild($dtTextNode);
-                // todo: handleInnerRenderArray isn't working as expected
+                // @todo: handleInnerRenderArray isn't working as expected
                 //$innerDtNode = $this->handleInnerRenderArray($dt);
                 //$dtNode->appendChild($innerDtNode);
                 $dlNode->appendChild($dtNode);

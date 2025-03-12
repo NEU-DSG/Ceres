@@ -60,7 +60,8 @@ $imgRenderArray = ['type' => 'img',
                    ]
                 ];
 
-
+// @todo candidate for removal since this would likely only exist
+//      within text, which has to be handled differently
 $aRenderArray = ['type' => 'a',
                     'data' => [
                         'href' => 'http://....',
@@ -124,6 +125,9 @@ $tableRenderArray = ['type' => 'table',
 $cardRenderArray = ['type' => 'card',
                     // optional to point renderer to 
                     // using <details> element, but it can ignore this
+
+                    // main and secondary renderArrays are only 
+                    //  examples -- they can be any renderArray
                     'subtype' => 'details', 
                     'data' => ['main' => ['text for main', 
                                             ['type' => 'img',

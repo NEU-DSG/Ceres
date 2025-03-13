@@ -1,7 +1,7 @@
 <?php
 namespace Ceres\Renderer;
 
-use Ceres\Util\DataUtilities;
+use Ceres\Util\StringUtilities as StringUtils;
 use DOMDocument;
 use DOMNode;
 use DOMElement;
@@ -221,7 +221,10 @@ class Html extends AbstractRenderer {
             foreach($dtDdGroup['dds'] as $dd) {
                 // handle the possibility of HTML among the text
                 // see https://github.com/NEU-DSG/Ceres/issues/115
-                $ddText = "<dd>" . $dd . "</dd>";
+                // handle URLs and hope they aren't already wrapped in <a>
+                
+                $ddText = StringUtils::linkifyUrls($dd);
+                $ddText = "<dd>" . $ddText . "</dd>";
                 $ddFrag = $this->htmlDom->createDocumentFragment();
                 $ddFrag->appendXML($ddText);
                 $dlNode->appendChild($ddFrag);

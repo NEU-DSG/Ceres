@@ -59,10 +59,14 @@ class StringUtilities {
 
     public static function sanitizeTextField($value) {
         if (function_exists('sanitize_text_field')) {
+            // @todo get around this WP dependency somehow
             return sanitize_text_field($value);
         }
-        
+    }
 
+    public static function linkifyUrls(string $text): string {
+        $linkifiedText = preg_replace('/(http[s]{0,1}\:\/\/\S{4,})\s{0,}/ims', '<a href="$1" target="_blank">$1</a> ', $text);
+        return $linkifiedText;
     }
 
 

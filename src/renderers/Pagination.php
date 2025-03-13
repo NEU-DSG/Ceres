@@ -5,7 +5,7 @@ namespace Ceres\Renderer;
 class Pagination extends Html {
   
   public function render(): string {
-    // @TODO needs update to reflect possibility of multiple fetchers being injected
+    // @todo needs update to reflect possibility of multiple fetchers being injected
     $pageCount = $this->fetchers['drs_paginator']->getPageCount();
     
     // this likely has to parse it out from url, maybe something in the response header

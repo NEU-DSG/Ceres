@@ -24,7 +24,7 @@ class Wdqs extends Sparql {
         return $optionValue;
     }
 
-    // @TODO reconcile with AbstractFetcher
+    // @todo reconcile with AbstractFetcher
     public function fetchData(string $url = null, bool $returnWithoutSetting = false) {
         //@todo fold this into the DataUtil optionValues array
         $fetchLocalData = $this->getValueForFetcherOption('fetchLocalData');

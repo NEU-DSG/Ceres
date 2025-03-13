@@ -56,7 +56,7 @@ class TextMedia extends Html {
 
 
                 // the jwPlayer node is built in a different DOMDocument
-                // TODO  is it? it _should be_ but doesn't seem to be
+                // @todo is it? it _should be_ but doesn't seem to be
                 $foreignContainerNode = $jwPlayerRenderer->getContainerNode();
                 $nativeContainerNode = $this->htmlDom->importNode($foreignContainerNode, true);
                

@@ -39,7 +39,7 @@ abstract class AbstractFetcher {
 
     /**
      * The parsed response, including the handling of errors and output message (i.e., not the direct
-     * curl response, though that's up for @TODO debate
+     * curl response, though that's up for @todo debate
      * @var array
      */
 

@@ -219,13 +219,24 @@ class Html extends AbstractRenderer {
                 $dlNode->appendChild($dtNode);
             }
             foreach($dtDdGroup['dds'] as $dd) {
+                // handle the possibility of HTML among the text
+                // see https://github.com/NEU-DSG/Ceres/issues/115
+                $ddText = "<dd>" . $dd . "</dd>";
+                $ddFrag = $this->htmlDom->createDocumentFragment();
+                $ddFrag->appendXML($ddText);
+                $dlNode->appendChild($ddFrag);
+
+
+/*
                 $ddNode = $this->htmlDom->createElement('dd');
                 $ddTextNode = $this->htmlDom->createTextNode($dd);
                 $ddNode->appendChild($ddTextNode);
-                // todo: handleInnerRenderArray isn't working as expected
+                // @todo: handleInnerRenderArray isn't working as expected
                 //$innerDdNode = $this->handleInnerRenderArray($dd);
                 //$ddNode->appendChild($innerDdNode);
                 $dlNode->appendChild($ddNode);
+
+*/                
             }
         }
         return $dlNode;

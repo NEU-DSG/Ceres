@@ -92,7 +92,7 @@ class Html extends AbstractRenderer {
     }
 
     protected function stripCeresIds(): void {
-        $xpath = "//div[contains(@id,'ceres')]";
+        $xpath = "//div[contains(@id,'ceres-container')]";
         $nodes = $this->xPath->query($xpath, $this->htmlDom);
         foreach ($nodes as $node) {
             $node->removeAttribute('id');

@@ -113,6 +113,33 @@ $tableRenderArray = ['type' => 'table',
                     ]
                 ];
 
+
+$tabbedContentRenderArray = [
+    'type' => 'tabbed',
+    'data' => [
+        'tabs' => [
+            ['type' => 'tab',
+             'data' => [
+                'id' => 'something minted, has to be matchable to tabContent id',
+                'label' => 'plain text label'
+             ]
+            ]
+            // repeat as necessary
+            
+        ],
+        'tabContent' => [
+            [
+                'type' => 'tabcontent',
+                'data' => [
+                    'id' => 'something minted to be matchable to tab id',
+                    'tabContentRenderArray' => []
+                ]
+            ]
+        ]
+    ]
+];
+
+
 /** 
  * 
  * Identical for `card` and `details`, but <details> HTML limits

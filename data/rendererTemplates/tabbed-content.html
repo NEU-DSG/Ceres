@@ -3,6 +3,47 @@
     <head>
         <title>tabbed-content</title>
         <style>
+            
+            .tabs {
+              padding: 1em;
+            }
+            
+            [role="tablist"] {
+              margin-bottom: -1px;
+            }
+            
+            [role="tab"] {
+              position: relative;
+              z-index: 1;
+              background: white;
+              border-radius: 5px 5px 0 0;
+              border: 1px solid grey;
+              border-bottom: 0;
+              padding: 0.2em;
+            }
+            
+            [role="tab"][aria-selected="true"] {
+              z-index: 3;
+            }
+            
+            [role="tabpanel"] {
+              position: relative;
+              padding: 0 0.5em 0.5em 0.7em;
+              border: 1px solid grey;
+              border-radius: 0 0 5px 5px;
+              background: white;
+              z-index: 2;
+            }
+            
+            [role="tabpanel"]:focus {
+              border-color: orange;
+              outline: 1px solid orange;
+            }
+                        
+            
+            
+            
+            
             .ceres-tabbed-tab {
             
             }
@@ -14,6 +55,9 @@
         
         <script>
             //from https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/tab_role#example
+            
+            
+        
             
             window.addEventListener("DOMContentLoaded", () => {
               // Only handle one particular tablist; if you have multiple tab
@@ -105,7 +149,7 @@
                   id='ceres-tab2Id' 
                   class='ceres-tabbed-tab' 
                   role='tab'
-                  aria-selected="true"
+                  aria-selected="false"
                   aria-controls='ceres-tab2Id-content'
                   tabindex="-1"
                 >

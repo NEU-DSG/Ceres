@@ -120,8 +120,8 @@ $tabbedContentRenderArray = [
         'tabs' => [
             ['type' => 'tab',
              'data' => [
-                'id' => 'something minted, has to be matchable to tabContent id',
-                'label' => 'plain text label'
+                'id' => '', // handled by renderer
+                'label' => 'plain text label' // @todo or HTML?
              ]
             ]
             // repeat as necessary
@@ -131,7 +131,7 @@ $tabbedContentRenderArray = [
             [
                 'type' => 'tabcontent',
                 'data' => [
-                    'id' => 'something minted to be matchable to tab id',
+                    'id' => '', // handled by renderer
                     'tabContentRenderArray' => []
                 ]
             ]

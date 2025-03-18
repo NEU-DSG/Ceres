@@ -1,190 +1,136 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>tabbed-content</title>
-        <style>
-            
-            .tabs {
-              padding: 1em;
-            }
-            
-            [role="tablist"] {
-              margin-bottom: -1px;
-            }
-            
-            [role="tab"] {
-              position: relative;
-              z-index: 1;
-              background: white;
-              border-radius: 5px 5px 0 0;
-              border: 1px solid grey;
-              border-bottom: 0;
-              padding: 0.2em;
-            }
-            
-            [role="tab"][aria-selected="true"] {
-              z-index: 3;
-            }
-            
-            [role="tabpanel"] {
-              position: relative;
-              padding: 0 0.5em 0.5em 0.7em;
-              border: 1px solid grey;
-              border-radius: 0 0 5px 5px;
-              background: white;
-              z-index: 2;
-            }
-            
-            [role="tabpanel"]:focus {
-              border-color: orange;
-              outline: 1px solid orange;
-            }
-                        
-            
-            
-            
-            
-            .ceres-tabbed-tab {
-            
-            }
-            
-            .ceres-tabbed-tab-content {
-            
-            }
-        </style>
-        
-        <script>
+  <head>
+    <title>tabbed-content</title>
+    <style>
+      .tabs {
+          padding: 1em;
+      }
+      
+      [role = "tablist"] {
+          margin-bottom: -1px;
+      }
+      
+      [role = "tab"] {
+          position: relative;
+          z-index: 1;
+          background: white;
+          border-radius: 5px 5px 0 0;
+          border: 1px solid grey;
+          border-bottom: 0;
+          padding: 0.2em;
+      }
+      
+      [role = "tab"][aria-selected = "true"] {
+          z-index: 3;
+      }
+      
+      [role = "tabpanel"] {
+          position: relative;
+          padding: 0 0.5em 0.5em 0.7em;
+          border: 1px solid grey;
+          border-radius: 0 0 5px 5px;
+          background: white;
+          z-index: 2;
+      }
+      
+      [role = "tabpanel"]:focus {
+          border-color: orange;
+          outline: 1px solid orange;
+      }
+      
+      
+      
+      
+      
+      .ceres-tabbed-tab {
+      
+      }
+      
+      .ceres-tabbed-tab-content {
+      
+      }</style>
+    <script>
             //from https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/tab_role#example
             
             
-        
             
-            window.addEventListener("DOMContentLoaded", () => {
-              // Only handle one particular tablist; if you have multiple tab
-              // lists (might even be nested), you have to apply this code for each one
-              const tabList = document.querySelector('[role="tablist"]');
-              const tabs = tabList.querySelectorAll(':scope > [role="tab"]');
             
-              // Add a click event handler to each tab
-              tabs.forEach((tab) => {
-                tab.addEventListener("click", changeTabs);
-              });
-            
-              // Enable arrow navigation between tabs in the tab list
-              let tabFocus = 0;
-            
-              tabList.addEventListener("keydown", (e) => {
-                // Move right
-                if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
-                  tabs[tabFocus].setAttribute("tabindex", -1);
-                  if (e.key === "ArrowRight") {
-                    tabFocus++;
-                    // If we're at the end, go to the start
-                    if (tabFocus >= tabs.length) {
-                      tabFocus = 0;
+            window.addEventListener("DOMContentLoaded", () = > {
+                // Only handle one particular tablist; if you have multiple tab
+                // lists (might even be nested), you have to apply this code for each one
+                const tabList = document.querySelector('[role="tablist"]');
+                const tabs = tabList.querySelectorAll(':scope > [role="tab"]');
+                
+                // Add a click event handler to each tab
+                tabs.forEach((tab) = > {
+                    tab.addEventListener("click", changeTabs);
+                });
+                
+                // Enable arrow navigation between tabs in the tab list
+                let tabFocus = 0;
+                
+                tabList.addEventListener("keydown", (e) = > {
+                    // Move right
+                    if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+                        tabs[tabFocus].setAttribute("tabindex", -1);
+                        if (e.key === "ArrowRight") {
+                            tabFocus++;
+                            // If we're at the end, go to the start
+                            if (tabFocus >= tabs.length) {
+                                tabFocus = 0;
+                            }
+                            // Move left
+                        } else if (e.key === "ArrowLeft") {
+                            tabFocus--;
+                            // If we're at the start, move to the end
+                            if (tabFocus < 0) {
+                                tabFocus = tabs.length - 1;
+                            }
+                        }
+                        
+                        tabs[tabFocus].setAttribute("tabindex", 0);
+                        tabs[tabFocus].focus();
                     }
-                    // Move left
-                  } else if (e.key === "ArrowLeft") {
-                    tabFocus--;
-                    // If we're at the start, move to the end
-                    if (tabFocus < 0) {
-                      tabFocus = tabs.length - 1;
-                    }
-                  }
-            
-                  tabs[tabFocus].setAttribute("tabindex", 0);
-                  tabs[tabFocus].focus();
-                }
-              });
+                });
             });
             
             function changeTabs(e) {
-              const targetTab = e.target;
-              const tabList = targetTab.parentNode;
-              const tabGroup = tabList.parentNode;
-            
-              // Remove all current selected tabs
-              tabList
-                .querySelectorAll(':scope > [aria-selected="true"]')
-                .forEach((t) => t.setAttribute("aria-selected", false));
-            
-              // Set this tab as selected
-              targetTab.setAttribute("aria-selected", true);
-            
-              // Hide all tab panels
-              tabGroup
-                .querySelectorAll(':scope > [role="tabpanel"]')
-                .forEach((p) => p.setAttribute("hidden", true));
-            
-              // Show the selected panel
-              tabGroup
-                .querySelector(`#${targetTab.getAttribute("aria-controls")}`)
-                .removeAttribute("hidden");
-            }
-            
-            
-            
-            
-        </script>
-        
-    </head>
-    <body>
-        
-        <div id='ceres-container' class='ceres-container ceres-container-tabbed'>
-            <div 
-                id='ceres-tabbed-tabs' 
-                role="tablist"
-                aria-label="Tabs">
-              <button 
-                  id='ceres-tab1Id' 
-                  class='ceres-tabbed-tab' 
-                  role='tab'
-                  aria-selected="true"
-                  aria-controls='ceres-tab1Id-content'
-                  tabindex="0"
-                  >
-                  tab1 label
-              </button>
-              <button 
-                  id='ceres-tab2Id' 
-                  class='ceres-tabbed-tab' 
-                  role='tab'
-                  aria-selected="false"
-                  aria-controls='ceres-tab2Id-content'
-                  tabindex="-1"
-                >
-                    tab2 label
-              </button>
-            </div>
-            
-            
-            <div 
-                id='ceres-tab1Id-content' 
-                class='ceres-tabbed-tab-content' 
-                role="tabpanel"
-                aria-labelledby="ceres-tab1Id"
-                tabindex="0"
+                const targetTab = e.target;
+                const tabList = targetTab.parentNode;
+                const tabGroup = tabList.parentNode;
                 
-                >
-                <!-- tab1 content -->
-                <div>tab1 content from a renderArray or something more complicated</div>
-            </div>
-            <div 
-                id='ceres-tab2Id-content' 
-                class='ceres-tabbed-tab-content' 
-                role="tabpanel"
-                aria-labelledby="ceres-tab2Id"
-                tabindex="0"
-                hidden="hidden"
-                >
-                <!-- tab2 content -->
-                <div>tab2 content from a renderArray or something more complicated</div>
-            </div>
-
-        </div>
-        
-        
-        
-        
-    </body>
+                // Remove all current selected tabs
+                tabList.querySelectorAll(':scope > [aria-selected="true"]').forEach((t) = > t.setAttribute("aria-selected", false));
+                
+                // Set this tab as selected
+                targetTab.setAttribute("aria-selected", true);
+                
+                // Hide all tab panels
+                tabGroup.querySelectorAll(':scope > [role="tabpanel"]').forEach((p) = > p.setAttribute("hidden", true));
+                
+                // Show the selected panel
+                tabGroup.querySelector(`#${targetTab.getAttribute("aria-controls")}`).removeAttribute("hidden");
+            }</script>
+  </head>
+  <body>
+    <div id="ceres-container" class="ceres-container ceres-container-tabbed">
+      <div id="ceres-tabbed-tabs" role="tablist" aria-label="Tabs">
+        <button id="ceres-tab-template" class="ceres-tabbed-tab" role="tab" aria-selected="true"
+          aria-controls="ceres-tab-panel-template-content" tabindex="0"> tab1 label </button>
+        <button id="ceres-tab2Id" class="ceres-tabbed-tab" role="tab" aria-selected="false"
+          aria-controls="ceres-tab2Id-content" tabindex="-1"> tab2 label </button>
+      </div>
+      <div id="ceres-tab-panel-template-content" class="ceres-tabbed-tab-content" role="tabpanel"
+        aria-labelledby="ceres-tab-template" tabindex="0">
+        <!-- tab1 content -->
+        <div>tab1 content from a renderArray or something more complicated</div>
+      </div>
+      <div id="ceres-tab2Id-content" class="ceres-tabbed-tab-content" role="tabpanel"
+        aria-labelledby="ceres-tab2Id" tabindex="0" hidden="hidden">
+        <!-- tab2 content -->
+        <div>tab2 content from a renderArray or something more complicated</div>
+      </div>
+    </div>
+  </body>
 </html>

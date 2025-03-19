@@ -7,16 +7,41 @@ use Ceres\Util\DataUtilities;
 
 class Drs1ItemToOralHistory extends Drs1ItemToTextMedia {
 
+    // we can use $modsRenderArray from ancestor class
+
     protected array $transcriptionRenderArray;
-    protected array $metadataRenderArray;
-    protected ArrayObject $tabArrayTemplate;
-    protected ArrayObject $tabContentArrayTemplate;
+    protected array $tabArrayTemplate =
+    [
+        [
+            'type' => 'tab',
+            'data' => [
+                'id' => '', // handled by renderer for matching tabContent
+                'label' => 'Transcription'
+            ],
+        ],
+        [
+            'type' => 'tab',
+            'data' => [
+                'id' => '', // handled by renderer for matching tabContent
+                'label' => 'Metadata'
+            ],
+        ]     
+    ];
+
+    protected array $tabContentArrayTemplate =
+    [
+        'type' => 'tabcontent',
+        'data' => [
+            'id' => '', // handled by renderer for matching up tab
+            'tabContentRenderArray' => []
+        ]
+    ];
 
     protected $renderArray = [
         'drsItem' => [
             'type' => 'jwPlayer',
             'data' => [
-                'mods' => [],
+                'mods' => [], // @todo in this class it goes into tabs
                 'drsPid' => '',
                 'jwPlayerSetup' => [
                     'imageFile' => '', //the thumbnail for the media
@@ -30,17 +55,35 @@ class Drs1ItemToOralHistory extends Drs1ItemToTextMedia {
         'drsText' => [
             'type' => 'tabbed', 
             'data' => [
+                // hardcoding here because, ya know how this process works
                 'tabs' => [
-                    ['type' => 'tab',
-                     'data' => [
-                        'id' => '', // handled by renderer for matching tabContent
-                        'label' => 'plain text label' // @todo or HTML?
-                     ]
+                    [
+                        'type' => 'tab',
+                        'data' => [
+                            'id' => '', // handled by renderer for matching tabContent
+                            'label' => 'Transcription'
+                        ],
+                    ],
+                    [
+                        'type' => 'tab',
+                        'data' => [
+                            'id' => '', // handled by renderer for matching tabContent
+                            'label' => 'Metadata'
+                        ],
                     ]
                     // repeat as necessary
                     
                 ],
                 'tabContent' => [
+                    // for transcript, key 0
+                    [
+                        'type' => 'tabcontent',
+                        'data' => [
+                            'id' => '', // handled by renderer for matching up tab
+                            'tabContentRenderArray' => []
+                        ]
+                    ],
+                    // for metadata, key 1
                     [
                         'type' => 'tabcontent',
                         'data' => [
@@ -53,6 +96,27 @@ class Drs1ItemToOralHistory extends Drs1ItemToTextMedia {
             ]
         ]
     ];
+
+    public function extract(): void {
+        // from parent class(es)
+        $this->extractContentObjects();
+        
+        // parent class does this. here, we do it in extractText
+        // because we have two+ varieties of text
+        // $this->renderArray['drsItem']['data']['mods'] = $this->extractAndReturnModsRenderArray();
+
+        // defined here
+        $this->extractText();
+        $this->extractMedia();
+
+        // apply what's been extracted to the top-level renderArray
+        $this->renderArray['drsText']['data']['tabContent']
+            [0]['data']['tabContentRenderArray'] = $this->transcriptionRenderArray;
+
+
+        $this->renderArray['drsText']['data']['tabContent']
+            [1]['data']['tabContentRenderArray'] = $this->modsRenderArray; 
+    }    
 
     /**
      * extractText
@@ -76,12 +140,10 @@ class Drs1ItemToOralHistory extends Drs1ItemToTextMedia {
 
 
         // @todo turn these into tabPanels
-        $this->renderArray['drsText']['type'] = $mimeType;
-        $this->renderArray['drsText']['data']['fileUrl'] = $fileUrl;
+        //$this->renderArray['drsText']['type'] = $mimeType;
+        //$this->renderArray['drsText']['data']['fileUrl'] = $fileUrl;
 
-        // see https://www.php.net/manual/en/arrayobject.getarraycopy.php
-
-        $transcriptionRenderArray = [
+        $this->transcriptionRenderArray = [
             'drsText' => [
                 'type' => $mimeType,
                 'data' => [
@@ -89,35 +151,10 @@ class Drs1ItemToOralHistory extends Drs1ItemToTextMedia {
                 ]
             ]
         ];
-        
-    }
 
-    protected function setTabTemplateArrayObject(): void {
 
-        $tabArrayTemplate =                    
-         [  'type' => 'tab',
-            'data' => [
-            'id' => '', // handled by renderer for matching tabContent
-            'label' => 'plain text label' // @todo or HTML?
-            ]
-        ];
-
-        $this->tabArrayTemplate = new ArrayObject($tabArrayTemplate);
-
-    }
-
-    protected function setTabContentTemplateArrayObject(): void {
-
-        $tabContentArrayTemplate =
-        [
-            'type' => 'tabcontent',
-            'data' => [
-                'id' => '', // handled by renderer for matching up tab
-                'tabContentRenderArray' => []
-            ]
-        ];
-
-        $this->tabContentArrayTemplate = new ArrayObject($tabContentArrayTemplate);
+        // pass off to ancestor's extractModsData
+        $this->extractModsData();
     }
 
 }

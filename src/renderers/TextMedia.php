@@ -88,9 +88,15 @@ class TextMedia extends Html {
             break;
 
             case 'application/pdf':
-                $text = 'PDF rendering coming soon';
+                $text = 'PDF download coming soon';
+
+            case 'text/html':
+                $text = 'HTML rendering coming soon';
 
             break;
+
+            default:
+                $text = 'Could not find a transcript file';
         }
 
         $textNode = $this->htmlDom->createTextNode($text);

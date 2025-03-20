@@ -245,6 +245,15 @@ class Html extends AbstractRenderer {
         return $dlNode;
     }
 
+    protected function appendHtmlIfiedText(string $text, DOMNode $node): DOMNode {
+        $frag = $this->htmlDom->createDocumentFragment();
+        $frag->appendXML($text);
+        $node->appendChild($frag);
+        return $node;
+
+
+    }
+
     protected function handleInnerRenderArray(array $renderArray): DOMNode {
         switch ($renderArray['type']) {
             case 'text':

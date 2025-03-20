@@ -96,7 +96,7 @@ class TextMedia extends Html {
             break;
 
             default:
-                $text = 'Could not find a transcript file';
+                $text = 'Could not find a transcript file - found mimetype: ' . $this->renderArray['drsText']['type'] ;
         }
 
         $textNode = $this->htmlDom->createTextNode($text);

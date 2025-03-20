@@ -16,12 +16,9 @@
                 }
             };
         </script>
-    </head>
-    <body>
         <script>
         //from https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/tab_role#example
         
-        console.log('pre tab setup');
         
         
         window.addEventListener("DOMContentLoaded", () => {
@@ -79,7 +76,11 @@
             
             // Show the selected panel
             tabGroup.querySelector(`#${targetTab.getAttribute("aria-controls")}`).removeAttribute("hidden");
-        }</script>
+        }
+        </script>
+    </head>
+    <body>
+        
         <div id="ceres-container" class="ceres-container ceres-oral-history"
             style="height: fit-content;">
             <div id="ceres-container-media" class="ceres-container-media"> </div>

@@ -1,3 +1,41 @@
+.tabs {
+    padding: 1em;
+}
+
+[role = "tablist"] {
+    margin-bottom: -1px;
+}
+
+[role = "tab"] {
+    position: relative;
+    z-index: 1;
+    background: white;
+    border-radius: 5px 5px 0 0;
+    border: 1px solid grey;
+    border-bottom: 0;
+    padding: 0.2em;
+}
+
+[role = "tab"][aria-selected = "true"] {
+    z-index: 3;
+}
+
+[role = "tabpanel"] {
+    position: relative;
+    padding: 0 0.5em 0.5em 0.7em;
+    border: 1px solid grey;
+    border-radius: 0 0 5px 5px;
+    background: white;
+    z-index: 2;
+    width: 40%;
+}
+
+[role = "tabpanel"]:focus {
+    border-color: orange;
+    outline: 1px solid orange;
+    width: 40%;
+}
+
 .ceres_container {
     height: fit-content;
 }
@@ -22,4 +60,5 @@
 .ceres-container-dl {
     border: 5px solid red;
     padding: 5px;    
+    width: fit-content;
 }

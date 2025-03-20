@@ -5,6 +5,8 @@ namespace Ceres\Extractor;
 use ArrayObject;
 use Ceres\Util\DataUtilities;
 
+require_once(CERES_ROOT_DIR . '/src/extractors/Drs1ItemToTextMedia.php');
+
 class Drs1ItemToOralHistory extends Drs1ItemToTextMedia {
 
     // we can use $modsRenderArray from ancestor class
@@ -37,7 +39,7 @@ class Drs1ItemToOralHistory extends Drs1ItemToTextMedia {
         ]
     ];
 
-    protected $renderArray = [
+    protected array $renderArray = [
         'drsItem' => [
             'type' => 'jwPlayer',
             'data' => [

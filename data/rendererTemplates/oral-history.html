@@ -3,32 +3,107 @@
 <html>
     <head>
         <title>oral history container</title>
-        
         <link rel="stylesheet" href="http://localhost/Ceres/assets/css/oral-history.css" />
-        <script src='https://cdn.jwplayer.com/libraries/dTFl0VEe.js'></script>
-        <script src='../assets/js/jquery-3.7.1.min.js'></script>
+        <script src="https://cdn.jwplayer.com/libraries/dTFl0VEe.js"></script>
+        <script src="../assets/js/jquery-3.7.1.min.js"></script>
         <script>
             document.onreadystatechange = () => {
-            console.log(document.readyState);
-                if(document.readyState === "complete") {
-                    jwplayer('jwplayer').setup(jwPlayerSetup).setCaptions({'fontSize': 9});
+                console.log(document.readyState);
+                if (document.readyState === "complete") {
+                    jwplayer('jwplayer').setup(jwPlayerSetup).setCaptions({
+                        'fontSize': 9
+                    });
                 }
-
             };
-        </script>       
+        </script>
     </head>
     <body>
+        <script>
+        //from https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Roles/tab_role#example
         
-        <div id="ceres-container" class="ceres-container ceres-oral-history" style="height: fit-content;">
-            <div id="ceres-container-media" class="ceres-container-media">
+        console.log('pre tab setup');
+        
+        
+        window.addEventListener("DOMContentLoaded", () => {
+            // Only handle one particular tablist; if you have multiple tab
+            // lists (might even be nested), you have to apply this code for each one
+            const tabList = document.querySelector('[role="tablist"]');
+            const tabs = tabList.querySelectorAll(':scope > [role="tab"]');
+            
+            // Add a click event handler to each tab
+            tabs.forEach((tab) => {
+                tab.addEventListener("click", changeTabs);
+            });
+            
+            // Enable arrow navigation between tabs in the tab list
+            let tabFocus = 0;
+            
+            tabList.addEventListener("keydown", (e) => {
+                // Move right
+                if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+                    tabs[tabFocus].setAttribute("tabindex", -1);
+                    if (e.key === "ArrowRight") {
+                        tabFocus++;
+                        // If we're at the end, go to the start
+                        if (tabFocus >= tabs.length) {
+                            tabFocus = 0;
+                        }
+                        // Move left
+                    } else if (e.key === "ArrowLeft") {
+                        tabFocus--;
+                        // If we're at the start, move to the end
+                        if (tabFocus < 0) {
+                            tabFocus = tabs.length - 1;
+                        }
+                    }
+                    
+                    tabs[tabFocus].setAttribute("tabindex", 0);
+                    tabs[tabFocus].focus();
+                }
+            });
+        });
+        
+        function changeTabs(e) {
+            const targetTab = e.target;
+            const tabList = targetTab.parentNode;
+            const tabGroup = tabList.parentNode;
+            
+            // Remove all current selected tabs
+            tabList.querySelectorAll(':scope > [aria-selected="true"]').forEach((t) => t.setAttribute("aria-selected", false));
+            
+            // Set this tab as selected
+            targetTab.setAttribute("aria-selected", true);
+            
+            // Hide all tab panels
+            tabGroup.querySelectorAll(':scope > [role="tabpanel"]').forEach((p) => p.setAttribute("hidden", true));
+            
+            // Show the selected panel
+            tabGroup.querySelector(`#${targetTab.getAttribute("aria-controls")}`).removeAttribute("hidden");
+        }</script>
+        <div id="ceres-container" class="ceres-container ceres-oral-history"
+            style="height: fit-content;">
+            <div id="ceres-container-media" class="ceres-container-media"> </div>
+            <div id="ceres-tabbed-tabs" role="tablist" aria-label="Tabs">
+                <button id="ceres-tab-template" class="ceres-tabbed-tab" role="tab"
+                    aria-selected="true" aria-controls="ceres-tab-panel-template-content"
+                    tabindex="-1">Transcription</button>
+                <button id="ceres-tab2Id" class="ceres-tabbed-tab" role="tab" aria-selected="false"
+                    aria-controls="ceres-tab2Id-content" tabindex="-1">Metadata</button>
             </div>
-            <div id="ceres-container-text" class="ceres-container-text">
+            <div id="ceres-tab-panel-template-content" class="ceres-tabbed-tab-content"
+                role="tabpanel" aria-labelledby="ceres-tab-template" tabindex="0">
+                <!-- tab1 content -->
+                <div>Transcription goes here</div>
+                <div id="ceres-container-text" class="ceres-container-text"> </div>   
             </div>
-            <div id="ceres-container-dl" class="ceres-container-dl">
+            <div id="ceres-tab2Id-content" class="ceres-tabbed-tab-content" role="tabpanel"
+                aria-labelledby="ceres-tab2Id" tabindex="0" hidden="hidden">
+                <!-- tab2 content -->
+                <div>Metadata goes here</div>
+                <div id="ceres-container-dl" class="ceres-container-dl"> </div>           
             </div>
+                     
+             
         </div>
-        
-        
-        
     </body>
 </html>

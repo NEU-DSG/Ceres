@@ -23,12 +23,13 @@ class Drs1ItemToTextMedia extends AbstractDrs1ItemExtractor {
             ] 
     
         ],
-        'drsText' => [
-            'type' => '', // could be .txt, .html, .rtf, .docx, .ods, or fking .pdf
-            'data' => [
-                'fileUrl' => '', // the url to get the contents from
-                'text' => ''
-    
+        // look among the associated files for what might be a transcription
+        'drsAssociatedFiles' => [
+            [
+                'type' => '', // the mimetype of the associated file
+                'data' => [
+                    'fileUrl' => '', // the url to get the contents from
+                ]
             ]
         ]
     ];
@@ -46,7 +47,7 @@ class Drs1ItemToTextMedia extends AbstractDrs1ItemExtractor {
         $this->renderArray['drsItem']['data']['mods'] = $this->extractAndReturnModsRenderArray();
 
         // defined here
-        $this->extractText();
+        $this->extractAssociatedFiles();
         $this->extractMedia();
     }
 
@@ -75,20 +76,30 @@ class Drs1ItemToTextMedia extends AbstractDrs1ItemExtractor {
         // print_r($this->renderArray['drsItem']['data']['jwPlayerSetup']);
         // die();
     }
+// @todo turn this into extractTextsArray to roll through the files and record mimetypes
+// to pass along to the renderer
 
-    protected function extractText(): void {
+    protected function extractAssociatedFiles(): void {
         // @todo check this against having multiple pids in associated
         // might need to switch here after a mimetype check
-        $transcriptionPid = array_key_first($this->sourceData['associated']);
 
-        $transcriptionDataUrl = 'https://repository.library.northeastern.edu/api/v1/files/' . $transcriptionPid;
-        $transcriptionData = file_get_contents($transcriptionDataUrl);
-        $transcriptionData = json_decode($transcriptionData, true);
-        $canonicalObject = $transcriptionData['canonical_object'];
-        $fileUrl = array_key_first($canonicalObject);
+        $parsedAssociatedFilesArray = [];
+
+        $associatedFilesArray = array_keys($this->sourceData['associated']);
+        foreach ($associatedFilesArray as $pid) {
+            $pidDataUrl = 'https://repository.library.northeastern.edu/api/v1/files/' . $pid;
+            $pidData = file_get_contents($pidDataUrl);
+            $pidData = json_decode($pidData, true);
+            $canonicalObject = $pidData['canonical_object'];
+            $fileUrl = array_key_first($canonicalObject);
+            $mimeType = DataUtilities::getMimeTypeForUrl($fileUrl);
+            $parsedAssociatedFilesArray[] = [
+                'type' => $mimeType,
+                'data' => ['fileUrl' => $fileUrl]
+            ];
+        }
+
         $mimeType = DataUtilities::getMimeTypeForUrl($fileUrl);
-        $this->renderArray['drsText']['type'] = $mimeType;
-        $this->renderArray['drsText']['data']['fileUrl'] = $fileUrl;
+        $this->renderArray['drsAssociatedFiles'] = $parsedAssociatedFilesArray;
     }
-
 }

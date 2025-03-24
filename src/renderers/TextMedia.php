@@ -76,29 +76,40 @@ class TextMedia extends Html {
     }
 
     public function buildTextContainerNode(): DOMNode {
-        switch ($this->renderArray['drsText']['type']) {
-            case 'text/plain':
-                $text = $this->renderArray['drsText']['data']['text'];
-                $textUrl = $this->renderArray['drsText']['data']['fileUrl'];
-                $text = file_get_contents($textUrl);
-                if (!$text) {
-                    $text = "Could not find a transcript file";
-                }
+        $associatedFiles = $this->renderArray['drsAssociatedFiles'];
 
-            break;
+        foreach ($associatedFiles as $associatedFileRenderArray) {
+            // look for text/html, then text/plain, then crap
+            switch ($associatedFileRenderArray['type']) {
+                case 'text/html':
 
-            case 'application/pdf':
-                $text = 'PDF download coming soon';
+                    $htmlUrl = $associatedFileRenderArray['data']['fileUrl'];
+                    $html = file_get_contents($htmlUrl);
 
-            case 'text/html':
-                $text = 'HTML rendering coming soon';
+                    $htmlFrag = $this->htmlDom->createDocumentFragment();
+                    $htmlFrag->appendXML($html);
+                    return $htmlFrag;
+                break;
 
-            break;
+                case 'text/plain':
+                    $textUrl = $associatedFileRenderArray['data']['fileUrl'];
+                    $text = file_get_contents($textUrl);
+                    if (!$text) {
+                        $text = "Could not find a transcript file";
+                    }                    
+                break;
 
-            default:
-                $text = 'Could not find a transcript file - found mimetype: ' . $this->renderArray['drsText']['type'] ;
+                case 'application/pdf':
+                    $text = 'PDF download coming soon';
+                break;
+
+                default:
+                    $text = 'Could not find a transcript file - found mimetype: ' . $associatedFileRenderArray['type'];
+
+            }
+
         }
-
+        
         $textNode = $this->htmlDom->createTextNode($text);
         return $textNode;
     }

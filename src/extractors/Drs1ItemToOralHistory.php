@@ -30,12 +30,12 @@ class Drs1ItemToOralHistory extends Drs1ItemToTextMedia {
         ]     
     ];
 
-    protected array $tabContentArrayTemplate =
+    protected array $tabPanelArrayTemplate =
     [
-        'type' => 'tabcontent',
+        'type' => 'tabPanel',
         'data' => [
             'id' => '', // handled by renderer for matching up tab
-            'tabContentRenderArray' => []
+            'tabPanelRenderArray' => []
         ]
     ];
 
@@ -76,21 +76,21 @@ class Drs1ItemToOralHistory extends Drs1ItemToTextMedia {
                     // repeat as necessary
                     
                 ],
-                'tabContent' => [
+                'tabPanels' => [
                     // for transcript, key 0
                     [
-                        'type' => 'tabcontent',
+                        'type' => 'tabPanel',
                         'data' => [
                             'id' => '', // handled by renderer for matching up tab
-                            'tabContentRenderArray' => []
+                            'tabPanelRenderArray' => []
                         ]
                     ],
                     // for metadata, key 1
                     [
-                        'type' => 'tabcontent',
+                        'type' => 'tabPanel',
                         'data' => [
                             'id' => '', // handled by renderer for matching up tab
-                            'tabContentRenderArray' => []
+                            'tabPanelRenderArray' => []
                         ]
                     ]
                     // repeat as necessary
@@ -112,12 +112,12 @@ class Drs1ItemToOralHistory extends Drs1ItemToTextMedia {
         $this->extractMedia();
 
         // apply what's been extracted to the top-level renderArray
-        $this->renderArray['drsText']['data']['tabContent']
-            [0]['data']['tabContentRenderArray'] = $this->transcriptionRenderArray;
+        $this->renderArray['drsText']['data']['tabPanels']
+            [0]['data']['tabPanelRenderArray'] = $this->transcriptionRenderArray;
 
 
-        $this->renderArray['drsText']['data']['tabContent']
-            [1]['data']['tabContentRenderArray'] = $this->modsRenderArray; 
+        $this->renderArray['drsText']['data']['tabPanels']
+            [1]['data']['tabPanelRenderArray'] = $this->modsRenderArray; 
     }    
 
     /**

@@ -100,7 +100,11 @@ class TextMedia extends Html {
                 break;
 
                 case 'application/pdf':
-                    $text = 'PDF download coming soon';
+                    $pdfUrl = $associatedFileRenderArray['data']['fileUrl'];
+                    $html = "Download <a href='". $pdfUrl . "'>PDF</a>";
+                    $htmlFrag = $this->htmlDom->createDocumentFragment();
+                    $htmlFrag->appendXML($html);
+                    return $htmlFrag;
                 break;
 
                 default:

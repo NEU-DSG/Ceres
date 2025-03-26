@@ -1,6 +1,5 @@
 .ceres-container-text {
     max-height: 500px;
-    border: 5px solid black;   
     overflow: scroll;
     word-wrap: break-word; 
     white-space: pre-wrap;

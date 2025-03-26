@@ -112,10 +112,6 @@ class Tabbed extends Html {
         }
 
         $newTabPanelNode->setAttribute('aria-labelledby', $tabId);
-
-
         return $newTabPanelNode;
-
     }
-
 }

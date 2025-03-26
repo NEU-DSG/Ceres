@@ -6,10 +6,11 @@ require_once(CERES_ROOT_DIR . '/src/renderers/Html.php');
 
 use DOMElement;
 use DOMNode;
+// @todo I don't think this is needed -- we're in the same namespace, so `use` is redundant
+
 use Ceres\Renderer\Html as Html;
 
 class TextMedia extends Html {
-
 
     protected string $templateFileName = 'text-media.html';
     public DOMElement $textContainerNode;
@@ -40,27 +41,16 @@ class TextMedia extends Html {
                     ]
                 ];
                 $jwPlayerRenderArray['data']['jwPlayerSetup'] = $this->renderArray['drsItem']['data']['jwPlayerSetup'];
-                // echo $jwPlayerRenderArray;
-                // die();
                 
                 // pass off to Jwplayer renderer
                 $jwPlayerRenderer = new Jwplayer;
                 $jwPlayerRenderer->setRenderArrayFromArray($jwPlayerRenderArray);
                 $jwPlayerRenderer->build();
 
-                // $jwPlayerSetup = $jwPlayerRenderer->getJwplayerSetupAsJson();
-                // echo $jwPlayerSetup;
-                // die();
-
-
-
-
-                // the jwPlayer node is built in a different DOMDocument
                 // @todo is it? it _should be_ but doesn't seem to be
                 $foreignContainerNode = $jwPlayerRenderer->getContainerNode();
                 $nativeContainerNode = $this->htmlDom->importNode($foreignContainerNode, true);
                
-                //$jwPlayerNode = $this->htmlDom->getElementById('jwplayer');
                 $jwPlayerNode = $this->htmlDom->createElement('div');
                 $jwPlayerNode->setAttribute('id', 'jwplayer');
                
@@ -68,11 +58,7 @@ class TextMedia extends Html {
                 
                 return $jwPlayerNode;
             break;
-
-
-
         }
-
     }
 
     public function buildTextContainerNode(): DOMNode {
@@ -109,9 +95,7 @@ class TextMedia extends Html {
 
                 default:
                     $text = 'Could not find a transcript file - found mimetype: ' . $associatedFileRenderArray['type'];
-
             }
-
         }
         
         $textNode = $this->htmlDom->createTextNode($text);

@@ -99,7 +99,6 @@ class Drs1ItemToTextMedia extends AbstractDrs1ItemExtractor {
             ];
         }
 
-        $mimeType = DataUtilities::getMimeTypeForUrl($fileUrl);
         $this->renderArray['drsAssociatedFiles'] = $parsedAssociatedFilesArray;
     }
 }

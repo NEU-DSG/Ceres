@@ -3,5 +3,6 @@ data/rendererTemplates/brc-leaflet.html
 assets/js/leaflet/brc/leaflet-brc-project.js
 src/renderers/mock
 mockData
+config/ceresSetup.php
 Ceres.code-workspace
 .vscode

@@ -35,7 +35,14 @@ class Html extends AbstractRenderer {
         $this->stripCeresIds();
         return $this->htmlDom->saveHtml();
     }
-
+    /**
+     * render
+     * 
+     * produces just the HTML for the ceres container
+     * oft overridden in descendent classes
+     *
+     * @return string
+     */
     public function render(): string {
         $this->build();
         // only strip the ids related to ceres, marked by the string
@@ -50,6 +57,15 @@ class Html extends AbstractRenderer {
         $this->appendTextNode($this->containerNode, $text);
     }
 
+    /**
+     * toHtmlString
+     * 
+     * returns the HTML to render
+     * can pass an arbitrary node to render if need be
+     *
+     * @param DOMNode|null $node
+     * @return string
+     */
     public function toHtmlString(?DOMNode $node = null): string {
         if (is_null($node)) {
             $node = $this->containerNode;
@@ -73,8 +89,16 @@ class Html extends AbstractRenderer {
     protected function getContainerNode() : DOMNode {
         return $this->containerNode;
     }
-
-    protected function appendToClass(DOMElement $node, $value ):void {
+    /**
+     * appendToClass
+     * 
+     * add a value to the CSS classes for the element
+     *
+     * @param DOMElement $node
+     * @param string $value
+     * @return void
+     */
+    protected function appendToClass(DOMElement $node, string $value ):void {
         $class = $node->getAttribute('class');
         $class = $class .= " $value";
         $node->setAttribute('class', $class);
@@ -91,6 +115,13 @@ class Html extends AbstractRenderer {
         }
     }
 
+    /**
+     * stripCeresIds
+     * 
+     * deletes ceres-container ids to avoid id collisions
+     *
+     * @return void
+     */
     protected function stripCeresIds(): void {
         $xpath = "//div[contains(@id,'ceres-container')]";
         $nodes = $this->xPath->query($xpath, $this->htmlDom);
@@ -229,17 +260,6 @@ class Html extends AbstractRenderer {
                 $ddFrag->appendXML($ddText);
                 $dlNode->appendChild($ddFrag);
 
-
-/*
-                $ddNode = $this->htmlDom->createElement('dd');
-                $ddTextNode = $this->htmlDom->createTextNode($dd);
-                $ddNode->appendChild($ddTextNode);
-                // @todo: handleInnerRenderArray isn't working as expected
-                //$innerDdNode = $this->handleInnerRenderArray($dd);
-                //$ddNode->appendChild($innerDdNode);
-                $dlNode->appendChild($ddNode);
-
-*/                
             }
         }
         return $dlNode;
@@ -250,8 +270,6 @@ class Html extends AbstractRenderer {
         $frag->appendXML($text);
         $node->appendChild($frag);
         return $node;
-
-
     }
 
     protected function handleInnerRenderArray(array $renderArray): DOMNode {

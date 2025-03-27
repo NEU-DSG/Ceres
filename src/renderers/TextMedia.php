@@ -29,7 +29,13 @@ class TextMedia extends Html {
         $this->mediaContainerNode->appendChild($mediaContainerNode);
         $this->textContainerNode->appendChild($this->buildTextContainerNode());
     }
-
+    /**
+     * buildMediaContainerNode
+     *
+     * Builds the media container (currently just JWPlayer)
+     * 
+     * @return DOMNode
+     */
     public function buildMediaContainerNode(): DOMNode {
         $type = $this->renderArray['drsItem']['type'];
         switch ($type) {
@@ -61,6 +67,14 @@ class TextMedia extends Html {
         }
     }
 
+    /**
+     * buildTextConainerNode
+     * 
+     * builds the (possibly) tabbed content for text(s) alongside the media
+     * could be overridden by descendant classes according to need
+     *
+     * @return DOMNode
+     */
     public function buildTextContainerNode(): DOMNode {
         $associatedFiles = $this->renderArray['drsAssociatedFiles'];
 

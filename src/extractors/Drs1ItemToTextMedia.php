@@ -70,9 +70,7 @@ class Drs1ItemToTextMedia extends AbstractDrs1ItemExtractor {
         $pid = $mediaUrlParts[array_keys($mediaUrlParts)[count($mediaUrlParts) - 1]];
         $pid = str_replace('?datastream_id=content', '', $pid);
         $wowzaUrl = 'https://repository.library.northeastern.edu/wowza/' . $pid . '/plain';
-        //$sourceFileType = DataUtilities::getMimeTypeForUrl($wowzaUrl);
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFile'] = $wowzaUrl;
-        //$this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFile'] = $mediaUrl;
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFileType'] = 'video/mp4';
         //$this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFileType'] = $sourceFileType;
 
@@ -81,8 +79,6 @@ class Drs1ItemToTextMedia extends AbstractDrs1ItemExtractor {
         }
         
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['imageFile'] = $imageFile;
-        // print_r($this->renderArray['drsItem']['data']['jwPlayerSetup']);
-        // die();
     }
 // @todo turn this into extractTextsArray to roll through the files and record mimetypes
 // to pass along to the renderer

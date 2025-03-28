@@ -59,7 +59,11 @@ class Drs1ItemToTextMedia extends AbstractDrs1ItemExtractor {
 
         //flip the array to make it easier to dig up associated files
         $contentObjects = array_flip($this->sourceData['content_objects']);
-        $vttFileUrl = $contentObjects['Text Document'];
+        
+        if (array_key_exists('Text Document', $contentObjects)) {
+            $vttFileUrl = $contentObjects['Text Document'];
+        }
+        
         $imageFile = $contentObjects['Master Image'];
 
         $mediaUrlParts = explode('/', $mediaUrl);
@@ -71,7 +75,11 @@ class Drs1ItemToTextMedia extends AbstractDrs1ItemExtractor {
         //$this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFile'] = $mediaUrl;
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFileType'] = 'video/mp4';
         //$this->renderArray['drsItem']['data']['jwPlayerSetup']['sourceFileType'] = $sourceFileType;
-        $this->renderArray['drsItem']['data']['jwPlayerSetup']['vttFile'] = $vttFileUrl;
+
+        if (isset($vttFileUrl)) {
+            $this->renderArray['drsItem']['data']['jwPlayerSetup']['vttFile'] = $vttFileUrl;
+        }
+        
         $this->renderArray['drsItem']['data']['jwPlayerSetup']['imageFile'] = $imageFile;
         // print_r($this->renderArray['drsItem']['data']['jwPlayerSetup']);
         // die();
@@ -85,6 +93,9 @@ class Drs1ItemToTextMedia extends AbstractDrs1ItemExtractor {
 
         $parsedAssociatedFilesArray = [];
 
+        if (is_null($this->sourceData['associated'])) {
+            $this->renderArray['drsAssociatedFiles'] = [];
+        } else {
         $associatedFilesArray = array_keys($this->sourceData['associated']);
         foreach ($associatedFilesArray as $pid) {
             $pidDataUrl = 'https://repository.library.northeastern.edu/api/v1/files/' . $pid;
@@ -98,7 +109,7 @@ class Drs1ItemToTextMedia extends AbstractDrs1ItemExtractor {
                 'data' => ['fileUrl' => $fileUrl]
             ];
         }
-
         $this->renderArray['drsAssociatedFiles'] = $parsedAssociatedFilesArray;
+        }
     }
 }

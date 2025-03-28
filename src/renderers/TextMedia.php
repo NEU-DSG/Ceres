@@ -77,7 +77,11 @@ class TextMedia extends Html {
      */
     public function buildTextContainerNode(): DOMNode {
         $associatedFiles = $this->renderArray['drsAssociatedFiles'];
-
+        if (empty($associatedFiles)) {
+            $text = "No text found";
+            $textNode = $this->htmlDom->createTextNode($text);
+            return $textNode;
+        }
         foreach ($associatedFiles as $associatedFileRenderArray) {
             // look for text/html, then text/plain, then crap
             switch ($associatedFileRenderArray['type']) {

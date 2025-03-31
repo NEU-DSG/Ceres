@@ -171,16 +171,16 @@ class ViewPackage {
         return $this->renderer->render();
     }
 
-    public function setFetcherQueryFromFile(?string $fetcherName = null, string $file) {
+    public function setFetcherQueryFromFile(string $file, ?string $fetcherName) {
         $fetcher = $this->renderer->getFetcher($fetcherName);
         $fetcher->setQueryFromFile($file);
     }
 
-    public function setFetcherOptionValue(?string $fetcherName = null, string $optionName, string $optionValue) {
-        $this->renderer->setFetcherOptionValue($fetcherName, $optionName, $optionValue);
+    public function setFetcherOptionValue(string $optionName, string $optionValue, ?string $fetcherName) {
+        $this->renderer->setFetcherOptionValue($optionName, $optionValue, $fetcherName);
     }
 
-    public function setExtractorOptionValue(?string $extractorName = null, string $optionName, string $optionValue ) {
+    public function setExtractorOptionValue(string $optionName, string $optionValue, ?string $extractorName ) {
         $this->renderer->setExtractorOptionValue($extractorName, $optionName, $optionValue);
     }
 

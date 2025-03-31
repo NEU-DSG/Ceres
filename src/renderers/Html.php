@@ -130,7 +130,7 @@ class Html extends AbstractRenderer {
         }
     }
 
-    protected function setGlobalAttributes(array $globalAtts = [], DOMNode $node) {
+    protected function setGlobalAttributes(DOMNode $node, array $globalAtts) {
         foreach($globalAtts as $att => $value) {
             $attributeNode = $this->htmlDom->createAttribute($att);
             $attributeNode->value = $value;
@@ -143,7 +143,7 @@ class Html extends AbstractRenderer {
     protected function imgRenderArrayToImg(array $renderArray): DOMNode {
         $imgNode = $this->htmlDom->createElement('img');
         if (isset($renderArray['globalAtts'])) {
-            $this->setGlobalAttributes($renderArray['globalAtts'], $imgNode);
+            $this->setGlobalAttributes($imgNode, $renderArray['globalAtts']);
             unset($renderArray['globalAtts']);
         }
         return $imgNode;
@@ -152,7 +152,7 @@ class Html extends AbstractRenderer {
     protected function linkArrayToA(array $linkData) : DOMNode {
         $aNode = $this->htmlDom->createElement('a');
         if (isset($renderArray['globalAtts'])) {
-            $this->setGlobalAttributes($linkData['globalAtts'], $aNode);
+            $this->setGlobalAttributes($aNode, $linkData['globalAtts']);
             unset($renderArray['globalAtts']);   
         }
         
@@ -181,7 +181,7 @@ class Html extends AbstractRenderer {
     protected function listRenderArrayToUl(array $renderArray): DOMNode {
         $ulNode = $this->htmlDom->createElement('ul');
         if (isset($renderArray['globalAtts'])) {
-            $this->setGlobalAttributes($renderArray['globalAtts'], $ulNode);
+            $this->setGlobalAttributes($ulNode, $renderArray['globalAtts']);
             unset($renderArray['globalAtts']);
         }
         
@@ -196,7 +196,7 @@ class Html extends AbstractRenderer {
     protected function listRenderArrayToOl(array $renderArray) : DOMNode {
         $olNode = $this->htmlDom->createElement('ol');
         if (isset($renderArray['globalAtts'])) {
-            $this->setGlobalAttributes($renderArray['globalAtts'], $olNode);
+            $this->setGlobalAttributes($olNode, $renderArray['globalAtts']);
             unset($renderArray['globalAtts']);  
         }
         

@@ -237,7 +237,7 @@ abstract class AbstractRenderer {
     public function setExtractorOptionsValues(string $extractorName, array $optionValues): void {
     }
 
-    public function setFetcherOptionValue(?string $fetcherName = null, $optionName, $optionValue) {
+    public function setFetcherOptionValue( string $optionName, string $optionValue, ?string $fetcherName) {
         $fetcher = $this->getFetcher($fetcherName);
         $fetcher->setFetcherOptionValue($optionName, $optionValue);
     }

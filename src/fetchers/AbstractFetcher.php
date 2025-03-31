@@ -313,7 +313,7 @@ abstract class AbstractFetcher {
     }
 
     //@todo another one to abstract across F/E/Rs, probably as a Trait
-    public function setFetcherOptionValue(string $optionName, $optionValue, bool $asCurrentValue = false) {
+    public function setFetcherOptionValue(string $optionName, string $optionValue, bool $asCurrentValue = false) {
         if ($asCurrentValue) {
             $this->fetcherOptions[$optionName]['currentValue'] = $optionValue;    
         } else {

@@ -75,7 +75,7 @@ class ViewPackage {
 
     }
 
-    public function buildExtractor(string $shortName = null) {
+    public function buildExtractor(?string $shortName = null) {
         $data = $this->currentViewPackageData['extractors'];
         if (empty($data)) {
             return null;
@@ -99,7 +99,7 @@ class ViewPackage {
         return $extractor;
     }
 
-    public function buildFetcher(string $shortName = null) {
+    public function buildFetcher(?string $shortName = null) {
         $data = $this->currentViewPackageData['fetchers'];
 
         if (empty($data)) {

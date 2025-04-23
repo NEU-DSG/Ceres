@@ -46,6 +46,19 @@ $textRenderArray = ['type' => 'text',
                     'subtype' => '', //the HTML element to wrap the text in
                     'data' => 'text to render'
                     ];
+/* `type` refers to the array structure, which is often the same
+ * as the renderer to use.
+ * For the same data structure but different renderers, `subtype` 
+ * is added.
+ */
+ 
+
+
+ 
+$textRenderArray = ['type' => 'text',
+                    'subtype' => '', //the HTML element to wrap the text in
+                    'data' => 'text to render'
+                    ];
 
 $imgRenderArray = ['type' => 'img',
                    'data' => [

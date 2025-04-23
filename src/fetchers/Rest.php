@@ -21,6 +21,13 @@ class Rest extends AbstractFetcher {
     protected ?string $resourceId;
     
     /**
+     * The ID of the remote resource (DRS pid, DPLA hash id, etc)
+     * @var string
+     */
+
+    protected string $resourceId;
+    
+    /**
      * GET params to tack on to the $endpoint + $queryOptions path
      * @var array
      */
@@ -96,7 +103,7 @@ class Rest extends AbstractFetcher {
         return $this->queryOptions[$option];
     }
 
-    public function setResourceId(?string $resourceId = null): void {
+    public function setResourceId($resourceId): void {
         $this->resourceId = $resourceId;
     }
 

@@ -4,11 +4,13 @@ namespace Ceres\Renderer;
 use Ceres\Util\StringUtilities as StringUtils;
 use DOMDocument;
 use DOMNode;
+use DOMNode;
 use DOMElement;
 use DOMXPath;
 
 class Html extends AbstractRenderer {
 
+    protected DOMNode $containerNode;
     protected DOMNode $containerNode;
     protected DOMXPath $xPath;
     protected DOMDocument $htmlDom;

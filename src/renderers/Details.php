@@ -5,6 +5,7 @@ use Ceres\Renderer\Html;
 use DOMNode;
 
 //only here because I don't have a real autoloader
+//only here because I don't have a real autoloader
 require_once(CERES_ROOT_DIR . '/src/renderers/Html.php');
 class Details extends Html {
     protected DOMNode $detailsNode;

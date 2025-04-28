@@ -15,10 +15,10 @@ class Rest extends AbstractFetcher {
 
     /**
      * The ID of the remote resource (DRS pid, DPLA hash id, etc)
-     * @var string
+     * @var ?string
      */
 
-    protected string $resourceId;
+    protected ?string $resourceId;
     
     /**
      * GET params to tack on to the $endpoint + $queryOptions path

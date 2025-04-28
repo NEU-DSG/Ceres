@@ -1,14 +1,15 @@
-<?php 
+<?php
 
 namespace Ceres\Fetcher;
 
+require_once(CERES_ROOT_DIR . '/src/fetchers/AbstractFetcher.php');
 use Ceres\Exception\DataException;
 use Ceres\Exception\Fetcher as FetcherException;
 
 class Sparql extends AbstractFetcher {
 
     protected string $queryForm = 'SELECT DISTINCT'; // 'SELECT', 'CONSTRUCT', 'ASK', 'DESCRIBE'
-    
+
 
     protected array $prefixes = [
         'dct' => 'http://purl.org/dc/terms/',
@@ -33,7 +34,7 @@ class Sparql extends AbstractFetcher {
     protected string $lang = 'en'; // @todo: make an option???
     /**
      * whereQueryClauses
-     * 
+     *
      * a list of base query clauses, before filter, optional, service, etc
      *
      * @var array
@@ -85,7 +86,7 @@ class Sparql extends AbstractFetcher {
 
     public function parseItemsData(): void {
     }
-    
+
     public function fetchPage(int $pageNumber) {
     }
 
@@ -93,7 +94,7 @@ class Sparql extends AbstractFetcher {
     }
 
     // end abstract overrides
-    
+
 
     public function addPrefixes(array $prefixes) {
         foreach ($prefixes as $prefix => $uri) {
@@ -108,7 +109,7 @@ class Sparql extends AbstractFetcher {
 
     /**
      * addWhereQueryClause
-     * 
+     *
      * Not necessarily a single line, to allow for multiline ttl bits
      *
      * @param string $clause
@@ -159,10 +160,6 @@ class Sparql extends AbstractFetcher {
         $this->fetcherOptions['lang'] = $lang;
     }
 
-    public function getQuery(): string {
-        return $this->query;
-    }
-
     public function setQueryForm(string $queryForm) {
         $allowedQueryForms = ['SELECT DISTINCT', 'SELECT', 'ASK', 'DESCRIBE'];
         $queryForm = strtoupper($queryForm);
@@ -189,7 +186,7 @@ class Sparql extends AbstractFetcher {
     }
 
     public function detectResponseFormat() {
-        
+
     }
 
     public function buildResultVars() {
@@ -289,5 +286,5 @@ class Sparql extends AbstractFetcher {
         $prefixesString = $this->buildPrefixesString();
         $this->query = $prefixesString . $this->query;
     }
-    
+
 }

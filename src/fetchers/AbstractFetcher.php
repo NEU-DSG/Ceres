@@ -1,6 +1,6 @@
 <?php 
 
-    namespace Ceres\Fetcher;
+namespace Ceres\Fetcher;
 
 use Ceres\Util\DataUtilities;
 
@@ -28,7 +28,7 @@ abstract class AbstractFetcher {
      * @var string
      */
 
-    protected string $resourceId;
+    protected ?string $resourceId;
 
     /**
      * GET params to tack on to the $endpoint + $queryOptions path
@@ -80,7 +80,8 @@ abstract class AbstractFetcher {
      */
 
     protected $currentPage;
-
+/*
+commenting out until PMJ sorts out the Abstract? Rest Fetcher
     abstract protected function buildQueryString(?array $queryOptions = null, ?array $queryParams = null): void;
 
     abstract protected function parseItemsData(): void;
@@ -88,6 +89,9 @@ abstract class AbstractFetcher {
     abstract protected function fetchPage(int $pageNumber);
 
     abstract protected function getPageUrl(int $pageNumber);
+*/
+
+    abstract protected function fetchPage(int $pageNumber);
 
     /**
      * Takes API-specific response to set currentPage, pageCount, and perPage
@@ -337,7 +341,7 @@ abstract class AbstractFetcher {
         return $this->queryOptions[$option];
     }
 
-    public function setResourceId($resourceId) {
+    public function setResourceId(?string $resourceId): void {
         $this->resourceId = $resourceId;
     }
 

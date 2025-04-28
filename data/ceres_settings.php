@@ -945,7 +945,7 @@ function getOptionsValues() {
         ],
         'firstRowIsHeader' => [
             'defaults' => [
-                'ceres' => '',
+                'ceres' => true,
                 '$projectName' => '',
                 '$viewPackageName' => '',
                 'leaflet_wikidata_for_public_art_table' => true,

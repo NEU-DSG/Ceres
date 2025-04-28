@@ -25,7 +25,8 @@ WHERE {
    FILTER(LANG(?officialName) = ?langCode).
 
    BIND(REPLACE(STR(?organization), ?baseURI, "") AS ?qid).
-
+# why in this system is ?organization not already the URI? is that wikidata weirdness
+# does snowman do something weird with it?
    OPTIONAL{?organization ?hasDescription ?description.}
    OPTIONAL{?organization ?hasType ?orgType.}
    OPTIONAL{?organization ?hasWikidataItem ?wdItem.}

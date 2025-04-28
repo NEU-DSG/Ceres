@@ -60,8 +60,11 @@ class Tabular extends Html {
         if (!$this->renderArray) {
             $this->setRenderArray();
         }
+
         $rowsData = $this->renderArray; 
-        $firstRowIsHeader = $this->getRendererOptionValue('firstRowIsHeader');
+        //$firstRowIsHeader = $this->getRendererOptionValue('firstRowIsHeader');
+        // @TODO remove this cheap hack around proper debugging
+        $firstRowIsHeader = true;
         if ($firstRowIsHeader) {
             $headerRowData = array_shift($rowsData);
             $rowNode = $this->buildRow($headerRowData, 'th');

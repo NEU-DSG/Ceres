@@ -18,13 +18,6 @@ class Rest extends AbstractFetcher {
      * @var string
      */
 
-    protected ?string $resourceId;
-    
-    /**
-     * The ID of the remote resource (DRS pid, DPLA hash id, etc)
-     * @var string
-     */
-
     protected string $resourceId;
     
     /**

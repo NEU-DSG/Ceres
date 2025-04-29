@@ -330,10 +330,6 @@ abstract class AbstractFetcher {
         return 'string';
     }
 
-    protected function getFetcherOptionValue(string $option): string {
-        return 'string';
-    }
-
     public function setResourceId(string $resourceId): void {
         $this->resourceId = $resourceId;
     }

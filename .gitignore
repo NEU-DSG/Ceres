@@ -6,3 +6,5 @@ mockData
 config/ceresSetup.php
 Ceres.code-workspace
 .vscode
+
+/vendor/
